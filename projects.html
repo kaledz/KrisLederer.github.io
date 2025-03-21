@@ -6,6 +6,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <style>
+        .project-filter {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .project-filter select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        .project-content {
+            display: block;
+            overflow: hidden;
+            transition: all 0.3s ease-in-out;
+            padding: 0 20px;
+        }
+        .project-content.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+        .project-content:not(.collapsed) {
+            max-height: 2000px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            opacity: 1;
+        }
+        .project-header {
+            padding: 15px 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .project-header:hover {
+            background: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+        .project-header h2 {
+            margin: 0;
+            padding: 0;
+        }
+        .collapse-btn {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            padding: 8px 16px;
+            color: #495057;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 40px;
+            min-height: 40px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .collapse-btn:hover {
+            background: #e9ecef;
+            border-color: #dee2e6;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+        }
+        .posts {
+            display: block !important;
+            width: 100% !important;
+        }
+        .posts article {
+            width: 100% !important;
+            margin: 0 0 2em 0 !important;
+            padding: 0 !important;
+            float: none !important;
+            display: block !important;
+        }
+        .image.fit, .image.main {
+            width: 100%;
+            height: auto;
+            margin: 0 0 2em 0;
+        }
+        /* Override any grid layouts from main.css */
+        @media screen and (max-width: 1280px) {
+            .posts {
+                display: block !important;
+                width: 100% !important;
+            }
+            .posts article {
+                width: 100% !important;
+                margin: 0 0 2em 0 !important;
+                float: none !important;
+            }
+        }
+        @media screen and (max-width: 736px) {
+            .posts {
+                display: block !important;
+                width: 100% !important;
+            }
+            .posts article {
+                width: 100% !important;
+                margin: 0 0 2em 0 !important;
+                float: none !important;
+            }
+        }
+        /* Additional overrides for grid layout */
+        .posts {
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        .posts article {
+            flex: 0 0 100% !important;
+        }
+        /* Override any potential grid columns */
+        .row {
+            display: block !important;
+        }
+        .row > * {
+            width: 100% !important;
+            margin-left: 0 !important;
+        }
+    </style>
 </head>
 <body class="is-preload">
 
@@ -41,110 +169,171 @@
         <!-- Main -->
         <div id="main">
 
+            <!-- Project Filter -->
+            <div class="project-filter">
+                <select id="categoryFilter" onchange="filterProjects()">
+                    <option value="all">All Categories</option>
+                    <option value="sql">SQL</option>
+                    <option value="python">Python</option>
+                    <option value="powerbi">Power BI</option>
+                    <option value="tableau">Tableau</option>
+                    <option value="excel">Excel</option>
+                </select>
+            </div>
+
             <!-- Featured Post -->
-            <article class="post featured">
-                <header class="major">
-                    <span class="date"></span>
-                    <h2><a>Data Cleaning in <br />SQL</a></h2>
+            <article class="post featured" data-category="sql">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <header class="major">
+                        <span class="date"></span>
+                        <h2><a>Data Cleaning in SQL</a></h2>
+                    </header>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="project-content">
                     <p>
                         In this SQL-based project, I meticulously cleaned Nashville housing data by addressing inconsistencies, inaccuracies, and missing values. Using SQL queries, I standardized data formats, handled outliers, and ensured overall data integrity. The process extended to normalizing data structures, addressing duplicates, and establishing relationships between tables. Through these efforts, I created a reliable dataset with a consistent schema, optimizing it for subsequent analyses and applications while adhering to best practices in database management.
                     </p>
-                </header>
-                <a href="https://github.com/kaledz/PorftolioProject/blob/main/DataCleaning_PorfolioProject1_NashvilleHousing.sql" class="image main"><img src="images/pic10.jpg" alt="" /></a>
-                <ul class="actions special">
-                    <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/DataCleaning_PorfolioProject1_NashvilleHousing.sql" class="button large">View Project</a></li>
-                </ul>
+                    <a href="https://github.com/kaledz/PorftolioProject/blob/main/DataCleaning_PorfolioProject1_NashvilleHousing.sql" class="image main"><img src="images/pic10.jpg" alt="" /></a>
+                    <ul class="actions special">
+                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/DataCleaning_PorfolioProject1_NashvilleHousing.sql" class="button large">View Project</a></li>
+                    </ul>
+                </div>
             </article>
 
             <!-- Coffee Bean Analysis Post -->
-            <article class="post featured">
-                <header class="major">
-                    <span class="date"></span>
-                    <h2><a href="#">Tableau Coffee Bean Analysis<br /></a></h2>
-                </header>
-                <div class='tableauPlaceholder' id='viz1741758783715' style='position: relative; width: 100%;'>
-                    <noscript>
-                        <a href='#'>
-                            <img alt='Coffee Bean Analysis ' src='https://public.tableau.com/static/images/Co/CoffeeBeansAnalysis/CoffeeBeanAnalysis/1_rss.png' style='border: none; width: 100%;' />
-                        </a>
-                    </noscript>
-                    <object class='tableauViz' style='display:none; width: 100%;'>
-                        <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
-                        <param name='embed_code_version' value='3' />
-                        <param name='site_root' value='' />
-                        <param name='name' value='CoffeeBeansAnalysis/CoffeeBeanAnalysis' />
-                        <param name='tabs' value='no' />
-                        <param name='toolbar' value='yes' />
-                        <param name='static_image' value='https://public.tableau.com/static/images/Co/CoffeeBeansAnalysis/CoffeeBeanAnalysis/1.png' />
-                        <param name='animate_transition' value='yes' />
-                        <param name='display_static_image' value='yes' />
-                        <param name='display_spinner' value='yes' />
-                        <param name='display_overlay' value='yes' />
-                        <param name='display_count' value='yes' />
-                        <param name='language' value='en-US' />
-                        <param name='filter' value='publish=yes' />
-                    </object>
-                </div>
-                <script type='text/javascript'>
-                    var divElement = document.getElementById('viz1741758783715');
-                    var vizElement = divElement.getElementsByTagName('object')[0];
-                    if (divElement.offsetWidth > 800) {
-                        vizElement.style.width = '100%';
-                        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-                    } else if (divElement.offsetWidth > 500) {
-                        vizElement.style.width = '100%';
-                        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-                    } else {
-                        vizElement.style.width = '100%';
-                        vizElement.style.height = '1877px';
-                    }
-                    var scriptElement = document.createElement('script');
-                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-                    vizElement.parentNode.insertBefore(scriptElement, vizElement);
-                </script>
-            </article>
-
-            <!-- Power BI Coffee Bean Analysis Post -->
-            <!-- Power BI Coffee Bean Analysis Post -->
-            <article class="post featured">
-                <header class="major">
-                    <span class="date"></span>
-                    <h2><a href="#">Power BI Coffee Bean Analysis<br /></a></h2>
-                </header>
-                <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-                    <iframe title="Coffee Analysis" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://app.powerbi.com/view?r=eyJrIjoiNjFmNzJkNGUtMTgwZS00YTk5LTkwYjQtODUzMmFiNGExYTNlIiwidCI6ImZkNTcxMTkzLTM4Y2ItNDM3Yi1iYjU1LTYwZjI4ZDY3YjY0MyIsImMiOjF9" frameborder="0" allowFullScreen="true"></iframe>
-                </div>
-            </article>
-
-            <!-- Posts -->
-            <section class="posts">
-                <article>
-                    <header>
+            <article class="post featured" data-category="tableau">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <header class="major">
                         <span class="date"></span>
-                        <h2><a>Python Movie Correlation<br /></a></h2>
+                        <h2><a href="#">Tableau Coffee Bean Analysis</a></h2>
                     </header>
-                    <a href="https://github.com/kaledz/PorftolioProject/blob/main/Portfolio%20Project%20-%20Movie%20Correlation%20.ipynb" class="image fit"><img src="images/pic13.jpg" alt="" /></a>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="project-content">
+                    <p>
+                        In this Tableau project, I conducted a comprehensive analysis of coffee bean data to uncover insights about different varieties, origins, and characteristics. The visualization explores patterns in coffee bean quality, pricing, and regional variations, providing valuable insights for coffee industry stakeholders and enthusiasts.
+                    </p>
+                    <div class='tableauPlaceholder' id='viz1741758783715' style='position: relative; width: 100%;'>
+                        <noscript>
+                            <a href='#'>
+                                <img alt='Coffee Bean Analysis ' src='https://public.tableau.com/static/images/Co/CoffeeBeansAnalysis/CoffeeBeanAnalysis/1_rss.png' style='border: none; width: 100%;' />
+                            </a>
+                        </noscript>
+                        <object class='tableauViz' style='display:none; width: 100%;'>
+                            <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+                            <param name='embed_code_version' value='3' />
+                            <param name='site_root' value='' />
+                            <param name='name' value='CoffeeBeansAnalysis/CoffeeBeanAnalysis' />
+                            <param name='tabs' value='no' />
+                            <param name='toolbar' value='yes' />
+                            <param name='static_image' value='https://public.tableau.com/static/images/Co/CoffeeBeansAnalysis/CoffeeBeanAnalysis/1.png' />
+                            <param name='animate_transition' value='yes' />
+                            <param name='display_static_image' value='yes' />
+                            <param name='display_spinner' value='yes' />
+                            <param name='display_overlay' value='yes' />
+                            <param name='display_count' value='yes' />
+                            <param name='language' value='en-US' />
+                            <param name='filter' value='publish=yes' />
+                        </object>
+                    </div>
+                    <script type='text/javascript'>
+                        var divElement = document.getElementById('viz1741758783715');
+                        var vizElement = divElement.getElementsByTagName('object')[0];
+                        if (divElement.offsetWidth > 800) {
+                            vizElement.style.width = '100%';
+                            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+                        } else if (divElement.offsetWidth > 500) {
+                            vizElement.style.width = '100%';
+                            vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+                        } else {
+                            vizElement.style.width = '100%';
+                            vizElement.style.height = '1877px';
+                        }
+                        var scriptElement = document.createElement('script');
+                        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+                        vizElement.parentNode.insertBefore(scriptElement, vizElement);
+                    </script>
+                </div>
+            </article>
+
+            <!-- Power BI Coffee Bean Analysis Post -->
+            <article class="post featured" data-category="powerbi">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <header class="major">
+                        <span class="date"></span>
+                        <h2><a href="#">Power BI Coffee Bean Analysis</a></h2>
+                    </header>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="project-content">
+                    <p>
+                        Using Power BI, I created an interactive dashboard to analyze coffee bean data, focusing on key metrics such as origin, roast levels, and market trends. This visualization provides dynamic insights into the coffee industry, allowing users to explore relationships between different variables and make data-driven decisions.
+                    </p>
+                    <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                        <iframe title="Coffee Analysis" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" src="https://app.powerbi.com/view?r=eyJrIjoiNjFmNzJkNGUtMTgwZS00YTk5LTkwYjQtODUzMmFiNGExYTNlIiwidCI6ImZkNTcxMTkzLTM4Y2ItNDM3Yi1iYjU1LTYwZjI4ZDY3YjY0MyIsImMiOjF9" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Chocolate Sales EDA Python -->
+            <article class="post featured" data-category="python">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <header class="major">
+                        <span class="date"></span>
+                        <h2><a href="#">Chocolate Sales EDA Python</a></h2>
+                    </header>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="project-content">
+                    <p>
+                        In this Python-based Exploratory Data Analysis (EDA) project, I analyzed chocolate sales data to uncover trends, patterns, and insights in the chocolate industry. Leveraging a comprehensive set of Python libraries including Pandas, Matplotlib, Plotly Express, Seaborn, NumPy, Altair, and Scikit-learn, I created interactive visualizations and performed detailed statistical analysis. The project utilized advanced data visualization techniques through libraries like Plotly and Chart Studio for interactive plots, while Scikit-learn enabled sophisticated data analysis. Additional libraries such as datetime were used for temporal analysis, making this a robust exploration of chocolate sales patterns and market dynamics.
+                    </p>
+                    <div style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                        <iframe src="Kaggle-Data Set.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowFullScreen="true"></iframe>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Python Movie Correlation -->
+            <article class="post featured" data-category="python">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <header class="major">
+                        <span class="date"></span>
+                        <h2><a>Python Movie Correlation</a></h2>
+                    </header>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="project-content">
                     <p>
                         In this Python project, I explored and analyzed movie correlation using data-driven techniques. Leveraging Python libraries like Pandas, NumPy, and Matplotlib, I implemented correlation analyses to uncover relationships and patterns within the movie dataset. This involved cleaning and preprocessing the data, calculating correlation coefficients, and visualizing the results. The goal was to gain insights into the interdependencies between various movie-related factors, providing valuable information for future recommendations or strategic decisions in the film industry.
                     </p>
+                    <a href="https://github.com/kaledz/PorftolioProject/blob/main/Portfolio%20Project%20-%20Movie%20Correlation%20.ipynb" class="image main"><img src="images/pic13.jpg" alt="" /></a>
                     <ul class="actions special">
-                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/Portfolio%20Project%20-%20Movie%20Correlation%20.ipynb" class="button">View Project</a></li>
+                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/Portfolio%20Project%20-%20Movie%20Correlation%20.ipynb" class="button large">View Project</a></li>
                     </ul>
-                </article>
-                <article>
-                    <header>
+                </div>
+            </article>
+
+            <!-- Excel Data Cleaning -->
+            <article class="post featured" data-category="excel">
+                <div class="project-header" onclick="toggleProject(this)">
+                    <header class="major">
                         <span class="date"></span>
-                        <h2><a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx">Excel Data Cleaning<br /></a></h2>
+                        <h2><a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx">Excel Data Cleaning</a></h2>
                     </header>
-                    <a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx" class="image fit"><img src="images/pic14.jpg" alt="" /></a>
+                    <button class="collapse-btn">▼</button>
+                </div>
+                <div class="project-content">
                     <p>
                         In this Excel project, I focused on data transformation by harnessing the power of Power Query to extract and refine job opportunity data obtained through web scraping from LinkedIn. Employing Excel's Power Query features, I seamlessly imported the raw web data and executed a series of transformations to address inconsistencies, handle missing values, and eliminate duplicates. The objective was to structure the information in a way that facilitates analysis and reporting. Through these data transformations, I successfully organized the current job opportunities dataset, making it more accessible and insightful for potential decision-making or strategic career planning within the Excel environment.
                     </p>
+                    <a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx" class="image main"><img src="images/pic14.jpg" alt="" /></a>
                     <ul class="actions special">
-                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx" class="button">View Project</a></li>
+                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx" class="button large">View Project</a></li>
                     </ul>
-                </article>
-            </section>
+                </div>
+            </article>
 
         <!-- Footer -->
         <footer id="footer">
@@ -202,6 +391,41 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        function toggleProject(header) {
+            const content = header.nextElementSibling;
+            const button = header.querySelector('.collapse-btn');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/></svg>';
+            } else {
+                content.classList.add('collapsed');
+                button.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>';
+            }
+        }
+
+        function filterProjects() {
+            const selectedCategory = document.getElementById('categoryFilter').value;
+            const projects = document.querySelectorAll('.post.featured, .posts article');
+            
+            projects.forEach(project => {
+                if (selectedCategory === 'all' || project.getAttribute('data-category') === selectedCategory) {
+                    project.style.display = 'block';
+                } else {
+                    project.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize all projects as expanded
+        document.addEventListener('DOMContentLoaded', function() {
+            const projectContents = document.querySelectorAll('.project-content');
+            projectContents.forEach(content => {
+                content.classList.remove('collapsed');
+            });
+        });
+    </script>
 
 </body>
 </html>
