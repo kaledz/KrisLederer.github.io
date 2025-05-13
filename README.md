@@ -8,7 +8,6 @@ This site serves as a digital portfolio showcasing my data projects, resume, and
 ---
 
 ## 📂 Project Structure
-
 .
 ├── assets/ # CSS, fonts, icons
 ├── images/ # Project images and logos
