@@ -18,10 +18,6 @@ This site serves as a digital portfolio showcasing my data projects, resume, and
 ├── Kaggle-Data Set.html # Embedded project or notebook from Kaggle
 └── index.html # (optional) Homepage if added
 
-yaml
-Copy
-Edit
-
 ---
 
 ## 📌 Key Pages
