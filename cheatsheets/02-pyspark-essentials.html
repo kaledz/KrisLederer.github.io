@@ -883,372 +883,98 @@ best_predictions = cv_model.transform(test)</code></pre>
         </div>
 
         <a href="#top" class="back-to-top">↑ Top</a>
-            <h2 id="ansi-sql-integration"> ANSI SQL Integration with PySpark</h2>
-            <div class="section-description">
-                <p><strong>Use ANSI SQL standards within PySpark for portable data processing</strong></p>
-                <ul>
-                    <li>Execute ANSI-compliant SQL in PySpark</li>
-                    <li>Convert between DataFrame API and SQL</li>
-                    <li>Use standard SQL functions in PySpark expressions</li>
-                    <li>Ensure cross-platform compatibility</li>
-                </ul>
-            </div>
+            
+            <div class="collapsible-section" id="sql-vs-pyspark-comparison">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2> SQL vs PySpark: Side-by-Side Comparison</h2>
+                    <span class="section-toggle"></span>
+                </div>
+                <div class="section-content">
 
-            <h3>ANSI SQL in PySpark SQL</h3>
-            <pre><code class="language-python"># Register DataFrame as SQL table
-df.createOrReplaceTempView("sales_data")
-
-# Use ANSI standard SQL functions
-ansi_sql_result = spark.sql("""
-    SELECT 
-        customer_id,
-        -- ANSI string functions
-        UPPER(customer_name) as name_upper,
-        LENGTH(customer_name) as name_length,
-        SUBSTRING(email FROM 1 FOR POSITION('@' IN email) - 1) as username,
-        
-        -- ANSI date functions  
-        EXTRACT(YEAR FROM order_date) as order_year,
-        EXTRACT(MONTH FROM order_date) as order_month,
-        CURRENT_DATE as processing_date,
-        
-        -- ANSI window functions
-        RANK() OVER (PARTITION BY region ORDER BY total_amount DESC) as regional_rank,
-        SUM(total_amount) OVER (
-            ORDER BY order_date 
-            ROWS BETWEEN 2 PRECEDING AND 2 FOLLOWING
-        ) as rolling_sum,
-        
-        -- ANSI conditional expressions
-        CASE 
-            WHEN total_amount > 1000 THEN 'High Value'
-            WHEN total_amount > 500 THEN 'Medium Value'
-            ELSE 'Low Value'
-        END as customer_segment,
-        
-        -- ANSI aggregate functions
-        COUNT(*) OVER (PARTITION BY region) as regional_customer_count
-        
-    FROM sales_data
-    WHERE order_date >= DATE '2024-01-01'
-    ORDER BY customer_id
-""")
-
-ansi_sql_result.show()</code></pre>
-
-            <h3>DataFrame API with ANSI SQL Functions</h3>
-            <pre><code class="language-python">from pyspark.sql import functions as F
+            <h3>ANSI Standard Functions - SQL vs PySpark</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                <div>
+                    <h4 style="background: #e6fffa; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;"> SQL (ANSI Standard)</h4>
+                    <pre><code class="language-sql">-- String functions
+SELECT 
+    UPPER(name) as upper_name,
+    LOWER(email) as lower_email,
+    LENGTH(description) as desc_len,
+    SUBSTRING(name FROM 1 FOR 10) as short_name,
+    TRIM(BOTH ' ' FROM name) as trimmed,
+    POSITION('@' IN email) as at_pos,
+    
+    -- Window functions
+    RANK() OVER (
+        PARTITION BY department 
+        ORDER BY salary DESC
+    ) as salary_rank
+FROM employees;</code></pre>
+                </div>
+                <div>
+                    <h4 style="background: #fff5f5; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;"> PySpark DataFrame API</h4>
+                    <pre><code class="language-python">from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
-# Use ANSI-equivalent functions in DataFrame API
-df_with_ansi = df.select(
-    # String functions (ANSI equivalent)
-    F.col("customer_id"),
-    F.upper(F.col("customer_name")).alias("name_upper"),
-    F.length(F.col("customer_name")).alias("name_length"),
-    F.substring_index(F.col("email"), "@", 1).alias("username"),
+df.select(
+    # String functions
+    F.upper("name").alias("upper_name"),
+    F.lower("email").alias("lower_email"),
+    F.length("description").alias("desc_len"),
+    F.substring("name", 1, 10).alias("short_name"),
+    F.trim("name").alias("trimmed"),
+    F.instr("email", "@").alias("at_pos"),
     
-    # Date functions (ANSI equivalent)
-    F.year(F.col("order_date")).alias("order_year"),
-    F.month(F.col("order_date")).alias("order_month"), 
-    F.current_date().alias("processing_date"),
-    
-    # Window functions (ANSI equivalent)
+    # Window functions
     F.rank().over(
-        Window.partitionBy("region").orderBy(F.desc("total_amount"))
-    ).alias("regional_rank"),
-    
-    F.sum("total_amount").over(
-        Window.orderBy("order_date").rowsBetween(-2, 2)
-    ).alias("rolling_sum"),
-    
-    # Conditional expressions (ANSI equivalent)
-    F.when(F.col("total_amount") > 1000, "High Value")
-     .when(F.col("total_amount") > 500, "Medium Value")
-     .otherwise("Low Value").alias("customer_segment"),
-     
-    # Aggregate with window (ANSI equivalent)
-    F.count("*").over(Window.partitionBy("region")).alias("regional_customer_count")
-)
-
-df_with_ansi.show()</code></pre>
-
-            <h2 id="advanced-elt-patterns"> Advanced ELT Patterns</h2>
-            <div class="section-description">
-                <p><strong>Production-ready ELT patterns for complex data workflows</strong></p>
-                <ul>
-                    <li>Slowly Changing Dimensions (SCD) implementations</li>
-                    <li>Data quality frameworks</li>
-                    <li>Incremental processing strategies</li>
-                    <li>Error handling and data lineage</li>
-                </ul>
+        Window.partitionBy("department")
+              .orderBy(F.desc("salary"))
+    ).alias("salary_rank")
+)</code></pre>
+                </div>
             </div>
 
-            <h3>Slowly Changing Dimension (SCD) Type 2</h3>
-            <pre><code class="language-python"># SCD Type 2 implementation for tracking historical changes
-from pyspark.sql.types import *
-from datetime import datetime, date
+            <h3>ANSI Standard Joins - SQL vs PySpark</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                <div>
+                    <h4 style="background: #e6fffa; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;"> SQL (ANSI-92 Joins)</h4>
+                    <pre><code class="language-sql">-- ANSI standard join syntax
+SELECT c.customer_name, o.order_date, p.product_name
+FROM customers c
+    INNER JOIN orders o ON c.customer_id = o.customer_id
+    LEFT OUTER JOIN order_items oi ON o.order_id = oi.order_id  
+    RIGHT OUTER JOIN products p ON oi.product_id = p.product_id
+    FULL OUTER JOIN categories cat ON p.category_id = cat.category_id
+WHERE o.order_date >= DATE '2024-01-01';</code></pre>
+                </div>
+                <div>
+                    <h4 style="background: #fff5f5; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;"> PySpark DataFrame API</h4>
+                    <pre><code class="language-python"># Equivalent PySpark joins
+result = customers.alias("c") \
+    .join(orders.alias("o"), 
+          F.col("c.customer_id") == F.col("o.customer_id"), 
+          "inner") \
+    .join(order_items.alias("oi"), 
+          F.col("o.order_id") == F.col("oi.order_id"), 
+          "left_outer") \
+    .join(products.alias("p"), 
+          F.col("oi.product_id") == F.col("p.product_id"), 
+          "right_outer") \
+    .join(categories.alias("cat"), 
+          F.col("p.category_id") == F.col("cat.category_id"), 
+          "full_outer")</code></pre>
+                </div>
+            </div>
 
-def implement_scd_type2(spark, new_data_df, existing_dim_df, key_columns, scd_columns):
-    """
-    Implement SCD Type 2 for dimensional data
-    
-    Args:
-        spark: SparkSession
-        new_data_df: DataFrame with new/updated records
-        existing_dim_df: DataFrame with existing dimensional data
-        key_columns: List of natural key columns
-        scd_columns: List of columns to track for changes
-    """
-    
-    # Add metadata columns to new data
-    new_data_with_meta = new_data_df.withColumn("effective_date", F.current_date()) \
-                                   .withColumn("end_date", F.lit(None).cast(DateType())) \
-                                   .withColumn("is_current", F.lit(True)) \
-                                   .withColumn("version", F.lit(1))
-    
-    # Identify changed records
-    join_condition = [new_data_df[col] == existing_dim_df[col] for col in key_columns]
-    
-    # Find records that have changed in SCD columns
-    scd_comparison = []
-    for col in scd_columns:
-        scd_comparison.append(
-            F.coalesce(new_data_df[col], F.lit("NULL")) != 
-            F.coalesce(existing_dim_df[col], F.lit("NULL"))
-        )
-    
-    changes_detected = existing_dim_df.join(new_data_df, join_condition, "inner") \
-                                     .filter(F.expr(" OR ".join([str(cond) for cond in scd_comparison])))
-    
-    # Expire old records
-    expired_records = existing_dim_df.join(
-        changes_detected.select(*key_columns).distinct(), 
-        key_columns, 
-        "inner"
-    ).withColumn("end_date", F.current_date()) \
-     .withColumn("is_current", F.lit(False))
-    
-    # Keep unchanged current records
-    unchanged_records = existing_dim_df.join(
-        changes_detected.select(*key_columns).distinct(), 
-        key_columns, 
-        "left_anti"
-    ).filter(F.col("is_current") == True)
-    
-    # Insert new versions of changed records
-    new_versions = new_data_with_meta.join(
-        changes_detected.select(*key_columns).distinct(), 
-        key_columns, 
-        "inner"
-    ).withColumn("version", F.lit(2))  # Simplified versioning
-    
-    # Insert completely new records
-    new_records = new_data_with_meta.join(
-        existing_dim_df.select(*key_columns).distinct(), 
-        key_columns, 
-        "left_anti"
-    )
-    
-    # Union all parts together
-    final_dimension = expired_records.unionByName(unchanged_records) \
-                                   .unionByName(new_versions) \
-                                   .unionByName(new_records)
-    
-    return final_dimension
+                </div>
+            </div>
 
-# Example usage
-customer_dim_updated = implement_scd_type2(
-    spark=spark,
-    new_data_df=new_customers_df,
-    existing_dim_df=existing_customer_dim_df,
-    key_columns=["customer_id"],
-    scd_columns=["customer_name", "email", "address", "phone"]
-)</code></pre>
+            <a href="#top" class="back-to-top"> Top</a>
+        </div>
+    </div>
 
-            <h3>Data Quality Framework</h3>
-            <pre><code class="language-python"># Comprehensive data quality framework
-class DataQualityFramework:
-    def __init__(self, spark):
-        self.spark = spark
-        self.quality_results = []
-    
-    def check_completeness(self, df, column_name, threshold=0.95):
-        """Check data completeness (non-null percentage)"""
-        total_count = df.count()
-        non_null_count = df.filter(F.col(column_name).isNotNull()).count()
-        completeness = non_null_count / total_count if total_count > 0 else 0
-        
-        result = {
-            "check_type": "completeness",
-            "column": column_name,
-            "metric_value": completeness,
-            "threshold": threshold,
-            "passed": completeness >= threshold,
-            "total_records": total_count,
-            "non_null_records": non_null_count
-        }
-        
-        self.quality_results.append(result)
-        return result
-    
-    def check_uniqueness(self, df, column_names, threshold=1.0):
-        """Check uniqueness of specified columns"""
-        if isinstance(column_names, str):
-            column_names = [column_names]
-            
-        total_count = df.count()
-        distinct_count = df.select(*column_names).distinct().count()
-        uniqueness = distinct_count / total_count if total_count > 0 else 0
-        
-        result = {
-            "check_type": "uniqueness",
-            "columns": column_names,
-            "metric_value": uniqueness,
-            "threshold": threshold,
-            "passed": uniqueness >= threshold,
-            "total_records": total_count,
-            "distinct_records": distinct_count,
-            "duplicate_records": total_count - distinct_count
-        }
-        
-        self.quality_results.append(result)
-        return result
-    
-    def check_validity(self, df, column_name, valid_values, threshold=1.0):
-        """Check if values are within expected valid set"""
-        total_count = df.count()
-        valid_count = df.filter(F.col(column_name).isin(valid_values)).count()
-        validity = valid_count / total_count if total_count > 0 else 0
-        
-        result = {
-            "check_type": "validity",
-            "column": column_name,
-            "metric_value": validity,
-            "threshold": threshold,
-            "passed": validity >= threshold,
-            "total_records": total_count,
-            "valid_records": valid_count,
-            "invalid_records": total_count - valid_count,
-            "valid_values": valid_values
-        }
-        
-        self.quality_results.append(result)
-        return result
-    
-    def generate_quality_report(self):
-        """Generate comprehensive data quality report"""
-        if not self.quality_results:
-            return "No quality checks performed"
-        
-        total_checks = len(self.quality_results)
-        passed_checks = sum(1 for result in self.quality_results if result["passed"])
-        
-        report = f"""
-        DATA QUALITY REPORT
-        ===================
-        Total Checks: {total_checks}
-        Passed Checks: {passed_checks}
-        Failed Checks: {total_checks - passed_checks}
-        Success Rate: {(passed_checks/total_checks)*100:.1f}%
-        
-        DETAILED RESULTS:
-        """
-        
-        for result in self.quality_results:
-            status = " PASSED" if result["passed"] else " FAILED"
-            report += f"""
-        {status} - {result["check_type"].upper()}
-          Column(s): {result.get("column") or result.get("columns")}
-          Metric: {result["metric_value"]:.3f}
-          Threshold: {result["threshold"]}
-        """
-        
-        return report
-
-# Example usage of data quality framework
-dq = DataQualityFramework(spark)
-
-# Run quality checks
-dq.check_completeness(df, "customer_id", threshold=1.0)
-dq.check_uniqueness(df, ["customer_id"], threshold=1.0)
-dq.check_validity(df, "status", ["Active", "Inactive", "Pending"], threshold=0.99)
-
-# Generate report
-print(dq.generate_quality_report())</code></pre>
-
- src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
-    
-    <script>
-        // Toggle Table of Contents
-        function toggleTOC() {
-            const tocContent = document.getElementById('tocContent');
-            const button = document.querySelector('.toc-toggle');
-            
-            if (tocContent.classList.contains('collapsed')) {
-                tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
-            } else {
-                tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
-            }
-        }
-
-        // Toggle individual sections
-        function toggleSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            const content = section.querySelector('.section-content');
-            const toggle = section.querySelector('.section-toggle');
-            
-            if (content.classList.contains('collapsed')) {
-                content.classList.remove('collapsed');
-                toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
-            } else {
-                content.classList.add('collapsed');
-                toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
-            }
-        }
-
-        // Expand all sections
-        function expandAll() {
-            document.querySelectorAll('.section-content').forEach(content => {
-                content.classList.remove('collapsed');
-            });
-            document.querySelectorAll('.section-toggle').forEach(toggle => {
-                toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
-            });
-        }
-
-        // Collapse all sections
-        function collapseAll() {
-            document.querySelectorAll('.section-content').forEach(content => {
-                content.classList.add('collapsed');
-            });
-            document.querySelectorAll('.section-toggle').forEach(toggle => {
-                toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
-            });
-        }
-
-        // Add expand/collapse all buttons
-        document.addEventListener('DOMContentLoaded', function() {
-            const tocContainer = document.querySelector('.toc-container');
-            if (tocContainer) {
-                const controls = document.createElement('div');
-                controls.style.marginTop = '1rem';
-                controls.innerHTML = `
-                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
-                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
-                `;
-                tocContainer.appendChild(controls);
-            }
-        });
-    </script>
 </body>
-</html> 
-
+</html>
 
