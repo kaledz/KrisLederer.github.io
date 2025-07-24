@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 requests Library Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.3rem; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } .section-header { padding: 0.8rem 1rem; } .section-content { padding: 1rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🧪 requests Library Cheat Sheet</h1>
+            <blockquote>Complete guide to HTTP requests, API authentication, pagination, and error handling</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://requests.readthedocs.io/en/latest/" target="_blank">Requests Documentation</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">HTTP Status Codes</a></li>
+                <li><a href="https://restfulapi.net/" target="_blank">REST API Best Practices</a></li>
+            </ul>
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#http-operations">🚀 Basic HTTP Operations</a></li>
+                        <li><a href="#authentication">🔐 Authentication Methods</a></li>
+                        <li><a href="#error-handling">⚠️ Error Handling and Status Codes</a></li>
+                        <li><a href="#advanced-features">🔧 Advanced Features</a></li>
+                        <li><a href="#best-practices">💡 Best Practices</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="http-operations">
+                <div class="section-header" onclick="toggleSection('http-operations')">
+                    <h2>🚀 Basic HTTP Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Simple Requests</h3>
+            <pre><code class="language-python">import requests
+import json
+from urllib.parse import urljoin, urlencode
+
+# GET request
+response = requests.get('https://api.example.com/users')
+data = response.json()
+
+# POST request with JSON data
+user_data = {
+    'name': 'John Doe',
+    'email': 'john@example.com',
+    'age': 30
+}
+response = requests.post('https://api.example.com/users', json=user_data)
+
+# POST with form data
+form_data = {'key1': 'value1', 'key2': 'value2'}
+response = requests.post('https://api.example.com/form', data=form_data)
+
+# PUT request (update)
+updated_data = {'name': 'John Smith'}
+response = requests.put('https://api.example.com/users/123', json=updated_data)
+
+# DELETE request
+response = requests.delete('https://api.example.com/users/123')</code></pre>
+
+            <h3>Request Parameters and Headers</h3>
+            <pre><code class="language-python"># GET with query parameters
+params = {
+    'page': 1,
+    'limit': 10,
+    'filter': 'active'
+}
+response = requests.get('https://api.example.com/users', params=params)
+
+# Custom headers
+headers = {
+    'User-Agent': 'MyApp/1.0',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+}
+response = requests.get('https://api.example.com/data', headers=headers)</code></pre>
+
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="authentication">
+                <div class="section-header" onclick="toggleSection('authentication')">
+                    <h2>🔐 Authentication Methods</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>API Key Authentication</h3>
+            <pre><code class="language-python"># API key in header
+headers = {'X-API-Key': 'your-api-key-here'}
+response = requests.get('https://api.example.com/data', headers=headers)
+
+# API key in query parameters
+params = {'api_key': 'your-api-key-here'}
+response = requests.get('https://api.example.com/data', params=params)
+
+# Using authorization header
+headers = {'Authorization': 'ApiKey your-api-key-here'}
+response = requests.get('https://api.example.com/data', headers=headers)</code></pre>
+
+            <h3>Bearer Token Authentication</h3>
+            <pre><code class="language-python"># Bearer token
+token = 'your-jwt-token-here'
+headers = {'Authorization': f'Bearer {token}'}
+response = requests.get('https://api.example.com/protected', headers=headers)
+
+# OAuth2 token refresh pattern
+class TokenManager:
+    def __init__(self, client_id, client_secret, token_url):
+        self.client_id = client_id
+        self.client_secret = client_secret
+        self.token_url = token_url
+        self.access_token = None
+        self.refresh_token = None
+    
+    def get_token(self):
+        """Get initial access token"""
+        data = {
+            'grant_type': 'client_credentials',
+            'client_id': self.client_id,
+            'client_secret': self.client_secret
+        }
+        response = requests.post(self.token_url, data=data)
+        tokens = response.json()
+        self.access_token = tokens['access_token']
+        return self.access_token
+    
+    def get_headers(self):
+        """Get headers with current token"""
+        if not self.access_token:
+            self.get_token()
+        return {'Authorization': f'Bearer {self.access_token}'}</code></pre>
+
+            <h3>Basic Authentication</h3>
+            <pre><code class="language-python">from requests.auth import HTTPBasicAuth
+
+# Method 1: Using auth parameter
+response = requests.get('https://api.example.com/data', 
+                       auth=HTTPBasicAuth('username', 'password'))
+
+# Method 2: Using tuple
+response = requests.get('https://api.example.com/data', 
+                       auth=('username', 'password'))</code></pre>
+
+            <h2>🛡️ Error Handling and Retries</h2>
+            <pre><code class="language-python">import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+import time
+
+class APIClient:
+    def __init__(self, base_url: str, timeout: int = 30, max_retries: int = 3):
+        self.base_url = base_url
+        self.timeout = timeout
+        self.session = requests.Session()
+        
+        # Configure retry strategy
+        retry_strategy = Retry(
+            total=max_retries,
+            backoff_factor=1,  # Wait 1, 2, 4, 8 seconds between retries
+            status_forcelist=[429, 500, 502, 503, 504]
+        )
+        
+        adapter = HTTPAdapter(max_retries=retry_strategy)
+        self.session.mount("http://", adapter)
+        self.session.mount("https://", adapter)
+    
+    def _make_request(self, method: str, endpoint: str, **kwargs):
+        """Make HTTP request with error handling"""
+        url = urljoin(self.base_url, endpoint)
+        
+        try:
+            response = self.session.request(
+                method=method,
+                url=url,
+                timeout=self.timeout,
+                **kwargs
+            )
+            response.raise_for_status()
+            return response
+            
+        except requests.exceptions.Timeout:
+            print(f"Request timed out: {method} {url}")
+            return None
+            
+        except requests.exceptions.ConnectionError:
+            print(f"Connection error: {method} {url}")
+            return None
+            
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTP error {e.response.status_code}: {method} {url}")
+            return None</code></pre>
+
+            <h2>📄 Pagination Handling</h2>
+            <h3>Common Pagination Patterns</h3>
+            <pre><code class="language-python">def fetch_all_pages_offset(base_url, headers=None, page_size=100):
+    """Handle offset-based pagination"""
+    all_data = []
+    offset = 0
+    
+    while True:
+        params = {
+            'limit': page_size,
+            'offset': offset
+        }
+        
+        response = requests.get(base_url, params=params, headers=headers)
+        response.raise_for_status()
+        
+        data = response.json()
+        items = data.get('items', [])
+        
+        if not items:
+            break
+        
+        all_data.extend(items)
+        offset += page_size
+        
+        # Check if we've reached the end
+        if len(items) < page_size:
+            break
+    
+    return all_data
+
+def fetch_all_pages_cursor(base_url, headers=None):
+    """Handle cursor-based pagination"""
+    all_data = []
+    next_cursor = None
+    
+    while True:
+        params = {}
+        if next_cursor:
+            params['cursor'] = next_cursor
+        
+        response = requests.get(base_url, params=params, headers=headers)
+        response.raise_for_status()
+        
+        data = response.json()
+        items = data.get('items', [])
+        all_data.extend(items)
+        
+        # Get next cursor
+        next_cursor = data.get('next_cursor')
+        if not next_cursor:
+            break
+    
+    return all_data</code></pre>
+
+            <h2>📁 File Downloads and Uploads</h2>
+            <h3>File Downloads</h3>
+            <pre><code class="language-python">def download_file(url, local_path, chunk_size=8192, headers=None):
+    """Download file with progress bar"""
+    response = requests.get(url, headers=headers, stream=True)
+    response.raise_for_status()
+    
+    total_size = int(response.headers.get('content-length', 0))
+    
+    with open(local_path, 'wb') as file:
+        for chunk in response.iter_content(chunk_size=chunk_size):
+            size = file.write(chunk)
+    
+    return local_path
+
+def download_json_data(url, headers=None):
+    """Download and parse JSON data"""
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    return response.json()</code></pre>
+
+            <h3>File Uploads</h3>
+            <pre><code class="language-python">def upload_file(url, file_path, headers=None, additional_data=None):
+    """Upload file with additional form data"""
+    files = {'file': open(file_path, 'rb')}
+    data = additional_data or {}
+    
+    try:
+        response = requests.post(url, files=files, data=data, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    finally:
+        files['file'].close()
+
+def upload_json_data(url, data, headers=None):
+    """Upload JSON data"""
+    if headers is None:
+        headers = {}
+    headers.update({'Content-Type': 'application/json'})
+    
+    response = requests.post(url, json=data, headers=headers)
+    response.raise_for_status()
+    return response.json()</code></pre>
+
+            <h2>🎯 Advanced Features</h2>
+            <h3>Session Management</h3>
+            <pre><code class="language-python">class APISession:
+    def __init__(self, base_url, default_headers=None):
+        self.base_url = base_url
+        self.session = requests.Session()
+        
+        if default_headers:
+            self.session.headers.update(default_headers)
+        
+        # Configure connection pooling
+        adapter = HTTPAdapter(
+            pool_connections=10,  # Number of connection pools
+            pool_maxsize=20,      # Max connections per pool
+            max_retries=3
+        )
+        self.session.mount('http://', adapter)
+        self.session.mount('https://', adapter)
+    
+    def request(self, method, endpoint, **kwargs):
+        url = urljoin(self.base_url, endpoint)
+        return self.session.request(method, url, **kwargs)
+    
+    def close(self):
+        self.session.close()
+
+# Context manager usage
+with APIClient('https://api.example.com/', headers={'Authorization': 'Bearer token'}) as client:
+    response = client.get('users')
+    data = response.json()</code></pre>
+
+            <h2>🚀 Production Patterns</h2>
+            <h3>Rate Limiting and Configuration</h3>
+            <pre><code class="language-python">import os
+from dataclasses import dataclass
+
+@dataclass
+class APIConfig:
+    base_url: str
+    api_key: str = None
+    timeout: int = 30
+    max_retries: int = 3
+    rate_limit: int = 100
+    
+    @classmethod
+    def from_env(cls):
+        return cls(
+            base_url=os.getenv('API_BASE_URL', 'https://api.example.com'),
+            api_key=os.getenv('API_KEY'),
+            timeout=int(os.getenv('API_TIMEOUT', '30')),
+            max_retries=int(os.getenv('API_MAX_RETRIES', '3')),
+            rate_limit=int(os.getenv('API_RATE_LIMIT', '100'))
+        )
+
+class ProductionAPIClient:
+    def __init__(self, config: APIConfig):
+        self.config = config
+        self.session = requests.Session()
+        
+        if config.api_key:
+            self.session.headers.update({
+                'Authorization': f'Bearer {config.api_key}',
+                'User-Agent': 'DataPipeline/1.0'
+            })
+    
+    def get(self, endpoint, **kwargs):
+        url = urljoin(self.config.base_url, endpoint)
+        kwargs.setdefault('timeout', self.config.timeout)
+        return self.session.get(url, **kwargs)</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Always implement proper error handling and retry logic for production API clients. Use sessions for multiple requests to the same host for better performance!
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

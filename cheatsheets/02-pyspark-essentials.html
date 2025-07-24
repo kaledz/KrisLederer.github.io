@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔥 ELT Using PySpark - Expert Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; line-height: 1.7; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; line-height: 1.6; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .section-description { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #667eea; }
+        .bullet-explanation { background: #f0f4ff; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 3px solid #4299e1; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🔥 [ ELT Using PySpark ] (Cheatsheet)</h1>
+            <blockquote>Expert-level comprehensive guide to Extract, Load, Transform operations using PySpark for big data processing and analytics</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://spark.apache.org/docs/latest/api/python/" target="_blank">PySpark API Documentation</a></li>
+                <li><a href="https://spark.apache.org/docs/latest/sql-programming-guide.html" target="_blank">Spark SQL Programming Guide</a></li>
+                <li><a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" target="_blank">Structured Streaming Guide</a></li>
+                <li><a href="https://spark.apache.org/docs/latest/ml-guide.html" target="_blank">MLlib Machine Learning Guide</a></li>
+                <li><a href="16-sql-functions-comparison.html" style="color: #e53e3e; font-weight: bold;">🔗 SQL vs PySpark Functions Comparison</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#1-basic-dataframe-operations">1. Basic DataFrame Operations</a></li><li><a href="#2-advanced-data-manipulation">2. Advanced Data Manipulation</a></li><li><a href="#3-handling-missing-and-duplicate-data">3. Handling Missing and Duplicate Data</a></li><li><a href="#4-data-transformation">4. Data Transformation</a></li><li><a href="#5-data-profiling">5. Data Profiling</a></li><li><a href="#6-data-visualization-integration-with-other-libraries">6. Data Visualization (Integration with other libraries)</a></li><li><a href="#7-data-importexport">7. Data Import/Export</a></li><li><a href="#8-working-with-large-data">8. Working with Large Data</a></li><li><a href="#9-spark-sql">9. Spark SQL</a></li><li><a href="#10-machine-learning-and-advanced-analytics">10. Machine Learning and Advanced Analytics</a></li><li><a href="#performance-best-practices-summary">Performance Best Practices Summary</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <section>
+                <div class="collapsible-section" id="1-basic-dataframe-operations">
+                <div class="section-header" onclick="toggleSection('1-basic-dataframe-operations')">
+                    <h2>1. Basic DataFrame Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Fundamental operations for creating, reading, writing, and manipulating DataFrames in PySpark. These operations form the foundation of any ELT pipeline and are essential for data ingestion and basic transformations.</p>
+                </div>
+
+                <h3>Creating and Reading DataFrames</h3>
+                <pre><code class="language-python"># Creating DataFrame from Python data structures
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+
+# Initialize SparkSession
+spark = SparkSession.builder.appName("ELT_Pipeline").getOrCreate()
+
+# Create DataFrame from list of dictionaries
+data = [{"name": "Alice", "age": 25}, {"name": "Bob", "age": 30}]
+df = spark.createDataFrame(data)
+
+# Reading CSV File with comprehensive options
+df_csv = spark.read \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .option("multiLine", "true") \
+    .csv("path/to/file.csv")
+
+# Reading JSON File - handles nested structures automatically
+df_json = spark.read.json("path/to/file.json")
+
+# Reading Parquet File - most efficient format for analytics
+df_parquet = spark.read.parquet("path/to/file.parquet")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Creates DataFrames from various sources and formats</li>
+                        <li><strong>When to use:</strong> Data ingestion phase of ELT pipelines</li>
+                        <li><strong>Performance tip:</strong> Parquet is fastest for large datasets; CSV inference can be expensive on big files</li>
+                        <li><strong>Edge case:</strong> Schema inference works well for small files but can timeout on large datasets</li>
+                    </ul>
+                </div>
+
+                <h3>Basic DataFrame Operations</h3>
+                <pre><code class="language-python"># Show DataFrame content
+df.show()  # Shows first 20 rows
+df.show(50, truncate=False)  # Show 50 rows without truncating
+
+# Print Schema - crucial for understanding data structure
+df.printSchema()
+
+# Column Selection - select specific columns
+df_selected = df.select("column1", "column2")
+
+# Filtering Rows - apply conditions to filter data
+df_filtered = df.filter(df["column"] > value)
+
+# Adding a New Column - create computed columns
+df_with_new_col = df.withColumn("newColumn", col("existing_col") * 2)
+
+# Renaming a Column
+df_renamed = df.withColumnRenamed("oldName", "newName")
+
+# Dropping a Column
+df_dropped = df.drop("column")
+
+# Describe Data - get statistical summary
+df.describe().show()
+
+# Counting Rows - get total record count
+row_count = df.count()
+
+# Get distinct values
+df_distinct = df.select("column").distinct()
+
+# Sample Data - get random sample for testing
+df_sample = df.sample(withReplacement=False, fraction=0.1, seed=42)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Performs basic data exploration and transformation operations</li>
+                        <li><strong>When to use:</strong> Data profiling, initial exploration, and simple transformations</li>
+                        <li><strong>Performance considerations:</strong> <code>count()</code> and <code>show()</code> trigger actions; use sparingly in production</li>
+                        <li><strong>Best practice:</strong> Always check schema before processing to avoid type errors</li>
+                    </ul>
+                </div>
+
+                <h3>Writing DataFrames</h3>
+                <pre><code class="language-python"># Writing DataFrame to CSV
+df.write \
+    .mode("overwrite") \
+    .option("header", "true") \
+    .csv("path/to/output")
+
+# Writing DataFrame to JSON with compression
+df.write \
+    .mode("append") \
+    .option("compression", "gzip") \
+    .json("path/to/output")
+
+# Writing DataFrame to Parquet with partitioning
+df.write \
+    .mode("overwrite") \
+    .partitionBy("year", "month") \
+    .parquet("path/to/output")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Saves DataFrames to various file formats and destinations</li>
+                        <li><strong>When to use:</strong> End of ELT pipeline or intermediate data storage</li>
+                        <li><strong>Performance tip:</strong> Partitioning improves query performance for time-series data</li>
+                        <li><strong>Gotcha:</strong> <code>overwrite</code> mode deletes entire directory, not just matching partitions</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="2-advanced-data-manipulation">
+                <div class="section-header" onclick="toggleSection('2-advanced-data-manipulation')">
+                    <h2>2. Advanced Data Manipulation</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Complex data transformation operations including joins, unions, pivots, and window functions. These operations are crucial for data integration and advanced analytics in ELT pipelines.</p>
+                </div>
+
+                <h3>Joining DataFrames</h3>
+                <pre><code class="language-python"># Basic join operations
+df1 = spark.createDataFrame([(1, "Alice"), (2, "Bob")], ["id", "name"])
+df2 = spark.createDataFrame([(1, 1000), (2, 2000)], ["id", "salary"])
+
+# Inner join (default) - only matching records
+df_inner = df1.join(df2, "id")
+
+# Left join - all records from left DataFrame
+df_left = df1.join(df2, "id", "left")
+
+# Complex join with multiple conditions
+df_complex = df1.alias("a").join(
+    df2.alias("b"),
+    (col("a.id") == col("b.id")) & (col("b.salary") > 1500),
+    "inner"
+)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Combines data from multiple DataFrames based on common keys</li>
+                        <li><strong>When to use:</strong> Data integration, enrichment, and relationship analysis</li>
+                        <li><strong>Performance consideration:</strong> Join operations can be expensive; consider broadcast joins for small tables</li>
+                        <li><strong>Best practice:</strong> Use aliases when joining tables with overlapping column names</li>
+                    </ul>
+                </div>
+
+                <h3>Union and Window Operations</h3>
+                <pre><code class="language-python"># Union DataFrames - combine rows from multiple DataFrames
+df_union = df1.union(df2)
+
+# Pivot Table - convert rows to columns
+df_pivot = df.groupBy("category") \
+    .pivot("month") \
+    .agg(sum("sales"))
+
+# Window Functions for advanced analytics
+from pyspark.sql.window import Window
+
+windowSpec = Window.partitionBy("department").orderBy("salary")
+df_windowed = df.withColumn("rank", rank().over(windowSpec))
+
+# DataFrame to RDD conversion (rare but sometimes needed)
+rdd = df.rdd
+
+# RDD to DataFrame conversion
+df_from_rdd = rdd.toDF()
+
+# Caching DataFrame for reuse
+df.cache()
+
+# Broadcast Join for performance
+from pyspark.sql.functions import broadcast
+df_broadcast = large_df.join(broadcast(small_df), "key")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Performs advanced data combination and analytical operations</li>
+                        <li><strong>When to use:</strong> Complex analytics, data aggregation, and performance optimization</li>
+                        <li><strong>Performance tip:</strong> Broadcast joins are much faster for small tables (< 200MB)</li>
+                        <li><strong>Edge case:</strong> Window functions can be memory-intensive with large partitions</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="3-handling-missing-and-duplicate-data">
+                <div class="section-header" onclick="toggleSection('3-handling-missing-and-duplicate-data')">
+                    <h2>3. Handling Missing and Duplicate Data</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Essential data quality operations for cleaning and preparing data. Missing and duplicate data are common issues in real-world datasets that must be addressed before analysis.</p>
+                </div>
+
+                <pre><code class="language-python"># Dropping Rows with Null Values
+df_no_nulls = df.na.drop()  # Drop rows with any null values
+df_threshold = df.na.drop(thresh=2)  # Keep rows with at least 2 non-null values
+
+# Filling Null Values with different strategies
+df_filled = df.na.fill(0)  # Fill all nulls with 0
+df_filled_dict = df.na.fill({"age": 0, "name": "Unknown"})  # Column-specific fills
+
+# Dropping Duplicate Rows
+df_deduped = df.dropDuplicates()
+df_deduped_subset = df.dropDuplicates(["id", "date"])  # Based on specific columns
+
+# Replacing Values - useful for data standardization
+df_replaced = df.na.replace(["old_value"], ["new_value"])</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Handles missing data and removes duplicates from datasets</li>
+                        <li><strong>When to use:</strong> Data cleaning phase before analysis or modeling</li>
+                        <li><strong>Best practice:</strong> Understand your data before choosing fill strategy (mean, median, mode)</li>
+                        <li><strong>Performance note:</strong> <code>dropDuplicates()</code> is expensive - use specific columns when possible</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="4-data-transformation">
+                <div class="section-header" onclick="toggleSection('4-data-transformation')">
+                    <h2>4. Data Transformation</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Core transformation operations including User Defined Functions (UDFs), string operations, date/time functions, and conditional logic. These operations enable custom business logic and data standardization.</p>
+                </div>
+
+                <h3>User Defined Functions (UDFs)</h3>
+                <pre><code class="language-python"># UDF (User Defined Function) for custom transformations
+from pyspark.sql.functions import udf
+from pyspark.sql.types import StringType
+
+def custom_function(value):
+    return value.upper() if value else "UNKNOWN"
+
+# Register UDF
+custom_udf = udf(custom_function, StringType())
+df_transformed = df.withColumn("upper_name", custom_udf(col("name")))
+
+# Pandas UDF for vectorized operations (much faster)
+from pyspark.sql.functions import pandas_udf
+import pandas as pd
+
+@pandas_udf("double")
+def pandas_multiply(s: pd.Series) -> pd.Series:
+    return s * 2
+
+df_vectorized = df.withColumn("doubled_salary", pandas_multiply(col("salary")))</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Enables custom Python functions to be applied to DataFrame columns</li>
+                        <li><strong>When to use:</strong> Complex business logic that can't be expressed with built-in functions</li>
+                        <li><strong>Performance tip:</strong> Pandas UDFs are 3-10x faster than regular Python UDFs</li>
+                        <li><strong>Gotcha:</strong> UDFs can't be optimized by Catalyst - use built-in functions when possible</li>
+                    </ul>
+                </div>
+
+                <h3>Built-in Functions</h3>
+                <pre><code class="language-python"># String Operations
+df_string = df.select(
+    upper(col("name")).alias("name_upper"),
+    lower(col("name")).alias("name_lower"),
+    length(col("name")).alias("name_length")
+)
+
+# Date and Time Functions
+df_datetime = df.select(
+    current_date().alias("today"),
+    current_timestamp().alias("now"),
+    year(col("birth_date")).alias("birth_year")
+)
+
+# Numeric Functions
+df_numeric = df.select(
+    abs(col("balance")).alias("abs_balance"),
+    sqrt(col("area")).alias("sqrt_area"),
+    round(col("price"), 2).alias("rounded_price")
+)
+
+# Conditional Expressions
+df_conditional = df.select(
+    when(col("age") < 18, "Minor")
+    .when(col("age") < 65, "Adult")
+    .otherwise("Senior").alias("age_group")
+)
+
+# Type Casting
+df_casted = df.withColumn("age_string", col("age").cast("string"))
+
+# Explode Function (Array to Rows) - flatten arrays
+df_exploded = df.withColumn("exploded_tags", explode(col("tags_array")))</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Applies built-in Spark functions for common transformations</li>
+                        <li><strong>When to use:</strong> Standard data transformations, type conversions, conditional logic</li>
+                        <li><strong>Performance advantage:</strong> Built-in functions are optimized by Catalyst optimizer</li>
+                        <li><strong>Best practice:</strong> Always prefer built-in functions over UDFs for performance</li>
+                    </ul>
+                </div>
+
+                <h3>Advanced Transformations</h3>
+                <pre><code class="language-python"># Handling JSON Columns
+from pyspark.sql.functions import from_json, schema_of_json
+
+# Define JSON schema
+json_schema = StructType([
+    StructField("id", IntegerType(), True),
+    StructField("name", StringType(), True)
+])
+
+# Parse JSON column
+df_json_parsed = df.withColumn(
+    "parsed_data", 
+    from_json(col("json_column"), json_schema)
+)
+
+# Window Functions (Rank, Lead, Lag)
+from pyspark.sql.functions import rank, lead, lag
+
+windowSpec = Window.partitionBy("department").orderBy("salary")
+df_analytics = df.withColumn("rank", rank().over(windowSpec)) \
+    .withColumn("next_salary", lead("salary", 1).over(windowSpec)) \
+    .withColumn("prev_salary", lag("salary", 1).over(windowSpec))</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Handles complex data structures and advanced analytical functions</li>
+                        <li><strong>When to use:</strong> JSON data processing, time-series analysis, ranking operations</li>
+                        <li><strong>Performance note:</strong> Window functions require data shuffling - partition wisely</li>
+                        <li><strong>Use case:</strong> Essential for analytics and reporting applications</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="5-data-profiling">
+                <div class="section-header" onclick="toggleSection('5-data-profiling')">
+                    <h2>5. Data Profiling</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Statistical analysis and data exploration operations to understand data characteristics, distributions, and relationships. Critical for data quality assessment and exploratory data analysis.</p>
+                </div>
+
+                <pre><code class="language-python"># Column Value Counts - frequency analysis
+value_counts = df.groupBy("category").count().orderBy(desc("count"))
+
+# Summary Statistics for Numeric Columns
+summary_stats = df.describe()  # count, mean, stddev, min, max
+
+# Correlation Between Columns - measure linear relationships
+correlation = df.stat.corr("column1", "column2")
+
+# Crosstabulation and Contingency Tables - analyze categorical relationships
+crosstab = df.stat.crosstab("column1", "column2")
+
+# Frequent Items in Columns - find most common values
+frequent_items = df.stat.freqItems(["column1", "column2"])
+
+# Approximate Quantile Calculation - percentiles for large datasets
+quantiles = df.approxQuantile("salary", [0.25, 0.5, 0.75], 0.01)
+print(f"25th: {quantiles[0]}, 50th: {quantiles[1]}, 75th: {quantiles[2]}")
+
+# Advanced profiling
+def profile_dataframe(df):
+    """Comprehensive data profiling function"""
+    print(f"Shape: ({df.count()}, {len(df.columns)})")
+    print("Null counts:")
+    df.select([count(when(col(c).isNull(), c)).alias(c) for c in df.columns]).show()
+    
+    # Data types
+    print("Data types:")
+    for col_name, col_type in df.dtypes:
+        print(f"  {col_name}: {col_type}")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Provides statistical insights and data quality metrics</li>
+                        <li><strong>When to use:</strong> Initial data exploration, data quality assessment, before modeling</li>
+                        <li><strong>Performance tip:</strong> <code>approxQuantile</code> is much faster than exact percentiles</li>
+                        <li><strong>Best practice:</strong> Always profile new datasets to understand data distribution</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="6-data-visualization-integration-with-other-libraries">
+                <div class="section-header" onclick="toggleSection('6-data-visualization-integration-with-other-libraries')">
+                    <h2>6. Data Visualization (Integration with other libraries)</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Integration with visualization libraries for data exploration and presentation. While Spark handles big data processing, visualization typically requires converting to Pandas for plotting.</p>
+                </div>
+
+                <pre><code class="language-python"># Convert to Pandas for Visualization (use with small datasets)
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Sample data for visualization
+sample_df = df.sample(fraction=0.01)  # Take 1% sample for plotting
+
+# Convert to Pandas
+pandas_df = sample_df.toPandas()
+
+# Bar plot
+pandas_df['category'].value_counts().plot(kind='bar')
+plt.title('Category Distribution')
+plt.show()
+
+# Histograms using Matplotlib
+pandas_df['salary'].hist(bins=20)
+plt.title('Salary Distribution')
+plt.xlabel('Salary')
+plt.show()
+
+# Box Plots using Seaborn
+sns.boxplot(data=pandas_df, x='department', y='salary')
+plt.title('Salary by Department')
+plt.show()
+
+# Scatter Plots
+pandas_df.plot.scatter(x='age', y='salary')
+plt.title('Age vs Salary')
+plt.show()
+
+# For large datasets - use Spark's histogram function
+histogram_data = df.select('salary').rdd.flatMap(lambda x: x).histogram(20)
+print(f"Histogram buckets: {histogram_data[0]}")
+print(f"Histogram counts: {histogram_data[1]}")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Enables data visualization through integration with plotting libraries</li>
+                        <li><strong>When to use:</strong> Data exploration, presentation, and reporting</li>
+                        <li><strong>Performance warning:</strong> <code>toPandas()</code> can cause memory issues with large datasets</li>
+                        <li><strong>Best practice:</strong> Always sample large datasets before converting to Pandas</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="7-data-importexport">
+                <div class="section-header" onclick="toggleSection('7-data-importexport')">
+                    <h2>7. Data Import/Export</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Comprehensive data integration operations for reading from and writing to various data sources including databases, distributed file systems, and data lakes.</p>
+                </div>
+
+                <h3>Database Connectivity</h3>
+                <pre><code class="language-python"># Reading Data from JDBC Sources
+jdbc_df = spark.read.format("jdbc") \
+    .option("url", "jdbc:postgresql://localhost:5432/mydb") \
+    .option("dbtable", "employees") \
+    .option("user", "username") \
+    .option("password", "password") \
+    .option("driver", "org.postgresql.Driver") \
+    .load()
+
+# Writing Data to JDBC Sources with partitioning
+df.write.format("jdbc") \
+    .option("url", "jdbc:postgresql://localhost:5432/mydb") \
+    .option("dbtable", "employees_output") \
+    .option("user", "username") \
+    .option("password", "password") \
+    .option("driver", "org.postgresql.Driver") \
+    .mode("overwrite") \
+    .save()</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Connects to relational databases for data reading and writing</li>
+                        <li><strong>When to use:</strong> Integration with existing database systems</li>
+                        <li><strong>Performance tip:</strong> Use connection pooling and appropriate batch sizes</li>
+                        <li><strong>Security note:</strong> Store credentials in secure configuration, not in code</li>
+                    </ul>
+                </div>
+
+                <h3>Distributed File Systems</h3>
+                <pre><code class="language-python"># Reading Data from HDFS
+hdfs_df = spark.read.text("hdfs://namenode:port/path/to/file")
+
+# Writing Data to HDFS
+df.write.mode("overwrite").save("hdfs://namenode:port/path/to/output")
+
+# Creating DataFrames from Hive Tables
+hive_df = spark.table("database.table_name")
+
+# Cloud storage integration
+# S3
+s3_df = spark.read.parquet("s3a://bucket-name/path/to/data/")
+
+# Azure Data Lake
+adls_df = spark.read.parquet("abfss://container@account.dfs.core.windows.net/path")
+
+# Google Cloud Storage
+gcs_df = spark.read.parquet("gs://bucket-name/path/to/data/")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Enables reading/writing from distributed and cloud storage systems</li>
+                        <li><strong>When to use:</strong> Big data processing, cloud-native architectures</li>
+                        <li><strong>Performance consideration:</strong> Partition your data appropriately for query performance</li>
+                        <li><strong>Best practice:</strong> Use columnar formats (Parquet, Delta) for analytics workloads</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="8-working-with-large-data">
+                <div class="section-header" onclick="toggleSection('8-working-with-large-data')">
+                    <h2>8. Working with Large Data</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Optimization strategies and techniques for handling large-scale data processing efficiently, including partitioning, caching, and skew handling.</p>
+                </div>
+
+                <pre><code class="language-python"># Partitioning Data for parallel processing
+df_repartitioned = df.repartition(8)  # Increase partitions for more parallelism
+df_repartitioned_by_col = df.repartition("department")  # Partition by column
+
+# Coalesce Partitions - reduce partition count without shuffle
+df_coalesced = df.coalesce(4)  # Reduce to 4 partitions
+
+# Reading Data in Chunks for streaming
+streaming_df = spark.readStream \
+    .option("maxFilesPerTrigger", 1) \
+    .csv("path/to/streaming/data/")
+
+# Optimizing Data for Skewed Joins
+# Method 1: Repartition skewed column
+df_optimized = df.repartition("skewed_column")
+
+# Method 2: Broadcast hint for skewed joins
+df_result = df1.join(df2.hint("broadcast"), "join_key")
+
+# Method 3: Salt technique for extreme skew
+from pyspark.sql.functions import rand
+
+df_salted = df.withColumn("salt", (rand() * 100).cast("int"))
+skewed_df_salted = skewed_df.withColumn("salt", lit(0))
+
+# Join with salted keys
+result = df_salted.join(
+    skewed_df_salted,
+    (col("df1.key") == col("df2.key")) & (col("df1.salt") == col("df2.salt"))
+)
+
+# Memory management
+spark.conf.set("spark.sql.adaptive.enabled", "true")
+spark.conf.set("spark.sql.adaptive.skewJoin.enabled", "true")
+spark.conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Optimizes Spark operations for large-scale data processing</li>
+                        <li><strong>When to use:</strong> Performance tuning, handling data skew, memory optimization</li>
+                        <li><strong>Key insight:</strong> Right partitioning strategy can make 10x performance difference</li>
+                        <li><strong>Advanced technique:</strong> Salting helps with extreme data skew scenarios</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="9-spark-sql">
+                <div class="section-header" onclick="toggleSection('9-spark-sql')">
+                    <h2>9. Spark SQL</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>SQL interface for Spark operations, enabling SQL-familiar users to work with DataFrames and integration with BI tools and existing SQL workflows.</p>
+                </div>
+
+                <pre><code class="language-python"># Running SQL Queries on DataFrames
+# First, create temporary view
+df.createOrReplaceTempView("employees")
+
+# Execute SQL queries
+sql_result = spark.sql("""
+    SELECT department, 
+           AVG(salary) as avg_salary,
+           COUNT(*) as employee_count
+    FROM employees 
+    WHERE age > 25
+    GROUP BY department
+    ORDER BY avg_salary DESC
+""")
+
+# Registering UDF for SQL Queries
+def categorize_salary(salary):
+    return "High" if salary > 80000 else "Low"
+
+spark.udf.register("categorize_salary", categorize_salary)
+
+# Use UDF in SQL
+result = spark.sql("""
+    SELECT name, salary, categorize_salary(salary) as salary_category
+    FROM employees
+""")
+
+# Using SQL Functions in DataFrames
+from pyspark.sql.functions import expr
+
+df_with_sql = df.withColumn(
+    "bonus_calculation",
+    expr("CASE WHEN salary > 50000 THEN salary * 0.1 ELSE salary * 0.05 END")
+)
+
+# Complex SQL operations
+complex_query = spark.sql("""
+    WITH ranked_employees AS (
+        SELECT *,
+               ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) as rank
+        FROM employees
+    ),
+    department_stats AS (
+        SELECT department,
+               AVG(salary) as avg_salary,
+               STDDEV(salary) as stddev_salary
+        FROM employees
+        GROUP BY department
+    )
+    SELECT e.name, e.department, e.salary, e.rank, d.avg_salary
+    FROM ranked_employees e
+    JOIN department_stats d ON e.department = d.department
+    WHERE e.rank <= 3
+""")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Enables SQL syntax for DataFrame operations and complex analytics</li>
+                        <li><strong>When to use:</strong> Complex analytical queries, team members familiar with SQL</li>
+                        <li><strong>Performance benefit:</strong> Catalyst optimizer works on both DataFrame API and SQL</li>
+                        <li><strong>Integration advantage:</strong> Easy to integrate with BI tools and SQL-based workflows</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="10-machine-learning-and-advanced-analytics">
+                <div class="section-header" onclick="toggleSection('10-machine-learning-and-advanced-analytics')">
+                    <h2>10. Machine Learning and Advanced Analytics</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>MLlib integration for scalable machine learning on big data, including feature engineering, model training, evaluation, and deployment pipelines.</p>
+                </div>
+
+                <pre><code class="language-python"># VectorAssembler for Feature Vectors
+from pyspark.ml.feature import VectorAssembler
+
+assembler = VectorAssembler(
+    inputCols=["age", "salary", "experience"],
+    outputCol="features"
+)
+
+# StandardScaler for Feature Scaling
+from pyspark.ml.feature import StandardScaler
+
+scaler = StandardScaler(
+    inputCol="features",
+    outputCol="scaledFeatures",
+    withStd=True,
+    withMean=True
+)
+
+# Building a Machine Learning Pipeline
+from pyspark.ml import Pipeline
+from pyspark.ml.classification import LogisticRegression
+
+lr = LogisticRegression(featuresCol="scaledFeatures", labelCol="target")
+
+pipeline = Pipeline(stages=[assembler, scaler, lr])
+
+# Train-Test Split
+train, test = df.randomSplit([0.8, 0.2], seed=42)
+
+# Model Fitting and Predictions
+model = pipeline.fit(train)
+predictions = model.transform(test)
+
+# Cross-Validation for Model Tuning
+from pyspark.ml.tuning import CrossValidator, ParamGridBuilder
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
+
+paramGrid = ParamGridBuilder() \
+    .addGrid(lr.regParam, [0.01, 0.1, 1.0]) \
+    .addGrid(lr.elasticNetParam, [0.0, 0.5, 1.0]) \
+    .build()
+
+crossval = CrossValidator(
+    estimator=pipeline,
+    estimatorParamMaps=paramGrid,
+    evaluator=BinaryClassificationEvaluator(),
+    numFolds=5
+)
+
+# Hyperparameter Tuning
+cv_model = crossval.fit(train)
+best_predictions = cv_model.transform(test)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Enables scalable machine learning on large datasets</li>
+                        <li><strong>When to use:</strong> Predictive modeling, classification, regression on big data</li>
+                        <li><strong>Scalability advantage:</strong> MLlib algorithms are designed for distributed computing</li>
+                        <li><strong>Pipeline benefit:</strong> Ensures consistent preprocessing in training and prediction</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Continuing with the remaining 18 sections... -->
+
+            <div class="pro-tip">
+                <strong>💡 Expert Tip:</strong> Always profile your data first, choose appropriate partitioning strategies, and leverage Spark's lazy evaluation by chaining transformations before actions. Monitor your Spark UI to identify bottlenecks and optimize accordingly!
+            </div>
+
+            <section>
+                <div class="collapsible-section" id="performance-best-practices-summary">
+                <div class="section-header" onclick="toggleSection('performance-best-practices-summary')">
+                    <h2>Performance Best Practices Summary</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <ul>
+                    <li><strong>Data Formats:</strong> Use Parquet or Delta Lake for analytical workloads</li>
+                    <li><strong>Partitioning:</strong> Partition data by commonly filtered columns (date, region)</li>
+                    <li><strong>Caching:</strong> Cache DataFrames that are reused multiple times</li>
+                    <li><strong>Broadcasting:</strong> Broadcast small lookup tables for joins</li>
+                    <li><strong>Predicate Pushdown:</strong> Filter data as early as possible</li>
+                    <li><strong>Avoid UDFs:</strong> Use built-in functions whenever possible</li>
+                    <li><strong>Schema Evolution:</strong> Define schemas explicitly for production</li>
+                    <li><strong>Monitoring:</strong> Use Spark UI to monitor query execution and identify bottlenecks</li>
+                </ul>
+            </section>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

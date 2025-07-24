@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 Git Essentials</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; line-height: 1.7; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; line-height: 1.6; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .section-description { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #667eea; }
+        .bullet-explanation { background: #f0f4ff; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 3px solid #4299e1; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">📝 Git Essentials</h1>
+            <blockquote>Complete guide to Git version control essentials for data engineering and software development workflows</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://git-scm.com/doc" target="_blank">Official Git Documentation</a></li>
+                <li><a href="https://docs.github.com/" target="_blank">GitHub Documentation</a></li>
+                <li><a href="https://www.atlassian.com/git/tutorials" target="_blank">Atlassian Git Tutorials</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#repository-setup-and-cloning">🚀 Repository Setup and Cloning</a></li><li><a href="#basic-git-workflow">📝 Basic Git Workflow</a></li><li><a href="#branch-management">🌿 Branch Management</a></li><li><a href="#remote-repository-operations">🔄 Remote Repository Operations</a></li><li><a href="#rebase-and-advanced-history">🔄 Rebase and Advanced History</a></li><li><a href="#pull-requests-and-collaboration">🎯 Pull Requests and Collaboration</a></li><li><a href="#gitignore-best-practices">📄 .gitignore Best Practices</a></li><li><a href="#git-aliases-for-productivity">⚡ Git Aliases for Productivity</a></li><li><a href="#git-workflow-summary">📋 Git Workflow Summary</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <section>
+                <div class="collapsible-section" id="repository-setup-and-cloning">
+                <div class="section-header" onclick="toggleSection('repository-setup-and-cloning')">
+                    <h2>🚀 Repository Setup and Cloning</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Essential commands for setting up repositories, cloning existing projects, and configuring Git for the first time. These are the foundational operations for any Git workflow.</p>
+                </div>
+
+                <h3>Initial Setup and Configuration</h3>
+                <pre><code class="language-bash"># Global Git configuration (one-time setup)
+git config --global user.name "Your Name"
+git config --global user.email "your.email@company.com"
+
+# Set default branch name
+git config --global init.defaultBranch main
+
+# Configure line ending preferences (important for cross-platform teams)
+git config --global core.autocrlf true    # Windows
+git config --global core.autocrlf input   # macOS/Linux
+
+# Set default editor
+git config --global core.editor "code --wait"  # VS Code
+git config --global core.editor "vim"          # Vim
+
+# View current configuration
+git config --list
+git config --global --list</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Sets up your Git identity and preferences globally</li>
+                        <li><strong>When to use:</strong> First time setting up Git on a new machine</li>
+                        <li><strong>Important:</strong> Use your work email for work repositories</li>
+                        <li><strong>Line endings:</strong> Prevents issues when working across different operating systems</li>
+                    </ul>
+                </div>
+
+                <h3>Creating and Cloning Repositories</h3>
+                <pre><code class="language-bash"># Initialize a new repository in current directory
+git init
+
+# Initialize with specific branch name
+git init --initial-branch=main
+
+# Clone a remote repository
+git clone https://github.com/username/repository.git
+
+# Clone with a different local name
+git clone https://github.com/username/repository.git my-local-name
+
+# Clone only a specific branch
+git clone -b feature-branch https://github.com/username/repository.git
+
+# Shallow clone (faster for large repos, only recent history)
+git clone --depth=1 https://github.com/username/repository.git
+
+# Clone with submodules
+git clone --recurse-submodules https://github.com/username/repository.git</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>git clone:</strong> Creates a complete copy of a remote repository locally</li>
+                        <li><strong>Shallow clone:</strong> Faster download but limited history (good for CI/CD)</li>
+                        <li><strong>Branch-specific clone:</strong> Only downloads specified branch</li>
+                        <li><strong>Submodules:</strong> Downloads nested repositories within the main project</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="basic-git-workflow">
+                <div class="section-header" onclick="toggleSection('basic-git-workflow')">
+                    <h2>📝 Basic Git Workflow</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>The fundamental Git workflow: staging changes, creating commits, and viewing repository status. These commands form the core of daily Git usage for tracking and saving changes.</p>
+                </div>
+
+                <h3>Staging and Committing Changes</h3>
+                <pre><code class="language-bash"># Check repository status - see what files have changed
+git status
+
+# See detailed differences in files
+git diff              # Unstaged changes
+git diff --staged     # Staged changes
+git diff HEAD         # All changes since last commit
+
+# Stage files for commit
+git add filename.py              # Add specific file
+git add src/                     # Add entire directory
+git add *.py                     # Add all Python files
+git add .                        # Add all changes in current directory
+git add -A                       # Add all changes in repository
+
+# Interactively stage parts of files
+git add -p filename.py           # Review and stage chunks individually
+
+# Unstage files (remove from staging area)
+git reset filename.py            # Unstage specific file
+git reset                        # Unstage all files
+
+# Commit staged changes
+git commit -m "Add data processing pipeline"
+
+# Commit with detailed message
+git commit -m "Add ETL pipeline
+
+- Implemented bronze layer data ingestion
+- Added data quality validation
+- Created unit tests for transformations"
+
+# Stage and commit in one command (only for tracked files)
+git commit -am "Quick fix for null handling"</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>git status:</strong> Shows current state - modified, staged, and untracked files</li>
+                        <li><strong>git add:</strong> Moves changes from working directory to staging area</li>
+                        <li><strong>git commit:</strong> Saves staged changes permanently with a message</li>
+                        <li><strong>Staging area:</strong> Allows you to craft precise commits with only desired changes</li>
+                    </ul>
+                </div>
+
+                <h3>Viewing History and Changes</h3>
+                <pre><code class="language-bash"># View commit history
+git log                          # Full commit history
+git log --oneline                # Condensed one-line per commit
+git log --graph --decorate --all # Visual branch representation
+git log -p                       # Show actual changes in each commit
+git log --stat                   # Show file statistics for each commit
+
+# View history for specific file
+git log filename.py
+git log --follow filename.py     # Follow renames
+
+# View specific commit
+git show commit-hash
+git show HEAD                    # Show latest commit
+git show HEAD~1                  # Show previous commit
+
+# View changes between commits
+git diff commit1..commit2
+git diff HEAD~2..HEAD           # Last 2 commits
+
+# View who modified each line of a file
+git blame filename.py
+
+# Search commit messages
+git log --grep="bug fix"
+git log --author="John Doe"
+git log --since="2024-01-01"</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>git log:</strong> Shows commit history with various formatting options</li>
+                        <li><strong>git show:</strong> Displays detailed information about specific commits</li>
+                        <li><strong>git blame:</strong> Shows who last modified each line (useful for debugging)</li>
+                        <li><strong>Filtering:</strong> Search commits by author, date, or message content</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="branch-management">
+                <div class="section-header" onclick="toggleSection('branch-management')">
+                    <h2>🌿 Branch Management</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Working with branches for parallel development, feature isolation, and collaborative workflows. Branching is essential for managing multiple features and maintaining stable code.</p>
+                </div>
+
+                <h3>Creating and Switching Branches</h3>
+                <pre><code class="language-bash"># List all branches
+git branch                       # Local branches only
+git branch -a                    # All branches (local and remote)
+git branch -r                    # Remote branches only
+
+# Create new branch
+git branch feature-new-pipeline
+
+# Create and switch to new branch
+git checkout -b feature-new-pipeline
+git switch -c feature-new-pipeline    # Modern alternative
+
+# Switch between branches
+git checkout main
+git switch main                  # Modern alternative
+
+# Switch to previous branch
+git checkout -
+git switch -
+
+# Create branch from specific commit
+git checkout -b hotfix abc1234
+
+# Create branch from remote branch
+git checkout -b local-branch origin/remote-branch</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Branches:</strong> Allow parallel development without affecting main codebase</li>
+                        <li><strong>git switch:</strong> New command specifically for switching branches (clearer than checkout)</li>
+                        <li><strong>Feature branches:</strong> Create separate branches for each feature or bug fix</li>
+                        <li><strong>Branch from commit:</strong> Useful for creating hotfixes from specific points</li>
+                    </ul>
+                </div>
+
+                <h3>Merging and Branch Management</h3>
+                <pre><code class="language-bash"># Merge branch into current branch
+git merge feature-branch
+
+# Create merge commit even if fast-forward is possible
+git merge --no-ff feature-branch
+
+# Merge with custom commit message
+git merge feature-branch -m "Integrate new ETL pipeline"
+
+# Delete local branch (safe - prevents deletion if not merged)
+git branch -d feature-branch
+
+# Force delete local branch
+git branch -D feature-branch
+
+# Delete remote branch
+git push origin --delete feature-branch
+
+# Rename current branch
+git branch -m new-branch-name
+
+# Track remote branch
+git branch --set-upstream-to=origin/main main
+
+# List merged branches
+git branch --merged
+git branch --no-merged           # Branches not yet merged</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>git merge:</strong> Integrates changes from one branch into another</li>
+                        <li><strong>--no-ff:</strong> Creates explicit merge commit for better history</li>
+                        <li><strong>Safe deletion:</strong> -d prevents deletion of unmerged branches</li>
+                        <li><strong>Branch tracking:</strong> Links local branches to remote counterparts</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="remote-repository-operations">
+                <div class="section-header" onclick="toggleSection('remote-repository-operations')">
+                    <h2>🔄 Remote Repository Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Working with remote repositories for collaboration, synchronization, and backup. Essential for team workflows and sharing code across different environments.</p>
+                </div>
+
+                <h3>Push, Pull, and Fetch Operations</h3>
+                <pre><code class="language-bash"># Add remote repository
+git remote add origin https://github.com/username/repo.git
+
+# List remote repositories
+git remote -v
+
+# Fetch changes from remote (doesn't merge)
+git fetch origin
+git fetch --all                  # Fetch from all remotes
+
+# Pull changes from remote (fetch + merge)
+git pull origin main
+git pull                         # Pull from tracked branch
+
+# Pull with rebase instead of merge
+git pull --rebase origin main
+
+# Push changes to remote
+git push origin main
+git push                         # Push to tracked branch
+
+# Push new branch to remote
+git push -u origin feature-branch    # -u sets up tracking
+
+# Push all branches
+git push --all origin
+
+# Push tags
+git push --tags
+
+# Force push (use carefully!)
+git push --force-with-lease origin main  # Safer than --force
+git push --force origin main             # Dangerous - can overwrite work</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>git fetch:</strong> Downloads changes but doesn't merge them</li>
+                        <li><strong>git pull:</strong> Combines fetch and merge in one operation</li>
+                        <li><strong>git push:</strong> Uploads local changes to remote repository</li>
+                        <li><strong>--force-with-lease:</strong> Safer force push that checks for remote changes</li>
+                    </ul>
+                </div>
+
+                <h3>Managing Remote Branches</h3>
+                <pre><code class="language-bash"># List remote branches
+git ls-remote origin
+
+# Track remote branch locally
+git checkout --track origin/feature-branch
+
+# Update remote branch references
+git remote prune origin          # Remove stale remote branch references
+
+# Change remote URL
+git remote set-url origin https://github.com/newusername/repo.git
+
+# Add multiple remotes (useful for forks)
+git remote add upstream https://github.com/original/repo.git
+git remote add fork https://github.com/yourfork/repo.git
+
+# Fetch from upstream and merge into local
+git fetch upstream
+git checkout main
+git merge upstream/main
+git push origin main             # Update your fork</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Remote tracking:</strong> Links local branches to remote counterparts</li>
+                        <li><strong>Pruning:</strong> Cleans up references to deleted remote branches</li>
+                        <li><strong>Multiple remotes:</strong> Useful for managing forks and upstream repositories</li>
+                        <li><strong>Upstream workflow:</strong> Keep forks synchronized with original repository</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="rebase-and-advanced-history">
+                <div class="section-header" onclick="toggleSection('rebase-and-advanced-history')">
+                    <h2>🔄 Rebase and Advanced History</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Advanced Git operations for rewriting history, cleaning up commits, and maintaining a linear project history. Use these carefully, especially on shared branches.</p>
+                </div>
+
+                <h3>Interactive Rebase</h3>
+                <pre><code class="language-bash"># Rebase current branch onto main
+git rebase main
+
+# Interactive rebase to edit last 3 commits
+git rebase -i HEAD~3
+
+# Interactive rebase from specific commit
+git rebase -i commit-hash
+
+# Continue rebase after resolving conflicts
+git rebase --continue
+
+# Abort rebase and return to original state
+git rebase --abort
+
+# Skip current commit during rebase
+git rebase --skip</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Rebase:</strong> Moves commits to a new base, creating linear history</li>
+                        <li><strong>Interactive rebase:</strong> Allows editing, squashing, or reordering commits</li>
+                        <li><strong>Conflict resolution:</strong> May require manual conflict resolution</li>
+                        <li><strong>History rewriting:</strong> Changes commit hashes - be careful with shared branches</li>
+                    </ul>
+                </div>
+
+                <h3>Undoing Changes</h3>
+                <pre><code class="language-bash"># Undo last commit (keep changes in working directory)
+git reset HEAD~1
+
+# Undo last commit (keep changes staged)
+git reset --soft HEAD~1
+
+# Undo last commit (discard changes completely)
+git reset --hard HEAD~1
+
+# Revert a commit (create new commit that undoes changes)
+git revert commit-hash
+
+# Revert merge commit
+git revert -m 1 merge-commit-hash
+
+# Restore file to last committed version
+git restore filename.py
+git checkout HEAD -- filename.py
+
+# Restore file from specific commit
+git restore --source=commit-hash filename.py
+
+# Create new commit that undoes changes in working directory
+git commit -a --amend            # Modify last commit</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>git reset:</strong> Moves HEAD pointer, can discard commits and changes</li>
+                        <li><strong>git revert:</strong> Safely undoes changes by creating new commits</li>
+                        <li><strong>git restore:</strong> New command for restoring files (clearer than checkout)</li>
+                        <li><strong>--amend:</strong> Modify the most recent commit message or content</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="pull-requests-and-collaboration">
+                <div class="section-header" onclick="toggleSection('pull-requests-and-collaboration')">
+                    <h2>🎯 Pull Requests and Collaboration</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Best practices for creating pull requests, code reviews, and collaborative development workflows using GitHub, GitLab, or similar platforms.</p>
+                </div>
+
+                <h3>Pull Request Workflow</h3>
+                <pre><code class="language-bash"># Typical feature development workflow
+
+# 1. Start from main branch
+git checkout main
+git pull origin main
+
+# 2. Create feature branch
+git checkout -b feature/add-data-validation
+
+# 3. Make changes and commit
+git add .
+git commit -m "Add comprehensive data validation
+
+- Implement null value checks
+- Add data type validation  
+- Create unit tests for validation functions
+- Update documentation"
+
+# 4. Push branch to remote
+git push -u origin feature/add-data-validation
+
+# 5. Create pull request via web interface or CLI
+gh pr create --title "Add comprehensive data validation" \
+             --body "This PR adds robust data validation including null checks and type validation"
+
+# 6. After review, update based on feedback
+git add .
+git commit -m "Address code review feedback"
+git push origin feature/add-data-validation
+
+# 7. After PR approval and merge, cleanup
+git checkout main
+git pull origin main
+git branch -d feature/add-data-validation</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Feature branches:</strong> Isolate development work from main branch</li>
+                        <li><strong>Descriptive commits:</strong> Clear commit messages help reviewers understand changes</li>
+                        <li><strong>Pull request description:</strong> Explain the purpose and scope of changes</li>
+                        <li><strong>Cleanup:</strong> Delete feature branches after successful merge</li>
+                    </ul>
+                </div>
+
+                <h3>Code Review Best Practices</h3>
+                <pre><code class="language-bash"># Reviewing someone else's pull request
+
+# 1. Fetch the latest changes
+git fetch origin
+
+# 2. Check out the PR branch locally
+git checkout feature/other-persons-branch
+
+# 3. Test the changes locally
+python -m pytest tests/
+python main.py --dry-run
+
+# 4. Review the diff
+git diff main...feature/other-persons-branch
+
+# 5. Leave feedback via web interface
+
+# Updating your PR based on review feedback
+# Make changes locally, then:
+git add .
+git commit -m "Fix linting issues and add error handling"
+git push origin feature/add-data-validation
+
+# Squash commits before merge (optional)
+git rebase -i main
+# In interactive rebase, squash commits together
+git push --force-with-lease origin feature/add-data-validation</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Local testing:</strong> Always test PR changes locally before reviewing</li>
+                        <li><strong>Constructive feedback:</strong> Provide specific, actionable review comments</li>
+                        <li><strong>Iterative improvement:</strong> Address feedback in additional commits</li>
+                        <li><strong>Squashing:</strong> Clean up commit history before merging (optional)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="gitignore-best-practices">
+                <div class="section-header" onclick="toggleSection('gitignore-best-practices')">
+                    <h2>📄 .gitignore Best Practices</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Essential .gitignore patterns for data engineering projects, including Python, Jupyter notebooks, data files, and environment-specific files that should not be tracked.</p>
+                </div>
+
+                <h3>Comprehensive .gitignore for Data Projects</h3>
+                <pre><code class="language-gitignore"># .gitignore for data engineering projects
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Data files (add specific extensions your project uses)
+*.csv
+*.parquet
+*.json
+*.xml
+*.xlsx
+*.xls
+data/
+datasets/
+raw_data/
+processed_data/
+
+# Logs
+*.log
+logs/
+*.out
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Configuration files with secrets
+.env
+.env.local
+.env.production
+config.ini
+secrets.yaml
+credentials.json
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Model files (machine learning)
+*.pkl
+*.joblib
+*.h5
+*.model
+models/
+checkpoints/
+
+# Spark
+metastore_db/
+spark-warehouse/
+derby.log
+
+# Databricks
+.databricks/
+
+# Azure
+.azure/
+
+# AWS
+.aws/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Documentation
+docs/_build/</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Python artifacts:</strong> Excludes compiled Python files and build artifacts</li>
+                        <li><strong>Data files:</strong> Prevents large data files from being committed</li>
+                        <li><strong>Secrets:</strong> Excludes configuration files that might contain credentials</li>
+                        <li><strong>IDE and OS files:</strong> Ignores editor and system-specific files</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="pro-tip">
+                <strong>💡 Expert Tip:</strong> Use <code>git commit --amend</code> to modify your last commit, create meaningful commit messages that explain the "why" not just the "what", and always test your changes locally before pushing. Consider using conventional commit formats for better automation!
+            </div>
+
+            <section>
+                <div class="collapsible-section" id="git-aliases-for-productivity">
+                <div class="section-header" onclick="toggleSection('git-aliases-for-productivity')">
+                    <h2>⚡ Git Aliases for Productivity</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <pre><code class="language-bash"># Useful Git aliases for faster workflows
+git config --global alias.st status
+git config --global alias.br branch  
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.unstage 'reset HEAD --'
+git config --global alias.last 'log -1 HEAD'
+git config --global alias.visual '!gitk'
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"</code></pre>
+
+                <section>
+                <div class="collapsible-section" id="git-workflow-summary">
+                <div class="section-header" onclick="toggleSection('git-workflow-summary')">
+                    <h2>📋 Git Workflow Summary</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <ul>
+                    <li><strong>Start with main:</strong> Always begin new work from updated main branch</li>
+                    <li><strong>Feature branches:</strong> Create separate branches for each feature or fix</li>
+                    <li><strong>Frequent commits:</strong> Make small, logical commits with clear messages</li>
+                    <li><strong>Regular synchronization:</strong> Fetch and merge upstream changes frequently</li>
+                    <li><strong>Code review:</strong> Use pull requests for collaborative code review</li>
+                    <li><strong>Clean history:</strong> Consider squashing commits before merging</li>
+                    <li><strong>Backup:</strong> Push branches regularly to avoid losing work</li>
+                    <li><strong>Security:</strong> Never commit secrets or credentials</li>
+                </ul>
+            </section>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

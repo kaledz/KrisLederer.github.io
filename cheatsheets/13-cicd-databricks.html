@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 CI/CD for Databricks</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; line-height: 1.7; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; line-height: 1.6; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .section-description { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #667eea; }
+        .bullet-explanation { background: #f0f4ff; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 3px solid #4299e1; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🚀 CI/CD for Databricks</h1>
+            <blockquote>Expert guide to implementing comprehensive CI/CD pipelines for Databricks notebooks, jobs, and data pipelines with automated testing and deployment</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://docs.databricks.com/dev-tools/ci-cd/index.html" target="_blank">Databricks CI/CD Guide</a></li>
+                <li><a href="https://docs.databricks.com/repos/index.html" target="_blank">Databricks Repos</a></li>
+                <li><a href="https://docs.databricks.com/dev-tools/cli/index.html" target="_blank">Databricks CLI</a></li>
+                <li><a href="https://github.com/databricks/databricks-cli" target="_blank">Databricks CLI GitHub</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#git-integration-setup">🔧 Git Integration Setup</a></li><li><a href="#testing-strategy-for-spark-functions">🧪 Testing Strategy for Spark Functions</a></li><li><a href="#github-actions-cicd-pipeline">📦 GitHub Actions CI/CD Pipeline</a></li><li><a href="#security-and-compliance-best-practices">🔒 Security and Compliance Best Practices</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <section>
+                <div class="collapsible-section" id="git-integration-setup">
+                <div class="section-header" onclick="toggleSection('git-integration-setup')">
+                    <h2>🔧 Git Integration Setup</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Setting up Git integration with Databricks Repos for version control and collaborative development. This forms the foundation for any CI/CD pipeline by providing proper source control and branch management.</p>
+                </div>
+
+                <h3>Repository Structure for Databricks</h3>
+                <pre><code class="language-text">databricks-project/
+├── .github/
+│   └── workflows/
+│       ├── ci-test.yml
+│       ├── cd-staging.yml
+│       └── cd-production.yml
+├── .databricks/
+│   ├── project.json
+│   └── bundle.yml
+├── notebooks/
+│   ├── etl/
+│   │   ├── bronze_ingestion.py
+│   │   ├── silver_transformation.py
+│   │   └── gold_aggregation.py
+│   ├── analysis/
+│   │   └── customer_insights.py
+│   └── utils/
+│       └── common_functions.py
+├── src/
+│   └── data_pipeline/
+│       ├── __init__.py
+│       ├── core/
+│       └── utils/
+├── tests/
+│   ├── unit/
+│   │   ├── test_transformations.py
+│   │   └── test_utils.py
+│   ├── integration/
+│   │   └── test_pipeline.py
+│   └── conftest.py
+├── config/
+│   ├── dev.yaml
+│   ├── staging.yaml
+│   └── prod.yaml
+├── jobs/
+│   ├── daily_etl_job.json
+│   └── weekly_report_job.json
+├── requirements.txt
+├── requirements-dev.txt
+├── setup.py
+├── pytest.ini
+├── .gitignore
+└── README.md</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Provides a standard project structure for Databricks CI/CD</li>
+                        <li><strong>Notebooks organization:</strong> Separates different types of notebooks for better maintainability</li>
+                        <li><strong>Configuration management:</strong> Environment-specific configs for different deployment stages</li>
+                        <li><strong>Testing structure:</strong> Clear separation between unit, integration, and functional tests</li>
+                    </ul>
+                </div>
+
+                <h3>Databricks Project Configuration</h3>
+                <pre><code class="language-json">// .databricks/project.json
+{
+    "project_id": "databricks-etl-pipeline",
+    "environments": {
+        "development": {
+            "workspace_url": "https://adb-123456789.azuredatabricks.net",
+            "profile": "development"
+        },
+        "staging": {
+            "workspace_url": "https://adb-987654321.azuredatabricks.net", 
+            "profile": "staging"
+        },
+        "production": {
+            "workspace_url": "https://adb-111222333.azuredatabricks.net",
+            "profile": "production"
+        }
+    },
+    "artifact_path": "/Workspace/Shared/artifacts",
+    "libraries": [
+        {
+            "pypi": {
+                "package": "delta-spark>=1.0.0"
+            }
+        }
+    ]
+}</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Multi-environment:</strong> Defines different workspaces for dev, staging, and production</li>
+                        <li><strong>Profile management:</strong> Links to Databricks CLI profiles for authentication</li>
+                        <li><strong>Artifact management:</strong> Centralizes deployment artifacts location</li>
+                        <li><strong>Dependency declaration:</strong> Lists required libraries for the project</li>
+                    </ul>
+                </div>
+
+                <h3>Environment Configuration</h3>
+                <pre><code class="language-yaml"># config/dev.yaml - Development environment configuration
+databricks:
+  workspace_url: "https://adb-123456789.azuredatabricks.net"
+  cluster:
+    cluster_name: "dev-etl-cluster"
+    node_type_id: "i3.xlarge"
+    driver_node_type_id: "i3.xlarge" 
+    num_workers: 2
+    spark_version: "11.3.x-scala2.12"
+    auto_termination_minutes: 30
+  
+storage:
+  raw_data_path: "/mnt/dev/raw"
+  processed_data_path: "/mnt/dev/processed"
+  checkpoint_location: "/mnt/dev/checkpoints"
+
+pipeline:
+  batch_size: 1000
+  parallelism: 4
+  timeout_seconds: 1800
+
+notifications:
+  email: ["dev-team@company.com"]
+  slack_webhook: "${SLACK_DEV_WEBHOOK}"</code></pre>
+
+                <pre><code class="language-yaml"># config/prod.yaml - Production environment configuration  
+databricks:
+  workspace_url: "https://adb-111222333.azuredatabricks.net"
+  cluster:
+    cluster_name: "prod-etl-cluster"
+    node_type_id: "i3.2xlarge"
+    driver_node_type_id: "i3.2xlarge"
+    num_workers: 8
+    spark_version: "11.3.x-scala2.12"
+    auto_termination_minutes: 60
+    
+storage:
+  raw_data_path: "/mnt/prod/raw"
+  processed_data_path: "/mnt/prod/processed" 
+  checkpoint_location: "/mnt/prod/checkpoints"
+
+pipeline:
+  batch_size: 10000
+  parallelism: 16
+  timeout_seconds: 7200
+
+notifications:
+  email: ["data-engineering@company.com", "alerts@company.com"]
+  pagerduty_key: "${PAGERDUTY_KEY}"</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Environment-specific configs:</strong> Different settings optimized for each environment</li>
+                        <li><strong>Resource scaling:</strong> Production uses larger clusters and higher parallelism</li>
+                        <li><strong>Path management:</strong> Separate data paths prevent cross-environment contamination</li>
+                        <li><strong>Alert configuration:</strong> Production has more comprehensive alerting</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="testing-strategy-for-spark-functions">
+                <div class="section-header" onclick="toggleSection('testing-strategy-for-spark-functions')">
+                    <h2>🧪 Testing Strategy for Spark Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Comprehensive testing approach for Spark-based data processing functions, including unit tests with mocked SparkSession, integration tests, and data quality validation tests.</p>
+                </div>
+
+                <h3>Unit Testing Setup</h3>
+                <pre><code class="language-python"># tests/conftest.py - Pytest configuration for Spark testing
+import pytest
+from pyspark.sql import SparkSession
+from unittest.mock import Mock, MagicMock
+import os
+
+@pytest.fixture(scope="session")
+def spark():
+    """Create a local SparkSession for testing"""
+    # Set up test environment
+    os.environ["PYSPARK_PYTHON"] = "python3"
+    os.environ["PYSPARK_DRIVER_PYTHON"] = "python3"
+    
+    spark = SparkSession.builder \
+        .appName("pytest-pyspark-local-testing") \
+        .master("local[2]") \
+        .config("spark.sql.warehouse.dir", "/tmp/spark-warehouse") \
+        .config("spark.sql.execution.arrow.pyspark.enabled", "false") \
+        .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer") \
+        .getOrCreate()
+    
+    # Set log level to reduce noise
+    spark.sparkContext.setLogLevel("WARN")
+    
+    yield spark
+    
+    # Cleanup
+    spark.stop()
+
+@pytest.fixture
+def mock_dbutils():
+    """Mock dbutils for testing functions that depend on Databricks utilities"""
+    mock = MagicMock()
+    
+    # Mock common dbutils.fs operations
+    mock.fs.ls.return_value = [
+        MagicMock(name="file1.parquet", path="/test/file1.parquet", size=1000),
+        MagicMock(name="file2.parquet", path="/test/file2.parquet", size=2000)
+    ]
+    mock.fs.cp.return_value = True
+    mock.fs.rm.return_value = True
+    
+    # Mock secrets
+    mock.secrets.get.return_value = "mock_secret_value"
+    
+    # Mock widgets
+    mock.widgets.get.return_value = "test_value"
+    
+    # Mock notebook operations
+    mock.notebook.run.return_value = "SUCCESS: Test completed"
+    mock.notebook.exit.side_effect = SystemExit
+    
+    return mock
+
+@pytest.fixture
+def sample_data():
+    """Sample test data for consistent testing"""
+    return [
+        {"id": 1, "name": "Alice", "age": 25, "department": "Engineering", "salary": 75000},
+        {"id": 2, "name": "Bob", "age": 30, "department": "Sales", "salary": 65000},
+        {"id": 3, "name": "Charlie", "age": 35, "department": "Engineering", "salary": 85000},
+        {"id": 4, "name": "Diana", "age": 28, "department": "Marketing", "salary": 70000},
+        {"id": 5, "name": "Eve", "age": 32, "department": "Engineering", "salary": 80000}
+    ]
+
+@pytest.fixture
+def sample_df(spark, sample_data):
+    """Create sample DataFrame for testing"""
+    return spark.createDataFrame(sample_data)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Local Spark session:</strong> Tests run locally without requiring a cluster</li>
+                        <li><strong>Mock dbutils:</strong> Isolates tests from Databricks-specific dependencies</li>
+                        <li><strong>Consistent test data:</strong> Reusable fixtures ensure reliable testing</li>
+                        <li><strong>Performance optimization:</strong> Session-scoped fixtures reduce setup overhead</li>
+                    </ul>
+                </div>
+
+                <h3>Data Transformation Unit Tests</h3>
+                <pre><code class="language-python"># tests/unit/test_transformations.py
+import pytest
+from pyspark.sql.functions import col, when
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+
+# Import your transformation functions
+from src.data_pipeline.transformations import (
+    clean_employee_data,
+    calculate_salary_bands,
+    aggregate_department_stats,
+    validate_data_quality
+)
+
+class TestDataTransformations:
+    
+    def test_clean_employee_data(self, spark, sample_df):
+        """Test data cleaning function"""
+        
+        # Add some dirty data to test cleaning
+        dirty_data = [
+            {"id": 6, "name": " JOHN ", "age": None, "department": "", "salary": -1000},
+            {"id": 7, "name": "jane doe", "age": 29, "department": None, "salary": 55000}
+        ]
+        
+        dirty_df = spark.createDataFrame(dirty_data)
+        combined_df = sample_df.union(dirty_df)
+        
+        # Apply cleaning function
+        cleaned_df = clean_employee_data(combined_df)
+        
+        # Assertions
+        assert cleaned_df.count() > 0, "Cleaned dataframe should not be empty"
+        
+        # Check that names are properly formatted
+        names = [row.name for row in cleaned_df.select("name").collect()]
+        assert all(name.strip() == name for name in names), "Names should be stripped"
+        assert all(name.title() == name for name in names), "Names should be title case"
+        
+        # Check that null ages are handled
+        null_ages = cleaned_df.filter(col("age").isNull()).count()
+        assert null_ages == 0, "Should handle null ages"
+        
+        # Check that negative salaries are handled
+        negative_salaries = cleaned_df.filter(col("salary") < 0).count()
+        assert negative_salaries == 0, "Should handle negative salaries"
+    
+    def test_calculate_salary_bands(self, spark, sample_df):
+        """Test salary band calculation"""
+        
+        result_df = calculate_salary_bands(sample_df)
+        
+        # Check that salary_band column is added
+        assert "salary_band" in result_df.columns
+        
+        # Collect results for detailed testing
+        results = result_df.collect()
+        
+        # Test specific salary band logic
+        for row in results:
+            if row.salary < 60000:
+                assert row.salary_band == "Junior"
+            elif row.salary < 75000:
+                assert row.salary_band == "Mid"
+            else:
+                assert row.salary_band == "Senior"
+    
+    def test_aggregate_department_stats(self, spark, sample_df):
+        """Test department aggregation"""
+        
+        agg_df = aggregate_department_stats(sample_df)
+        
+        # Check expected columns
+        expected_columns = ["department", "employee_count", "avg_salary", "total_salary"]
+        for col_name in expected_columns:
+            assert col_name in agg_df.columns
+        
+        # Test specific aggregations
+        engineering_stats = agg_df.filter(col("department") == "Engineering").collect()[0]
+        
+        assert engineering_stats.employee_count == 3  # Alice, Charlie, Eve
+        assert engineering_stats.avg_salary == 80000  # (75000 + 85000 + 80000) / 3
+        assert engineering_stats.total_salary == 240000
+    
+    def test_validate_data_quality_success(self, spark, sample_df):
+        """Test data quality validation with good data"""
+        
+        quality_result = validate_data_quality(sample_df)
+        
+        assert quality_result["is_valid"] == True
+        assert quality_result["null_percentage"] < 0.1  # Less than 10%
+        assert quality_result["duplicate_count"] == 0
+        assert len(quality_result["issues"]) == 0
+    
+    def test_validate_data_quality_failure(self, spark):
+        """Test data quality validation with bad data"""
+        
+        bad_data = [
+            {"id": 1, "name": None, "age": None, "department": "Eng", "salary": 75000},
+            {"id": 1, "name": None, "age": 25, "department": "Eng", "salary": 75000},  # Duplicate
+            {"id": 2, "name": "Bob", "age": -5, "department": None, "salary": None}
+        ]
+        
+        bad_df = spark.createDataFrame(bad_data)
+        quality_result = validate_data_quality(bad_df)
+        
+        assert quality_result["is_valid"] == False
+        assert quality_result["null_percentage"] > 0.3  # More than 30%
+        assert quality_result["duplicate_count"] > 0
+        assert len(quality_result["issues"]) > 0
+    
+    def test_error_handling(self, spark):
+        """Test error handling with invalid input"""
+        
+        with pytest.raises(Exception) as exc_info:
+            # Test with DataFrame missing required columns
+            incomplete_df = spark.createDataFrame([{"id": 1, "name": "Test"}])
+            clean_employee_data(incomplete_df)
+        
+        assert "required column" in str(exc_info.value).lower()
+
+    def test_schema_validation(self, spark):
+        """Test that transformations preserve expected schema"""
+        
+        # Define expected schema
+        expected_schema = StructType([
+            StructField("id", IntegerType(), True),
+            StructField("name", StringType(), True),
+            StructField("age", IntegerType(), True),
+            StructField("department", StringType(), True),
+            StructField("salary", IntegerType(), True),
+            StructField("salary_band", StringType(), True)
+        ])
+        
+        sample_data = [{"id": 1, "name": "Test", "age": 30, "department": "IT", "salary": 70000}]
+        test_df = spark.createDataFrame(sample_data)
+        
+        result_df = calculate_salary_bands(clean_employee_data(test_df))
+        
+        # Check schema compatibility
+        assert len(result_df.schema) == len(expected_schema)
+        
+        for expected_field, actual_field in zip(expected_schema, result_df.schema):
+            assert expected_field.name == actual_field.name
+            assert expected_field.dataType == actual_field.dataType</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Comprehensive testing:</strong> Tests both happy path and edge cases</li>
+                        <li><strong>Data quality validation:</strong> Ensures transformations handle dirty data correctly</li>
+                        <li><strong>Schema validation:</strong> Verifies output schema matches expectations</li>
+                        <li><strong>Error handling:</strong> Tests that functions fail gracefully with invalid input</li>
+                    </ul>
+                </div>
+
+                <h3>Integration Tests</h3>
+                <pre><code class="language-python"># tests/integration/test_pipeline.py
+import pytest
+import tempfile
+import shutil
+from pathlib import Path
+
+from src.data_pipeline.pipeline import ETLPipeline
+from src.data_pipeline.config import load_config
+
+class TestETLPipeline:
+    
+    @pytest.fixture
+    def temp_data_dir(self):
+        """Create temporary directory for test data"""
+        temp_dir = tempfile.mkdtemp()
+        yield temp_dir
+        shutil.rmtree(temp_dir)
+    
+    @pytest.fixture
+    def test_config(self, temp_data_dir):
+        """Create test configuration"""
+        return {
+            "input_path": f"{temp_data_dir}/input",
+            "output_path": f"{temp_data_dir}/output",
+            "checkpoint_path": f"{temp_data_dir}/checkpoints",
+            "batch_size": 100,
+            "parallelism": 2
+        }
+    
+    def test_full_pipeline_execution(self, spark, sample_data, temp_data_dir, test_config):
+        """Test complete pipeline execution"""
+        
+        # Setup: Create input data
+        input_df = spark.createDataFrame(sample_data)
+        input_df.coalesce(1).write.mode("overwrite").parquet(test_config["input_path"])
+        
+        # Execute pipeline
+        pipeline = ETLPipeline(spark, test_config)
+        result = pipeline.run()
+        
+        # Verify results
+        assert result["status"] == "SUCCESS"
+        assert result["records_processed"] == len(sample_data)
+        
+        # Verify output data exists and is correct
+        output_df = spark.read.parquet(test_config["output_path"])
+        
+        assert output_df.count() == len(sample_data)
+        assert "salary_band" in output_df.columns  # Transformation applied
+        assert output_df.filter(col("salary_band").isNull()).count() == 0
+    
+    def test_pipeline_with_invalid_input(self, spark, test_config):
+        """Test pipeline behavior with invalid input"""
+        
+        # No input data scenario
+        pipeline = ETLPipeline(spark, test_config)
+        
+        with pytest.raises(Exception) as exc_info:
+            pipeline.run()
+        
+        assert "input path not found" in str(exc_info.value).lower()
+    
+    def test_pipeline_data_quality_failure(self, spark, temp_data_dir, test_config):
+        """Test pipeline with data quality issues"""
+        
+        # Create problematic input data
+        bad_data = [
+            {"id": None, "name": None, "age": None, "department": None, "salary": None}
+        ] * 100  # 100 completely null records
+        
+        bad_df = spark.createDataFrame(bad_data)
+        bad_df.coalesce(1).write.mode("overwrite").parquet(test_config["input_path"])
+        
+        # Configure pipeline to fail on quality issues
+        test_config["fail_on_quality_issues"] = True
+        test_config["max_null_percentage"] = 0.1  # 10% threshold
+        
+        pipeline = ETLPipeline(spark, test_config)
+        
+        with pytest.raises(Exception) as exc_info:
+            pipeline.run()
+        
+        assert "data quality" in str(exc_info.value).lower()
+    
+    def test_pipeline_performance(self, spark, temp_data_dir, test_config):
+        """Test pipeline performance with larger dataset"""
+        
+        # Create larger test dataset
+        large_data = []
+        for i in range(10000):
+            large_data.append({
+                "id": i,
+                "name": f"Employee_{i}",
+                "age": 25 + (i % 40),
+                "department": ["Engineering", "Sales", "Marketing"][i % 3],
+                "salary": 50000 + (i % 50000)
+            })
+        
+        large_df = spark.createDataFrame(large_data)
+        large_df.coalesce(4).write.mode("overwrite").parquet(test_config["input_path"])
+        
+        # Execute pipeline with timing
+        import time
+        start_time = time.time()
+        
+        pipeline = ETLPipeline(spark, test_config)
+        result = pipeline.run()
+        
+        execution_time = time.time() - start_time
+        
+        # Performance assertions
+        assert result["status"] == "SUCCESS"
+        assert result["records_processed"] == 10000
+        assert execution_time < 120  # Should complete in under 2 minutes
+        
+        # Verify output
+        output_df = spark.read.parquet(test_config["output_path"])
+        assert output_df.count() == 10000
+        
+    def test_pipeline_idempotency(self, spark, sample_data, temp_data_dir, test_config):
+        """Test that pipeline can be run multiple times safely"""
+        
+        # Setup input data
+        input_df = spark.createDataFrame(sample_data)
+        input_df.coalesce(1).write.mode("overwrite").parquet(test_config["input_path"])
+        
+        pipeline = ETLPipeline(spark, test_config)
+        
+        # Run pipeline first time
+        result1 = pipeline.run()
+        output_count_1 = spark.read.parquet(test_config["output_path"]).count()
+        
+        # Run pipeline second time (should overwrite)
+        result2 = pipeline.run()
+        output_count_2 = spark.read.parquet(test_config["output_path"]).count()
+        
+        # Both runs should succeed and produce same results
+        assert result1["status"] == "SUCCESS"
+        assert result2["status"] == "SUCCESS"
+        assert output_count_1 == output_count_2 == len(sample_data)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>End-to-end testing:</strong> Tests complete pipeline from input to output</li>
+                        <li><strong>Performance testing:</strong> Validates pipeline performance with realistic data volumes</li>
+                        <li><strong>Error scenarios:</strong> Tests how pipeline handles various failure conditions</li>
+                        <li><strong>Idempotency:</strong> Ensures pipeline can be safely re-run without side effects</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="github-actions-cicd-pipeline">
+                <div class="section-header" onclick="toggleSection('github-actions-cicd-pipeline')">
+                    <h2>📦 GitHub Actions CI/CD Pipeline</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Complete GitHub Actions workflows for continuous integration and deployment, including automated testing, security scanning, and multi-environment deployment strategies.</p>
+                </div>
+
+                <h3>Continuous Integration Workflow</h3>
+                <pre><code class="language-yaml"># .github/workflows/ci-test.yml
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  PYTHON_VERSION: '3.9'
+  JAVA_VERSION: '11'
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install black flake8 mypy isort bandit
+        pip install -r requirements-dev.txt
+    
+    - name: Format check with Black
+      run: black --check --diff src/ tests/
+    
+    - name: Import sorting check
+      run: isort --check-only --diff src/ tests/
+    
+    - name: Lint with flake8
+      run: |
+        flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 src/ tests/ --count --max-complexity=10 --max-line-length=88 --statistics
+    
+    - name: Type checking with mypy
+      run: mypy src/
+    
+    - name: Security scan with bandit
+      run: bandit -r src/ -f json -o bandit-report.json
+    
+    - name: Upload security scan results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: security-scan-results
+        path: bandit-report.json
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    needs: lint-and-format
+    
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ env.JAVA_VERSION }}
+    
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements*.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        pip install -e .
+    
+    - name: Run unit tests
+      run: |
+        pytest tests/unit/ -v \
+          --cov=src/ \
+          --cov-report=xml \
+          --cov-report=html \
+          --junitxml=pytest-results.xml
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: pytest-results-${{ matrix.python-version }}
+        path: |
+          pytest-results.xml
+          htmlcov/
+    
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: coverage.xml
+        flags: unittests
+        name: codecov-${{ matrix.python-version }}
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    
+    services:
+      # Add any external services needed for integration tests
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Set up Java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: ${{ env.JAVA_VERSION }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+        pip install -e .
+    
+    - name: Run integration tests
+      env:
+        DATABASE_URL: postgresql://postgres:testpassword@localhost:5432/testdb
+      run: |
+        pytest tests/integration/ -v \
+          --cov=src/ \
+          --cov-append \
+          --cov-report=xml
+    
+    - name: Upload integration test results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: integration-test-results
+        path: coverage.xml
+
+  build-package:
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    
+    - name: Install build tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install build twine
+    
+    - name: Build package
+      run: python -m build
+    
+    - name: Check package
+      run: twine check dist/*
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: python-package
+        path: dist/
+        retention-days: 30
+
+  notify-status:
+    runs-on: ubuntu-latest
+    needs: [lint-and-format, unit-tests, integration-tests, build-package]
+    if: always()
+    
+    steps:
+    - name: Notify success
+      if: ${{ needs.lint-and-format.result == 'success' && needs.unit-tests.result == 'success' && needs.integration-tests.result == 'success' }}
+      uses: 8398a7/action-slack@v3
+      with:
+        status: success
+        text: "✅ CI Pipeline completed successfully for ${{ github.ref }}"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+    
+    - name: Notify failure
+      if: ${{ needs.lint-and-format.result == 'failure' || needs.unit-tests.result == 'failure' || needs.integration-tests.result == 'failure' }}
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        text: "❌ CI Pipeline failed for ${{ github.ref }}"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Comprehensive testing:</strong> Runs linting, unit tests, and integration tests</li>
+                        <li><strong>Matrix testing:</strong> Tests across multiple Python versions for compatibility</li>
+                        <li><strong>Security scanning:</strong> Includes automated security vulnerability detection</li>
+                        <li><strong>Artifact management:</strong> Stores test results and build artifacts</li>
+                    </ul>
+                </div>
+
+                <h3>Continuous Deployment - Staging</h3>
+                <pre><code class="language-yaml"># .github/workflows/cd-staging.yml
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [ develop ]
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    branches: [ develop ]
+    types: [ completed ]
+
+env:
+  DATABRICKS_HOST: ${{ secrets.DATABRICKS_STAGING_HOST }}
+  DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_STAGING_TOKEN }}
+
+jobs:
+  deploy-staging:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    
+    environment:
+      name: staging
+      url: ${{ steps.deploy.outputs.job-url }}
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install Databricks CLI
+      run: |
+        pip install databricks-cli
+        pip install -r requirements.txt
+    
+    - name: Configure Databricks CLI
+      run: |
+        echo "[staging]" > ~/.databrickscfg
+        echo "host = $DATABRICKS_HOST" >> ~/.databrickscfg
+        echo "token = $DATABRICKS_TOKEN" >> ~/.databrickscfg
+    
+    - name: Download build artifacts
+      if: github.event_name == 'workflow_run'
+      uses: actions/download-artifact@v3
+      with:
+        name: python-package
+        path: dist/
+        run-id: ${{ github.event.workflow_run.id }}
+    
+    - name: Build package (if direct push)
+      if: github.event_name == 'push'
+      run: |
+        pip install build
+        python -m build
+    
+    - name: Upload notebooks to Databricks
+      run: |
+        databricks workspace import-dir notebooks /Workspace/Repos/staging/data-pipeline/notebooks \
+          --profile staging \
+          --overwrite \
+          --language PYTHON
+    
+    - name: Upload package to DBFS
+      run: |
+        databricks fs cp dist/*.whl dbfs:/shared/packages/staging/ \
+          --profile staging \
+          --overwrite
+    
+    - name: Update job configuration
+      id: deploy
+      run: |
+        # Replace placeholders in job config with staging values
+        envsubst < jobs/daily_etl_job.json > jobs/staging_daily_etl_job.json
+        
+        # Update or create the job
+        job_id=$(databricks jobs list --profile staging --output JSON | \
+          jq -r '.jobs[] | select(.settings.name=="Staging Daily ETL") | .job_id')
+        
+        if [ "$job_id" != "null" ] && [ -n "$job_id" ]; then
+          echo "Updating existing job $job_id"
+          databricks jobs reset --profile staging --job-id $job_id --json-file jobs/staging_daily_etl_job.json
+        else
+          echo "Creating new job"
+          job_id=$(databricks jobs create --profile staging --json-file jobs/staging_daily_etl_job.json | jq -r '.job_id')
+        fi
+        
+        echo "job-url=https://$DATABRICKS_HOST/#job/$job_id" >> $GITHUB_OUTPUT
+    
+    - name: Run smoke tests
+      run: |
+        # Run a simple test job to verify deployment
+        job_id=$(databricks jobs list --profile staging --output JSON | \
+          jq -r '.jobs[] | select(.settings.name=="Staging Daily ETL") | .job_id')
+        
+        run_id=$(databricks jobs run-now --profile staging --job-id $job_id | jq -r '.run_id')
+        
+        echo "Started test run: $run_id"
+        
+        # Wait for completion (with timeout)
+        timeout=600  # 10 minutes
+        elapsed=0
+        
+        while [ $elapsed -lt $timeout ]; do
+          status=$(databricks runs get --profile staging --run-id $run_id | jq -r '.state.life_cycle_state')
+          
+          if [ "$status" = "TERMINATED" ]; then
+            result_state=$(databricks runs get --profile staging --run-id $run_id | jq -r '.state.result_state')
+            
+            if [ "$result_state" = "SUCCESS" ]; then
+              echo "✅ Smoke test passed"
+              break
+            else
+              echo "❌ Smoke test failed"
+              exit 1
+            fi
+          fi
+          
+          sleep 30
+          elapsed=$((elapsed + 30))
+        done
+        
+        if [ $elapsed -ge $timeout ]; then
+          echo "⏰ Smoke test timed out"
+          exit 1
+        fi
+    
+    - name: Notify deployment success
+      if: success()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: success
+        text: "🚀 Successfully deployed to Staging environment"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+    
+    - name: Notify deployment failure
+      if: failure()
+      uses: 8398a7/action-slack@v3
+      with:
+        status: failure
+        text: "💥 Staging deployment failed"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Automated deployment:</strong> Triggers automatically after successful CI</li>
+                        <li><strong>Artifact management:</strong> Downloads and deploys built packages</li>
+                        <li><strong>Job management:</strong> Updates or creates Databricks jobs programmatically</li>
+                        <li><strong>Smoke testing:</strong> Runs validation tests after deployment</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="pro-tip">
+                <strong>💡 Expert Tip:</strong> Always implement proper secret management using GitHub Secrets, include comprehensive smoke tests after deployment, and use environment protection rules for production deployments. Consider blue-green deployment strategies for zero-downtime updates!
+            </div>
+
+            <section>
+                <div class="collapsible-section" id="security-and-compliance-best-practices">
+                <div class="section-header" onclick="toggleSection('security-and-compliance-best-practices')">
+                    <h2>🔒 Security and Compliance Best Practices</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <ul>
+                    <li><strong>Secret Management:</strong> Store all credentials in GitHub Secrets, never in code</li>
+                    <li><strong>Access Control:</strong> Use environment protection rules for production deployments</li>
+                    <li><strong>Code Scanning:</strong> Implement automated security scanning with tools like Bandit</li>
+                    <li><strong>Dependency Scanning:</strong> Regularly update and scan dependencies for vulnerabilities</li>
+                    <li><strong>Audit Trails:</strong> Log all deployment activities and maintain deployment history</li>
+                    <li><strong>Testing in Production:</strong> Implement canary deployments and comprehensive monitoring</li>
+                    <li><strong>Rollback Strategy:</strong> Always have a plan and mechanism for rolling back deployments</li>
+                    <li><strong>Data Privacy:</strong> Ensure test data doesn't contain sensitive information</li>
+                </ul>
+            </section>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

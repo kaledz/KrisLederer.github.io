@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛠️ dbutils Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.3rem; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🛠️ dbutils Cheat Sheet</h1>
+            <blockquote>Complete guide to Databricks utilities for file system, secrets, widgets, and notebook operations</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://docs.databricks.com/dev-tools/databricks-utils.html" target="_blank">Databricks Utils Documentation</a></li>
+                <li><a href="https://docs.databricks.com/security/secrets/index.html" target="_blank">Secrets Management</a></li>
+                <li><a href="https://docs.databricks.com/notebooks/widgets.html" target="_blank">Notebook Widgets</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#file-system-operations-dbutilsfs">📁 File System Operations (dbutils.fs)</a></li><li><a href="#secrets-management-dbutilssecrets">🔐 Secrets Management (dbutils.secrets)</a></li><li><a href="#notebook-widgets-dbutilswidgets">🎛️ Notebook Widgets (dbutils.widgets)</a></li><li><a href="#notebook-operations-dbutilsnotebook">📓 Notebook Operations (dbutils.notebook)</a></li><li><a href="#library-management-dbutilslibrary">🎨 Library Management (dbutils.library)</a></li><li><a href="#advanced-dbutils-patterns">⚙️ Advanced dbutils Patterns</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="file-system-operations-dbutilsfs">
+                <div class="section-header" onclick="toggleSection('file-system-operations-dbutilsfs')">
+                    <h2>📁 File System Operations (dbutils.fs)</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Basic File Operations</h3>
+            <pre><code class="language-python"># List files and directories in a path
+files = dbutils.fs.ls("/mnt/data/")
+for file in files:
+    print(f"Name: {file.name}, Path: {file.path}, Size: {file.size}")
+
+# List files recursively - useful for exploring nested directory structures
+all_files = []
+def list_recursive(path):
+    """Recursively list all files in a directory structure"""
+    for item in dbutils.fs.ls(path):
+        if item.isDir():
+            list_recursive(item.path)  # Recurse into subdirectories
+        else:
+            all_files.append(item.path)
+
+list_recursive("/mnt/data/")
+print(f"Found {len(all_files)} files total")
+
+# Check if a file or directory exists
+if dbutils.fs.ls("/mnt/data/important_file.csv"):
+    print("File exists!")
+else:
+    print("File not found")</code></pre>
+
+            <h3>File Content Operations</h3>
+            <pre><code class="language-python"># Read file content - useful for small files like config files
+content = dbutils.fs.head("/mnt/data/config.txt", max_bytes=1000)
+print("First 1000 bytes:", content)
+
+# Copy files between locations
+# Source can be local file system, DBFS, or cloud storage
+dbutils.fs.cp("/mnt/source/data.csv", "/mnt/destination/data.csv")
+
+# Copy entire directory recursively
+dbutils.fs.cp("/mnt/source/folder/", "/mnt/destination/folder/", recurse=True)
+
+# Move/rename files - atomically moves file to new location
+dbutils.fs.mv("/mnt/old/location.csv", "/mnt/new/location.csv")
+
+# Delete files - be careful with this operation!
+dbutils.fs.rm("/mnt/data/temp_file.csv")
+
+# Delete directory and all contents recursively
+dbutils.fs.rm("/mnt/data/temp_directory/", recurse=True)</code></pre>
+
+            <h3>Working with Cloud Storage</h3>
+            <pre><code class="language-python"># Mount cloud storage to DBFS for easy access
+# Example: Mount S3 bucket with access keys
+dbutils.fs.mount(
+    source="s3a://my-bucket/data/",
+    mount_point="/mnt/s3-data",
+    extra_configs={
+        "fs.s3a.access.key": dbutils.secrets.get("aws", "access-key"),
+        "fs.s3a.secret.key": dbutils.secrets.get("aws", "secret-key")
+    }
+)
+
+# Mount Azure Data Lake Storage Gen2
+dbutils.fs.mount(
+    source="abfss://container@storageaccount.dfs.core.windows.net/",
+    mount_point="/mnt/adls",
+    extra_configs={
+        "fs.azure.account.auth.type.storageaccount.dfs.core.windows.net": "OAuth",
+        "fs.azure.account.oauth.provider.type.storageaccount.dfs.core.windows.net": 
+            "org.apache.hadoop.fs.azurebfs.oauth2.ClientCredsTokenProvider",
+        "fs.azure.account.oauth2.client.id.storageaccount.dfs.core.windows.net": 
+            dbutils.secrets.get("azure", "client-id"),
+        "fs.azure.account.oauth2.client.secret.storageaccount.dfs.core.windows.net": 
+            dbutils.secrets.get("azure", "client-secret"),
+        "fs.azure.account.oauth2.client.endpoint.storageaccount.dfs.core.windows.net": 
+            "https://login.microsoftonline.com/tenant-id/oauth2/token"
+    }
+)
+
+# List all mounts to see what's currently mounted
+mounts = dbutils.fs.mounts()
+for mount in mounts:
+    print(f"Mount point: {mount.mountPoint}, Source: {mount.source}")
+
+# Unmount when no longer needed
+dbutils.fs.unmount("/mnt/s3-data")</code></pre>
+
+            <div class="collapsible-section" id="secrets-management-dbutilssecrets">
+                <div class="section-header" onclick="toggleSection('secrets-management-dbutilssecrets')">
+                    <h2>🔐 Secrets Management (dbutils.secrets)</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Working with Secret Scopes</h3>
+            <pre><code class="language-python"># List all available secret scopes in your workspace
+scopes = dbutils.secrets.listScopes()
+print("Available secret scopes:")
+for scope in scopes:
+    print(f"  - {scope.name}")
+
+# List secrets within a specific scope (names only, not values)
+secrets = dbutils.secrets.list("my-secret-scope")
+print("Secrets in 'my-secret-scope':")
+for secret in secrets:
+    print(f"  - {secret.key}")
+
+# Retrieve secret value - this is the secure way to access credentials
+api_key = dbutils.secrets.get("api-keys", "external-service-key")
+database_password = dbutils.secrets.get("database", "production-password")
+
+# Use secrets in connection strings
+connection_string = f"""
+jdbc:postgresql://prod-db.company.com:5432/analytics
+?user=analytics_user
+&password={dbutils.secrets.get("database", "analytics-password")}
+"""
+
+# Best practice: Use secrets in DataFrame operations
+df = spark.read.format("jdbc") \
+    .option("url", "jdbc:mysql://db.example.com:3306/mydb") \
+    .option("dbtable", "users") \
+    .option("user", "myuser") \
+    .option("password", dbutils.secrets.get("mysql", "password")) \
+    .load()</code></pre>
+
+            <div class="collapsible-section" id="notebook-widgets-dbutilswidgets">
+                <div class="section-header" onclick="toggleSection('notebook-widgets-dbutilswidgets')">
+                    <h2>🎛️ Notebook Widgets (dbutils.widgets)</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Creating Interactive Widgets</h3>
+            <pre><code class="language-python"># Create different types of input widgets for parameterized notebooks
+
+# Text widget - for free-form text input
+dbutils.widgets.text("environment", "dev", "Environment")
+env = dbutils.widgets.get("environment")
+print(f"Running in environment: {env}")
+
+# Dropdown widget - for selecting from predefined options
+dbutils.widgets.dropdown("data_source", "customers", 
+                         ["customers", "orders", "products", "inventory"],
+                         "Choose Data Source")
+selected_table = dbutils.widgets.get("data_source")
+
+# Multiselect widget - for selecting multiple options
+dbutils.widgets.multiselect("regions", "us-east-1", 
+                           ["us-east-1", "us-west-2", "eu-west-1", "ap-south-1"],
+                           "Select Regions")
+selected_regions = dbutils.widgets.get("regions").split(",")
+
+# Combobox widget - combines text input with dropdown suggestions
+dbutils.widgets.combobox("date_range", "last_30_days",
+                        ["last_7_days", "last_30_days", "last_90_days", "custom"],
+                        "Date Range")
+date_range = dbutils.widgets.get("date_range")
+
+# Use widget values in your data processing logic
+if env == "prod":
+    table_prefix = "production"
+    cluster_size = "large"
+else:
+    table_prefix = "staging" 
+    cluster_size = "small"
+
+# Dynamic table name based on widget selection
+full_table_name = f"{table_prefix}.{selected_table}"
+df = spark.table(full_table_name)
+
+print(f"Processing table: {full_table_name} for regions: {selected_regions}")
+
+# Remove widgets when done (useful for cleanup)
+dbutils.widgets.remove("environment")
+# Remove all widgets at once
+dbutils.widgets.removeAll()</code></pre>
+
+            <div class="collapsible-section" id="notebook-operations-dbutilsnotebook">
+                <div class="section-header" onclick="toggleSection('notebook-operations-dbutilsnotebook')">
+                    <h2>📓 Notebook Operations (dbutils.notebook)</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Orchestrating Notebook Workflows</h3>
+            <pre><code class="language-python"># Run another notebook and get its return value
+# This enables modular notebook design and workflow orchestration
+result = dbutils.notebook.run(
+    "/path/to/data_processing_notebook",
+    timeout_seconds=3600,  # 1 hour timeout
+    arguments={
+        "input_path": "/mnt/data/raw/",
+        "output_path": "/mnt/data/processed/",
+        "processing_date": "2024-01-15"
+    }
+)
+
+print(f"Child notebook returned: {result}")
+
+# Exit current notebook with a return value
+# This value can be captured by the parent notebook
+if error_occurred:
+    dbutils.notebook.exit("ERROR: Data validation failed")
+else:
+    dbutils.notebook.exit("SUCCESS: Processing completed")
+
+# Example of a complete ETL workflow using notebook orchestration
+def run_etl_pipeline(date):
+    """Run complete ETL pipeline by orchestrating multiple notebooks"""
+    
+    # Step 1: Data extraction
+    extract_result = dbutils.notebook.run(
+        "/etl/01_extract_data",
+        timeout_seconds=1800,
+        arguments={"processing_date": date}
+    )
+    
+    if "ERROR" in extract_result:
+        raise Exception(f"Extraction failed: {extract_result}")
+    
+    # Step 2: Data transformation
+    transform_result = dbutils.notebook.run(
+        "/etl/02_transform_data", 
+        timeout_seconds=3600,
+        arguments={"processing_date": date}
+    )
+    
+    if "ERROR" in transform_result:
+        raise Exception(f"Transformation failed: {transform_result}")
+    
+    # Step 3: Data loading/publishing
+    load_result = dbutils.notebook.run(
+        "/etl/03_load_data",
+        timeout_seconds=1200, 
+        arguments={"processing_date": date}
+    )
+    
+    return load_result
+
+# Run the pipeline
+try:
+    pipeline_result = run_etl_pipeline("2024-01-15")
+    print(f"ETL Pipeline completed successfully: {pipeline_result}")
+except Exception as e:
+    print(f"Pipeline failed: {str(e)}")
+    # Send alert or notification
+    dbutils.notebook.exit(f"PIPELINE_FAILURE: {str(e)}")</code></pre>
+
+            <div class="collapsible-section" id="library-management-dbutilslibrary">
+                <div class="section-header" onclick="toggleSection('library-management-dbutilslibrary')">
+                    <h2>🎨 Library Management (dbutils.library)</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <pre><code class="language-python"># Install Python packages dynamically during notebook execution
+# Note: This installs packages on the current cluster
+
+# Install a single package
+dbutils.library.installPyPI("pandas", version="1.5.0")
+
+# Install multiple packages at once
+dbutils.library.installPyPI("scikit-learn")
+dbutils.library.installPyPI("plotly", version="5.10.0") 
+dbutils.library.installPyPI("seaborn")
+
+# Install from a requirements file
+dbutils.library.installPyPI("requests", extras=["security"])
+
+# Restart Python to make newly installed packages available
+dbutils.library.restartPython()
+
+# After restart, you can import the newly installed packages
+import pandas as pd
+import plotly.express as px
+import seaborn as sns
+
+print("All packages installed and available!")</code></pre>
+
+            <div class="collapsible-section" id="advanced-dbutils-patterns">
+                <div class="section-header" onclick="toggleSection('advanced-dbutils-patterns')">
+                    <h2>⚙️ Advanced dbutils Patterns</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Error Handling and Logging</h3>
+            <pre><code class="language-python">import logging
+from datetime import datetime
+
+def safe_file_operation(operation, path, **kwargs):
+    """Safely perform file operations with proper error handling"""
+    try:
+        if operation == "ls":
+            return dbutils.fs.ls(path)
+        elif operation == "rm":
+            return dbutils.fs.rm(path, **kwargs)
+        elif operation == "cp":
+            return dbutils.fs.cp(path, kwargs.get("dest"), **kwargs)
+        elif operation == "mv":
+            return dbutils.fs.mv(path, kwargs.get("dest"))
+    except Exception as e:
+        logging.error(f"File operation {operation} failed for {path}: {str(e)}")
+        return None
+
+def create_checkpoint_file(checkpoint_path, status, metadata=None):
+    """Create checkpoint files to track processing status"""
+    checkpoint_data = {
+        "timestamp": datetime.now().isoformat(),
+        "status": status,
+        "metadata": metadata or {}
+    }
+    
+    # Convert to JSON and write to DBFS
+    import json
+    checkpoint_content = json.dumps(checkpoint_data, indent=2)
+    
+    # Write to a temp file first, then move (atomic operation)
+    temp_path = f"{checkpoint_path}.tmp"
+    dbutils.fs.put(temp_path, checkpoint_content, overwrite=True)
+    dbutils.fs.mv(temp_path, checkpoint_path)
+
+# Usage example
+checkpoint_path = "/mnt/data/processing_checkpoints/job_2024_01_15.json"
+create_checkpoint_file(checkpoint_path, "completed", 
+                      {"records_processed": 1000000, "runtime_minutes": 45})</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Always use <code>dbutils.secrets.get()</code> instead of hardcoding credentials. Store secrets in Databricks secret scopes for secure access to external systems!
+            </div>
+
+            <h3>Production Best Practices</h3>
+            <pre><code class="language-python"># Example of a robust data processing function using dbutils best practices
+def process_daily_data(processing_date, source_path, target_path):
+    """
+    Process daily data with comprehensive error handling and monitoring
+    
+    Args:
+        processing_date: Date to process in YYYY-MM-DD format
+        source_path: Source data location
+        target_path: Target output location
+    """
+    
+    # Step 1: Validate inputs using dbutils
+    try:
+        files = dbutils.fs.ls(source_path)
+        if not files:
+            raise ValueError(f"No files found in source path: {source_path}")
+    except Exception as e:
+        dbutils.notebook.exit(f"ERROR: Source validation failed - {str(e)}")
+    
+    # Step 2: Use widgets for configuration
+    dbutils.widgets.text("batch_size", "1000", "Batch Size")
+    batch_size = int(dbutils.widgets.get("batch_size"))
+    
+    # Step 3: Secure credential access
+    db_password = dbutils.secrets.get("production", "database-password")
+    
+    # Step 4: Create processing checkpoint
+    checkpoint_dir = f"/mnt/checkpoints/daily_processing/{processing_date}"
+    dbutils.fs.mkdirs(checkpoint_dir)
+    
+    try:
+        # Your data processing logic here
+        print(f"Processing {len(files)} files with batch size {batch_size}")
+        
+        # Mark as completed
+        dbutils.fs.put(f"{checkpoint_dir}/SUCCESS", 
+                       f"Completed at {datetime.now()}")
+        
+        return "SUCCESS"
+        
+    except Exception as e:
+        # Mark as failed with error details
+        dbutils.fs.put(f"{checkpoint_dir}/FAILED", 
+                       f"Failed at {datetime.now()}: {str(e)}")
+        raise e</code></pre>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

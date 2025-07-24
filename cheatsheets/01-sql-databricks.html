@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 SQL for Databricks Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-links .home-link {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-links .home-link:hover {
+            background: #5a67d8;
+        }
+
+        .content {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            color: #4a5568;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        h4 {
+            color: #4a5568;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.3rem;
+        }
+
+        code {
+            background: #f7fafc;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            border: 1px solid #e2e8f0;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            border: none;
+            color: inherit;
+        }
+
+        blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #666;
+            background: #f8f9fa;
+            padding: 1rem 1rem 1rem 2rem;
+            border-radius: 5px;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .pro-tip {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .pro-tip strong {
+            font-size: 1.1em;
+        }
+
+        .section-description {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #5a67d8;
+        }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .nav-links a {
+                text-align: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            pre {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">📊 SQL for Databricks Cheat Sheet</h1>
+
+            <blockquote>Essential SQL commands, window functions, and Delta Lake operations for Databricks</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://spark.apache.org/docs/latest/sql-ref.html" target="_blank">Spark SQL Reference</a></li>
+                <li><a href="https://docs.databricks.com/sql/language-manual/index.html" target="_blank">Databricks SQL Reference</a></li>
+                <li><a href="https://docs.delta.io/latest/delta-batch.html#ddl-statements" target="_blank">Delta Lake SQL Commands</a></li>
+                <li><a href="16-sql-functions-comparison.html" style="color: #e53e3e; font-weight: bold;">🔗 SQL vs PySpark Functions Comparison</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#core-sql-commands">🏗️ Core SQL Commands</a></li><li><a href="#join-operations">🔗 JOIN Operations</a></li><li><a href="#group-by-and-aggregations">📊 GROUP BY and Aggregations</a></li><li><a href="#window-functions">🪟 Window Functions</a></li><li><a href="#delta-lake-operations">🔺 Delta Lake Operations</a></li><li><a href="#performance-tips">🎯 Performance Tips</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="core-sql-commands">
+                <div class="section-header" onclick="toggleSection('core-sql-commands')">
+                    <h2>🏗️ Core SQL Commands</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>SELECT Basics</h3>
+            <div class="section-description">
+                <p>The SELECT statement forms the foundation of all SQL queries. Use column aliases for readability, apply transformations with functions, and always include appropriate filtering and ordering for performance.</p>
+            </div>
+            <pre><code class="language-sql">-- Basic SELECT with column aliases for better readability
+-- This query retrieves customer information with renamed columns
+SELECT 
+    customer_id AS id,              -- Rename for shorter reference
+    customer_name AS name,          -- More user-friendly column name  
+    UPPER(email) AS email_upper,    -- Transform email to uppercase for consistency
+    created_date                    -- Keep original column name
+FROM customers                      -- Source table
+WHERE created_date >= '2023-01-01' -- Filter for records from 2023 onwards only
+ORDER BY created_date DESC          -- Sort by newest records first for relevance
+LIMIT 100;                          -- Restrict to first 100 results for performance
+
+-- SELECT DISTINCT removes duplicate combinations of values
+-- Use when you need unique combinations of columns
+SELECT DISTINCT region, country     -- Get unique region-country pairs
+FROM customers                      -- From the customers table
+ORDER BY region, country;           -- Sort alphabetically for easy reading</code></pre>
+
+            <h3>WHERE Clause Patterns</h3>
+            <div class="section-description">
+                <p>The WHERE clause filters data before processing, which is crucial for performance. Use appropriate operators and handle NULL values explicitly to avoid unexpected results.</p>
+            </div>
+            <pre><code class="language-sql">-- Multiple conditions with logical operators
+-- Combine conditions using AND, OR, and parentheses for complex logic
+SELECT * FROM orders 
+WHERE order_date BETWEEN '2023-01-01' AND '2023-12-31'  -- Date range filter
+  AND status IN ('completed', 'shipped')                -- Multiple status values
+  AND amount > 100;                                     -- Minimum amount threshold
+
+-- Pattern matching with LIKE and RLIKE (regex)
+-- Use for flexible text searching and validation
+SELECT * FROM customers
+WHERE email LIKE '%@gmail.com'                          -- Ends with @gmail.com
+  AND customer_name NOT LIKE 'Test%'                    -- Exclude test accounts
+  AND phone RLIKE '^\\+1[0-9]{10}$';                   -- US phone number pattern
+
+-- NULL handling - explicitly check for NULL values
+-- NULL comparisons require special operators (IS NULL/IS NOT NULL)
+SELECT * FROM customers
+WHERE email IS NOT NULL                                 -- Must have email
+  AND last_login IS NULL                                -- Never logged in
+  AND COALESCE(phone, 'N/A') != 'N/A';                 -- Has phone number</code></pre>
+
+            <h3>CASE WHEN Statements</h3>
+            <div class="section-description">
+                <p>CASE WHEN statements provide conditional logic in SQL, similar to if-else statements in programming languages. Use them for data categorization, conditional calculations, and handling complex business logic.</p>
+            </div>
+            <pre><code class="language-sql">-- Simple CASE statement for data categorization
+-- Evaluates conditions in order and returns first matching result
+SELECT 
+    customer_id,
+    CASE 
+        WHEN age < 25 THEN 'Young'              -- First condition checked
+        WHEN age BETWEEN 25 AND 54 THEN 'Adult' -- Second condition if first fails
+        WHEN age >= 55 THEN 'Senior'            -- Third condition
+        ELSE 'Unknown'                          -- Default if no conditions match
+    END AS age_group,
+    
+    -- Nested CASE for complex hierarchical logic
+    -- Inner CASE only evaluated when outer condition is true
+    CASE 
+        WHEN region = 'US' THEN 
+            CASE WHEN state IN ('CA', 'NY', 'FL') THEN 'Major State'
+                 ELSE 'Other State' 
+            END
+        WHEN region = 'EU' THEN 'Europe'        -- Simple assignment for EU
+        ELSE 'Other Region'                     -- Default for all other regions
+    END AS region_category
+FROM customers;</code></pre>
+
+            <div class="collapsible-section" id="join-operations">
+                <div class="section-header" onclick="toggleSection('join-operations')">
+                    <h2>🔗 JOIN Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>All JOIN Types</h3>
+            <pre><code class="language-sql">-- INNER JOIN (most common)
+SELECT 
+    c.customer_id,
+    c.customer_name,
+    o.order_id,
+    o.order_amount
+FROM customers c
+INNER JOIN orders o ON c.customer_id = o.customer_id
+WHERE o.order_date >= '2023-01-01';
+
+-- LEFT JOIN (keep all customers)
+SELECT 
+    c.customer_id,
+    c.customer_name,
+    COALESCE(SUM(o.order_amount), 0) AS total_orders
+FROM customers c
+LEFT JOIN orders o ON c.customer_id = o.customer_id
+GROUP BY c.customer_id, c.customer_name;</code></pre>
+
+            <div class="collapsible-section" id="group-by-and-aggregations">
+                <div class="section-header" onclick="toggleSection('group-by-and-aggregations')">
+                    <h2>📊 GROUP BY and Aggregations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>Basic Aggregations</h3>
+            <pre><code class="language-sql">-- Standard aggregations
+SELECT 
+    region,
+    COUNT(*) AS customer_count,
+    COUNT(DISTINCT customer_id) AS unique_customers,
+    AVG(order_amount) AS avg_order,
+    SUM(order_amount) AS total_revenue,
+    MIN(order_date) AS first_order,
+    MAX(order_date) AS last_order,
+    STDDEV(order_amount) AS revenue_std
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+GROUP BY region
+HAVING COUNT(*) > 100
+ORDER BY total_revenue DESC;</code></pre>
+
+            <div class="collapsible-section" id="window-functions">
+                <div class="section-header" onclick="toggleSection('window-functions')">
+                    <h2>🪟 Window Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>ROW_NUMBER, RANK, DENSE_RANK</h3>
+            <pre><code class="language-sql">SELECT 
+    customer_id,
+    order_date,
+    order_amount,
+    
+    -- Row number (unique sequential)
+    ROW_NUMBER() OVER (
+        PARTITION BY customer_id 
+        ORDER BY order_date DESC
+    ) AS order_sequence,
+    
+    -- Rank (gaps for ties)
+    RANK() OVER (
+        ORDER BY order_amount DESC
+    ) AS amount_rank,
+    
+    -- Dense rank (no gaps)
+    DENSE_RANK() OVER (
+        PARTITION BY YEAR(order_date) 
+        ORDER BY order_amount DESC
+    ) AS yearly_dense_rank
+FROM orders;</code></pre>
+
+            <div class="collapsible-section" id="delta-lake-operations">
+                <div class="section-header" onclick="toggleSection('delta-lake-operations')">
+                    <h2>🔺 Delta Lake Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>MERGE (Upsert Operations)</h3>
+            <pre><code class="language-sql">-- Basic MERGE (upsert)
+MERGE INTO customer_profiles AS target
+USING customer_updates AS source
+ON target.customer_id = source.customer_id
+WHEN MATCHED THEN
+    UPDATE SET 
+        email = source.email,
+        phone = source.phone,
+        last_updated = CURRENT_TIMESTAMP()
+WHEN NOT MATCHED THEN
+    INSERT (customer_id, email, phone, created_date)
+    VALUES (source.customer_id, source.email, source.phone, CURRENT_TIMESTAMP());</code></pre>
+
+            <h3>Delta Lake Utilities</h3>
+            <pre><code class="language-sql">-- Optimize table (compaction)
+OPTIMIZE customers
+WHERE created_date >= '2023-01-01';
+
+-- Optimize with Z-ordering
+OPTIMIZE sales
+ZORDER BY (customer_id, order_date);
+
+-- Vacuum (remove old files)
+VACUUM customers RETAIN 168 HOURS;  -- 7 days
+
+-- Show table history
+DESCRIBE HISTORY customers;
+
+-- Time travel queries
+SELECT * FROM customers VERSION AS OF 1;
+SELECT * FROM customers TIMESTAMP AS OF '2023-12-01 00:00:00';</code></pre>
+
+            <div class="collapsible-section" id="performance-tips">
+                <div class="section-header" onclick="toggleSection('performance-tips')">
+                    <h2>🎯 Performance Tips</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>Query Optimization</h3>
+            <pre><code class="language-sql">-- Use column pruning
+SELECT customer_id, order_amount  -- Only select needed columns
+FROM orders
+WHERE order_date >= '2023-01-01';
+
+-- Predicate pushdown
+SELECT *
+FROM orders
+WHERE partition_date = '2023-12-01'  -- Filter on partition column first
+  AND order_amount > 100;
+
+-- Use broadcast joins for small tables
+SELECT /*+ BROADCAST(small_table) */ *
+FROM large_table l
+JOIN small_table s ON l.key = s.key;</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Always use <code>EXPLAIN</code> to understand query execution plans and identify performance bottlenecks!
+            </div>
+
+            <pre><code class="language-sql">EXPLAIN SELECT * FROM large_table WHERE complex_condition = 'value';</code></pre>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

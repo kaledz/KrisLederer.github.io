@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>📱 Mobile Cheat Sheets - Data Engineering</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 1rem;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .debug-info {
+            background: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .file-grid {
+            display: grid;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .file-card {
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            overflow: hidden;
+        }
+
+        .file-header {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .file-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .file-desc {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .file-buttons {
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-height: 48px;
+            touch-action: manipulation;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover, .btn-primary:active {
+            background: #5a67d8;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover, .btn-secondary:active {
+            background: #cbd5e0;
+        }
+
+        .troubleshooting {
+            background: #fed7d7;
+            border: 1px solid #e53e3e;
+            color: #822727;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .troubleshooting h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .troubleshooting ul {
+            margin-left: 1.5rem;
+        }
+
+        .footer {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="title">📱 Mobile Cheat Sheets</h1>
+        <p>Data Engineering & ML Reference</p>
+    </div>
+
+    <div class="debug-info" id="debugInfo">
+        <strong>🔍 System Info:</strong><br>
+        <span id="systemDetails">Loading...</span>
+    </div>
+
+    <div class="troubleshooting" id="troubleshootingSection" style="display: none;">
+        <h3>⚠️ Navigation Issues?</h3>
+        <ul>
+            <li><strong>File Access:</strong> Try opening files directly from your file manager</li>
+            <li><strong>Browser:</strong> Use Chrome, Firefox, or Safari for best results</li>
+            <li><strong>Alternative:</strong> Upload files to Google Drive or Dropbox</li>
+            <li><strong>Local Server:</strong> Use a web server app if available</li>
+        </ul>
+    </div>
+
+    <div class="file-grid">
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">📊 SQL for Databricks</div>
+                <div class="file-desc">Core SQL commands, window functions, Delta Lake</div>
+            </div>
+            <div class="file-buttons">
+                <a href="01-sql-databricks.html" class="btn btn-primary" onclick="trackClick(this)">Open SQL Cheat Sheet</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('01-sql-databricks.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🔥 PySpark ELT Essentials</div>
+                <div class="file-desc">Complete ELT guide with 28+ sections</div>
+            </div>
+            <div class="file-buttons">
+                <a href="02-pyspark-essentials.html" class="btn btn-primary" onclick="trackClick(this)">Open PySpark Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('02-pyspark-essentials.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🪵 Delta Live Tables</div>
+                <div class="file-desc">DLT decorators, streaming, Kinesis integration</div>
+            </div>
+            <div class="file-buttons">
+                <a href="03-delta-live-tables.html" class="btn btn-primary" onclick="trackClick(this)">Open DLT Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('03-delta-live-tables.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🛠️ dbutils Cheatsheet</div>
+                <div class="file-desc">Databricks utilities, widgets, secrets</div>
+            </div>
+            <div class="file-buttons">
+                <a href="04-dbutils-cheatsheet.html" class="btn btn-primary" onclick="trackClick(this)">Open dbutils Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('04-dbutils-cheatsheet.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🐍 Python Core</div>
+                <div class="file-desc">File I/O, datetime, regex, error handling</div>
+            </div>
+            <div class="file-buttons">
+                <a href="05-python-core.html" class="btn btn-primary" onclick="trackClick(this)">Open Python Core</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('05-python-core.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🔣 Python Fundamentals</div>
+                <div class="file-desc">Language fundamentals: classes, data types</div>
+            </div>
+            <div class="file-buttons">
+                <a href="15-python-fundamentals.html" class="btn btn-primary" onclick="trackClick(this)">Open Fundamentals</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('15-python-fundamentals.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🧪 requests Library</div>
+                <div class="file-desc">HTTP requests, authentication, pagination</div>
+            </div>
+            <div class="file-buttons">
+                <a href="06-requests-apis.html" class="btn btn-primary" onclick="trackClick(this)">Open requests Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('06-requests-apis.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🐼 pandas + NumPy</div>
+                <div class="file-desc">Data manipulation and analysis</div>
+            </div>
+            <div class="file-buttons">
+                <a href="07-pandas-numpy.html" class="btn btn-primary" onclick="trackClick(this)">Open pandas Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('07-pandas-numpy.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🤖 scikit-learn ML</div>
+                <div class="file-desc">Model training, pipelines, evaluation</div>
+            </div>
+            <div class="file-buttons">
+                <a href="08-scikit-learn-ml.html" class="btn btn-primary" onclick="trackClick(this)">Open ML Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('08-scikit-learn-ml.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">⚡ AWS Kinesis</div>
+                <div class="file-desc">Kinesis streaming patterns</div>
+            </div>
+            <div class="file-buttons">
+                <a href="09-aws-kinesis.html" class="btn btn-primary" onclick="trackClick(this)">Open Kinesis Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('09-aws-kinesis.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🔧 Data Patterns</div>
+                <div class="file-desc">Common patterns and best practices</div>
+            </div>
+            <div class="file-buttons">
+                <a href="10-data-patterns.html" class="btn btn-primary" onclick="trackClick(this)">Open Patterns Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('10-data-patterns.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">📦 Python Packaging</div>
+                <div class="file-desc">Build packages for Databricks</div>
+            </div>
+            <div class="file-buttons">
+                <a href="11-python-packaging-databricks.html" class="btn btn-primary" onclick="trackClick(this)">Open Packaging Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('11-python-packaging-databricks.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🔄 Exit & Retry</div>
+                <div class="file-desc">Notebook exits and retry patterns</div>
+            </div>
+            <div class="file-buttons">
+                <a href="12-notebook-exit-retry.html" class="btn btn-primary" onclick="trackClick(this)">Open Exit & Retry</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('12-notebook-exit-retry.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🚀 CI/CD Databricks</div>
+                <div class="file-desc">Complete CI/CD pipelines</div>
+            </div>
+            <div class="file-buttons">
+                <a href="13-cicd-databricks.html" class="btn btn-primary" onclick="trackClick(this)">Open CI/CD Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('13-cicd-databricks.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">📝 Git Essentials</div>
+                <div class="file-desc">Version control for data teams</div>
+            </div>
+            <div class="file-buttons">
+                <a href="14-git-essentials.html" class="btn btn-primary" onclick="trackClick(this)">Open Git Guide</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('14-git-essentials.html')">Copy Filename</button>
+            </div>
+        </div>
+
+        <div class="file-card">
+            <div class="file-header">
+                <div class="file-title">🔗 SQL Functions Comparison</div>
+                <div class="file-desc">Side-by-side SQL vs PySpark function reference</div>
+            </div>
+            <div class="file-buttons">
+                <a href="16-sql-functions-comparison.html" class="btn btn-primary" onclick="trackClick(this)">Open SQL Functions</a>
+                <button class="btn btn-secondary" onclick="copyToClipboard('16-sql-functions-comparison.html')">Copy Filename</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p><strong>💡 Tip:</strong> If links don't work, copy the filename and open it directly in your file manager.</p>
+        <p><em>Mobile-optimized version | 2024</em></p>
+    </div>
+
+    <script>
+        // Mobile debugging and navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const debugInfo = document.getElementById('systemDetails');
+            const troubleshootingSection = document.getElementById('troubleshootingSection');
+            
+            // System information
+            const info = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine,
+                screenSize: `${screen.width}x${screen.height}`,
+                viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+                protocol: window.location.protocol,
+                href: window.location.href,
+                touchSupport: 'ontouchstart' in window,
+                deviceMemory: navigator.deviceMemory || 'Unknown',
+                hardwareConcurrency: navigator.hardwareConcurrency || 'Unknown'
+            };
+            
+            let debugText = `
+                <strong>Device:</strong> ${info.platform}<br>
+                <strong>Screen:</strong> ${info.screenSize} | Viewport: ${info.viewportSize}<br>
+                <strong>Touch:</strong> ${info.touchSupport ? 'Yes' : 'No'}<br>
+                <strong>Protocol:</strong> ${info.protocol}<br>
+                <strong>Online:</strong> ${info.onLine ? 'Yes' : 'No'}<br>
+                <strong>Location:</strong> ${info.href}<br>
+                <strong>Browser:</strong> ${info.userAgent.substring(0, 50)}...
+            `;
+            
+            debugInfo.innerHTML = debugText;
+            
+            // Show troubleshooting if using file protocol
+            if (info.protocol === 'file:' || info.href.includes('file://')) {
+                troubleshootingSection.style.display = 'block';
+            }
+        });
+
+        // Track clicks for debugging
+        function trackClick(element) {
+            const fileName = element.getAttribute('href');
+            console.log('Attempting to navigate to:', fileName);
+            
+            // Add visual feedback
+            element.style.backgroundColor = '#4c51bf';
+            setTimeout(() => {
+                element.style.backgroundColor = '';
+            }, 200);
+            
+            return true; // Allow default navigation
+        }
+
+        // Copy filename to clipboard
+        async function copyToClipboard(filename) {
+            try {
+                if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(filename);
+                    showToast(`Copied: ${filename}`);
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = filename;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast(`Copied: ${filename}`);
+                }
+            } catch (err) {
+                showToast(`Copy failed: ${filename}`);
+            }
+        }
+
+        // Show toast message
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #48bb78;
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                font-size: 0.9rem;
+                z-index: 1000;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            `;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Enhanced touch feedback
+        document.addEventListener('touchstart', function() {}, true);
+    </script>
+</body>
+</html> 

@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🪵 Delta Live Tables (DLT) Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-links .home-link {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-links .home-link:hover {
+            background: #5a67d8;
+        }
+
+        .content {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            color: #4a5568;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        h4 {
+            color: #4a5568;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.3rem;
+        }
+
+        code {
+            background: #f7fafc;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9em;
+            border: 1px solid #e2e8f0;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #f7fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+
+        pre code {
+            background: transparent;
+            padding: 0;
+            border: none;
+            color: inherit;
+        }
+
+        blockquote {
+            border-left: 4px solid #667eea;
+            padding-left: 1rem;
+            margin: 1rem 0;
+            font-style: italic;
+            color: #666;
+            background: #f8f9fa;
+            padding: 1rem 1rem 1rem 2rem;
+            border-radius: 5px;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .pro-tip {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        .pro-tip strong {
+            font-size: 1.1em;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #5a67d8;
+        }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .nav-links a {
+                text-align: center;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            pre {
+                padding: 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🪵 Delta Live Tables (DLT) Cheat Sheet</h1>
+
+            <blockquote>Complete guide to Delta Live Tables with streaming, bronze-silver-gold architecture, and Kinesis integration</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://docs.databricks.com/workflows/delta-live-tables/index.html" target="_blank">Delta Live Tables Guide</a></li>
+                <li><a href="https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-python-ref.html" target="_blank">DLT API Reference</a></li>
+                <li><a href="https://docs.databricks.com/structured-streaming/kinesis.html" target="_blank">Kinesis Streaming with Databricks</a></li>
+                <li><a href="https://docs.databricks.com/ingestion/auto-loader/index.html" target="_blank">Auto Loader Documentation</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#dlt-fundamentals">🏗️ DLT Fundamentals</a></li><li><a href="#aws-kinesis-integration">⚡ AWS Kinesis Integration</a></li><li><a href="#bronze-silver-gold-architecture">🏛️ Bronze-Silver-Gold Architecture</a></li><li><a href="#data-quality-and-expectations">✅ Data Quality and Expectations</a></li><li><a href="#streaming-tables-and-auto-loader">🌊 Streaming Tables and Auto Loader</a></li><li><a href="#change-data-capture-cdc-patterns">🔄 Change Data Capture (CDC) Patterns</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="dlt-fundamentals">
+                <div class="section-header" onclick="toggleSection('dlt-fundamentals')">
+                    <h2>🏗️ DLT Fundamentals</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>Basic DLT Decorators</h3>
+            <pre><code class="language-python">import dlt
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+
+# Simple table
+@dlt.table(
+    comment="Raw customer data from source system",
+    table_properties={
+        "quality": "bronze",
+        "pipelines.autoOptimize.managed": "true"
+    }
+)
+def raw_customers():
+    return spark.read.json("/path/to/customer/data")
+
+# View (not materialized)
+@dlt.view(
+    comment="Filtered view of active customers"
+)
+def active_customers():
+    return dlt.read("raw_customers").filter(col("status") == "active")
+
+# Streaming table
+@dlt.table(
+    comment="Streaming orders from Kafka"
+)
+def streaming_orders():
+    return (
+        spark.readStream
+        .format("kafka")
+        .option("kafka.bootstrap.servers", "localhost:9092")
+        .option("subscribe", "orders")
+        .load()
+    )</code></pre>
+
+            <div class="collapsible-section" id="aws-kinesis-integration">
+                <div class="section-header" onclick="toggleSection('aws-kinesis-integration')">
+                    <h2>⚡ AWS Kinesis Integration</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>Basic Kinesis Stream Reading</h3>
+            <pre><code class="language-python">@dlt.table(
+    comment="Bronze layer - Raw data from Kinesis stream",
+    table_properties={
+        "quality": "bronze",
+        "pipelines.trigger.interval": "10 seconds"
+    }
+)
+def kinesis_bronze():
+    return (
+        spark.readStream
+        .format("kinesis")
+        .option("streamName", "user-events-stream")
+        .option("region", "us-west-2")
+        .option("initialPosition", "TRIM_HORIZON")  # or "LATEST"
+        .option("awsAccessKeyId", dbutils.secrets.get("aws", "access-key"))
+        .option("awsSecretKey", dbutils.secrets.get("aws", "secret-key"))
+        .load()
+        .withColumn("_ingest_timestamp", current_timestamp())
+        .withColumn("_partition_key", col("partitionKey"))
+        .withColumn("_sequence_number", col("sequenceNumber"))
+    )
+
+# With IAM role (recommended for production)
+@dlt.table(
+    comment="Kinesis stream with IAM role authentication"
+)
+def kinesis_bronze_iam():
+    return (
+        spark.readStream
+        .format("kinesis")
+        .option("streamName", "production-events")
+        .option("region", "us-east-1")
+        .option("initialPosition", "LATEST")
+        .option("roleArn", "arn:aws:iam::123456789012:role/DatabricksKinesisRole")
+        .option("roleSessionName", "DLT-Kinesis-Session")
+        .load()
+    )</code></pre>
+
+            <h3>Kinesis with Custom Deserialization</h3>
+            <pre><code class="language-python"># Define schema for JSON payloads
+kinesis_schema = StructType([
+    StructField("event_id", StringType(), True),
+    StructField("user_id", StringType(), True),
+    StructField("event_type", StringType(), True),
+    StructField("timestamp", TimestampType(), True),
+    StructField("properties", MapType(StringType(), StringType()), True)
+])
+
+@dlt.table(
+    comment="Parsed Kinesis events with schema validation"
+)
+def kinesis_parsed():
+    return (
+        dlt.read_stream("kinesis_bronze")
+        .select(
+            from_json(col("data").cast("string"), kinesis_schema).alias("event"),
+            col("_ingest_timestamp"),
+            col("_partition_key"),
+            col("_sequence_number")
+        )
+        .select("event.*", "_ingest_timestamp", "_partition_key", "_sequence_number")
+        .filter(col("event_id").isNotNull())  # Basic data quality check
+    )</code></pre>
+
+            <div class="collapsible-section" id="bronze-silver-gold-architecture">
+                <div class="section-header" onclick="toggleSection('bronze-silver-gold-architecture')">
+                    <h2>🏛️ Bronze-Silver-Gold Architecture</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>Bronze Layer (Raw Data)</h3>
+            <pre><code class="language-python">@dlt.table(
+    comment="Bronze: Raw ingestion with minimal processing",
+    table_properties={"quality": "bronze"}
+)
+def bronze_orders():
+    return (
+        spark.readStream
+        .format("cloudFiles")
+        .option("cloudFiles.format", "json")
+        .option("cloudFiles.schemaLocation", "/tmp/bronze_schema/orders")
+        .load("/mnt/raw/orders/")
+        .withColumn("_bronze_ingest_timestamp", current_timestamp())
+        .withColumn("_source_file", input_file_name())
+    )</code></pre>
+
+            <h3>Silver Layer (Cleaned and Validated)</h3>
+            <pre><code class="language-python">@dlt.table(
+    comment="Silver: Cleaned and validated orders",
+    table_properties={"quality": "silver"}
+)
+def silver_orders():
+    return (
+        dlt.read_stream("bronze_orders")
+        .select(from_json(col("value"), orders_schema).alias("data"))
+        .select("data.*", "_bronze_ingest_timestamp")
+        .filter(col("order_id").isNotNull())
+        .filter(col("customer_id").isNotNull())
+        .filter(col("order_amount") > 0)
+        .withColumn("order_date", to_date(col("order_timestamp")))
+        .withColumn("_silver_processed_timestamp", current_timestamp())
+        .dropDuplicates(["order_id"])  # Remove duplicates
+    )</code></pre>
+
+            <h3>Gold Layer (Business Logic)</h3>
+            <pre><code class="language-python">@dlt.table(
+    comment="Gold: Daily customer order summary",
+    table_properties={
+        "quality": "gold",
+        "business_domain": "sales"
+    }
+)
+def gold_daily_customer_summary():
+    return (
+        dlt.read_stream("silver_orders")
+        .join(dlt.read("silver_customers"), ["customer_id"], "inner")
+        .groupBy("customer_id", "customer_tier", "order_date")
+        .agg(
+            count("order_id").alias("order_count"),
+            sum("order_amount").alias("total_amount"),
+            avg("order_amount").alias("avg_order_value"),
+            max("order_timestamp").alias("last_order_time")
+        )
+        .withColumn("_gold_processed_timestamp", current_timestamp())
+    )</code></pre>
+
+            <div class="collapsible-section" id="data-quality-and-expectations">
+                <div class="section-header" onclick="toggleSection('data-quality-and-expectations')">
+                    <h2>✅ Data Quality and Expectations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>Basic Data Quality Checks</h3>
+            <pre><code class="language-python">@dlt.table(
+    comment="Orders with data quality validations"
+)
+@dlt.expect_or_fail("valid_order_id", "order_id IS NOT NULL")
+@dlt.expect_or_fail("positive_amount", "order_amount > 0")
+@dlt.expect_or_drop("valid_email", "email RLIKE '^[^@]+@[^@]+\\\\.[^@]+$'")
+def validated_orders():
+    return dlt.read("bronze_orders")
+
+# Custom expectations
+@dlt.table(comment="Customers with comprehensive validation")
+@dlt.expect_or_fail("customer_id_not_null", "customer_id IS NOT NULL")
+@dlt.expect_or_drop("valid_customer_email", "email IS NOT NULL AND email != ''")
+@dlt.expect("reasonable_age", "age BETWEEN 13 AND 120")  # Allow but track violations
+def validated_customers():
+    return (
+        dlt.read("bronze_customers")
+        .withColumn("age", col("age").cast("int"))
+        .filter(col("created_date") <= current_date())
+    )</code></pre>
+
+            <div class="collapsible-section" id="streaming-tables-and-auto-loader">
+                <div class="section-header" onclick="toggleSection('streaming-tables-and-auto-loader')">
+                    <h2>🌊 Streaming Tables and Auto Loader</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <h3>Auto Loader for File Ingestion</h3>
+            <pre><code class="language-python">@dlt.table(
+    comment="Bronze layer - Auto Loader for CSV files"
+)
+def bronze_sales():
+    return (
+        spark.readStream
+        .format("cloudFiles")
+        .option("cloudFiles.format", "csv")
+        .option("cloudFiles.schemaLocation", "/tmp/schema/sales")
+        .option("cloudFiles.inferColumnTypes", "true")
+        .option("cloudFiles.schemaEvolutionMode", "rescue")  # Handle schema changes
+        .option("header", "true")
+        .load("/mnt/data/sales/")
+        .withColumn("_ingest_timestamp", current_timestamp())
+        .withColumn("_source_file", input_file_name())
+    )
+
+# JSON Auto Loader
+@dlt.table(
+    comment="Auto Loader for JSON with schema evolution"
+)
+def bronze_events():
+    return (
+        spark.readStream
+        .format("cloudFiles")
+        .option("cloudFiles.format", "json")
+        .option("cloudFiles.schemaLocation", "/tmp/schema/events")
+        .option("cloudFiles.schemaEvolutionMode", "addNewColumns")
+        .option("multiLine", "true")
+        .load("/mnt/data/events/")
+        .withColumn("_ingest_date", to_date(current_timestamp()))
+    )</code></pre>
+
+            <div class="collapsible-section" id="change-data-capture-cdc-patterns">
+                <div class="section-header" onclick="toggleSection('change-data-capture-cdc-patterns')">
+                    <h2>🔄 Change Data Capture (CDC) Patterns</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+
+            <pre><code class="language-python">@dlt.table(comment="Process CDC events from source system")
+def customers_cdc():
+    return (
+        spark.readStream
+        .format("cloudFiles")
+        .option("cloudFiles.format", "json")
+        .option("cloudFiles.schemaLocation", "/tmp/schema/cdc")
+        .load("/mnt/cdc/customers/")
+        .select(
+            col("data.*"),
+            col("_change_type"),
+            col("_commit_version"),
+            col("_commit_timestamp")
+        )
+    )
+
+# Apply CDC changes
+@dlt.table(
+    comment="Current state after applying CDC"
+)
+def customers_current():
+    cdc_df = dlt.read_stream("customers_cdc")
+    
+    # Get latest version for each customer
+    window_spec = Window.partitionBy("customer_id").orderBy(desc("_commit_timestamp"))
+    
+    return (
+        cdc_df
+        .withColumn("row_num", row_number().over(window_spec))
+        .filter(col("row_num") == 1)
+        .filter(col("_change_type") != "delete")
+        .drop("row_num", "_change_type", "_commit_version", "_commit_timestamp")
+    )</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Use DLT's built-in data lineage and monitoring features to track data flow and quality across your pipeline!
+            </div>
+
+            <pre><code class="language-python"># Check pipeline status
+display(spark.sql("DESCRIBE HISTORY delta_live_tables.my_table"))</code></pre>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

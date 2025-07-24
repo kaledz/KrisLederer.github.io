@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Data Engineering & ML Cheat Sheet System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #667eea;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover,
+        .card:focus-within {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Mobile-specific card improvements */
+        @media (max-width: 768px) {
+            .card {
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+            }
+            
+            .card:active {
+                transform: translateY(-2px);
+                box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .card-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+            min-height: 44px; /* Apple recommended touch target */
+            min-width: 44px;
+            text-align: center;
+            line-height: 1.4;
+            -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
+            touch-action: manipulation;
+            user-select: none;
+            cursor: pointer;
+        }
+
+        .card-link:hover, 
+        .card-link:focus,
+        .card-link:active {
+            background: #5a67d8;
+            outline: none;
+        }
+
+        .features {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .features h2 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .features li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+
+        .quick-start {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-start h2 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .quick-start ol {
+            padding-left: 1.5rem;
+        }
+
+        .quick-start li {
+            margin: 0.5rem 0;
+        }
+
+        .resources {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .resources h2 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .resources ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .resources li {
+            margin: 0.5rem 0;
+        }
+
+        .resources a {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .resources a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        /* Mobile Debug Info */
+        .mobile-debug {
+            background: #e2e8f0;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .card-link {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+                font-weight: 500;
+            }
+            
+            .mobile-debug {
+                display: block;
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .card:hover {
+                transform: none;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            
+            .card:active {
+                transform: translateY(-2px);
+                box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Data Engineering & ML Cheat Sheet System</h1>
+            <p class="subtitle">Comprehensive reference for Data Engineers working with Python, Databricks, AWS, and ML</p>
+        </header>
+
+        <div class="mobile-debug" id="mobileDebug">
+            <strong>📱 Mobile Navigation Debug:</strong><br>
+            <span id="debugInfo">Checking mobile compatibility...</span>
+        </div>
+
+        <section class="grid">
+            <div class="card">
+                <h3 class="card-title">📊 SQL for Databricks</h3>
+                <p class="card-description">Core SQL commands, window functions, Delta Lake operations</p>
+                <a href="01-sql-databricks.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🔥 PySpark ELT Essentials</h3>
+                <p class="card-description">Complete ELT guide with 28+ sections for big data processing</p>
+                <a href="02-pyspark-essentials.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🪵 Delta Live Tables (DLT)</h3>
+                <p class="card-description">DLT decorators, streaming, Kinesis integration</p>
+                <a href="03-delta-live-tables.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🛠️ dbutils Cheatsheet</h3>
+                <p class="card-description">Databricks utilities, widgets, secrets, magic commands</p>
+                <a href="04-dbutils-cheatsheet.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🐍 Python Core Libraries</h3>
+                <p class="card-description">File I/O, datetime, regex, error handling</p>
+                <a href="05-python-core.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🔣 Python Fundamentals</h3>
+                <p class="card-description">Language fundamentals: namespaces, classes, data types, imports</p>
+                <a href="15-python-fundamentals.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🧪 requests Library (APIs)</h3>
+                <p class="card-description">HTTP requests, authentication, pagination, error handling</p>
+                <a href="06-requests-apis.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🐼 pandas + NumPy</h3>
+                <p class="card-description">Data manipulation, analysis, numerical operations</p>
+                <a href="07-pandas-numpy.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🤖 scikit-learn ML</h3>
+                <p class="card-description">Model training, pipelines, evaluation, hyperparameter tuning</p>
+                <a href="08-scikit-learn-ml.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">⚡ AWS Kinesis Streaming</h3>
+                <p class="card-description">Kinesis setup, streaming patterns, error handling</p>
+                <a href="09-aws-kinesis.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🔧 Data Engineering Patterns</h3>
+                <p class="card-description">Common patterns, best practices, troubleshooting</p>
+                <a href="10-data-patterns.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">📦 Python Packaging</h3>
+                <p class="card-description">Build and deploy Python packages for Databricks</p>
+                <a href="11-python-packaging-databricks.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🔄 Exit & Retry Logic</h3>
+                <p class="card-description">Conditional notebook exits and robust retry patterns</p>
+                <a href="12-notebook-exit-retry.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🚀 CI/CD for Databricks</h3>
+                <p class="card-description">Complete CI/CD pipelines with GitHub Actions</p>
+                <a href="13-cicd-databricks.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">📝 Git Essentials</h3>
+                <p class="card-description">Version control essentials for data engineering teams</p>
+                <a href="14-git-essentials.html" class="card-link">View Cheat Sheet</a>
+            </div>
+
+            <div class="card">
+                <h3 class="card-title">🔗 SQL Functions Comparison</h3>
+                <p class="card-description">Side-by-side SQL vs PySpark function reference with examples</p>
+                <a href="16-sql-functions-comparison.html" class="card-link">View Cheat Sheet</a>
+            </div>
+        </section>
+
+        <div class="features">
+            <h2>🎯 Key Features</h2>
+            <ul>
+                <li><strong>Real-world code examples</strong> tested in production environments</li>
+                <li><strong>Official documentation links</strong> for deep-dive learning</li>
+                <li><strong>Best practices</strong> and common pitfalls to avoid</li>
+                <li><strong>Copy-paste ready</strong> code snippets</li>
+                <li><strong>Modular structure</strong> - each file is self-contained</li>
+                <li><strong>Production-ready</strong> configurations and error handling</li>
+            </ul>
+        </div>
+
+        <div class="quick-start">
+            <h2>🚀 Quick Start</h2>
+            <ol>
+                <li><strong>Browse by topic</strong> - Click any cheat sheet above to jump to specific content</li>
+                <li><strong>Search within pages</strong> - Use Ctrl+F to find specific functions or patterns</li>
+                <li><strong>Copy examples</strong> - All code is production-ready and documented</li>
+                <li><strong>Check links</strong> - Official docs are linked for deeper understanding</li>
+            </ol>
+        </div>
+
+        <div class="resources">
+            <h2>📚 Additional Resources</h2>
+            <ul>
+                <li><a href="https://docs.databricks.com/" target="_blank">Databricks Documentation</a></li>
+                <li><a href="https://spark.apache.org/docs/latest/" target="_blank">Apache Spark Documentation</a></li>
+                <li><a href="https://docs.aws.amazon.com/kinesis/" target="_blank">AWS Kinesis Documentation</a></li>
+                <li><a href="https://docs.python.org/3/" target="_blank">Python Documentation</a></li>
+            </ul>
+        </div>
+
+        <footer>
+            <p><em>Last updated: 2024 | Built for Data Engineers by Data Engineers</em> 🛠️</p>
+        </footer>
+    </div>
+
+    <script>
+        // Mobile Navigation Enhancement & Debug Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const debugInfo = document.getElementById('debugInfo');
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+            
+            // Debug information
+            let debugText = `
+                Device: ${isMobile ? 'Mobile' : 'Desktop'} | 
+                Touch: ${isTouchDevice ? 'Yes' : 'No'} | 
+                Screen: ${window.innerWidth}x${window.innerHeight} | 
+                Protocol: ${window.location.protocol} | 
+                User Agent: ${navigator.userAgent.substring(0, 50)}...
+            `;
+            
+            if (debugInfo) {
+                debugInfo.innerHTML = debugText;
+            }
+
+            // Enhanced mobile navigation handling
+            const cardLinks = document.querySelectorAll('.card-link');
+            
+            cardLinks.forEach(function(link) {
+                // Add better touch handling for mobile
+                if (isTouchDevice) {
+                    link.addEventListener('touchstart', function(e) {
+                        this.style.backgroundColor = '#5a67d8';
+                    });
+                    
+                    link.addEventListener('touchend', function(e) {
+                        this.style.backgroundColor = '#667eea';
+                    });
+                }
+                
+                // Enhanced click handling with fallback
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const href = this.getAttribute('href');
+                    const fullPath = window.location.href.replace('index.html', '') + href;
+                    
+                    // Try multiple navigation methods for mobile compatibility
+                    if (isMobile) {
+                        // Method 1: Direct window.open (works better on some mobile browsers)
+                        const newWindow = window.open(href, '_self');
+                        
+                        // Method 2: Fallback using location.href after a brief delay
+                        setTimeout(function() {
+                            if (!newWindow || newWindow.closed) {
+                                window.location.href = href;
+                            }
+                        }, 100);
+                        
+                        // Method 3: Last resort - try full path
+                        setTimeout(function() {
+                            if (window.location.href.includes('index.html')) {
+                                window.location.href = fullPath;
+                            }
+                        }, 500);
+                    } else {
+                        // Desktop - standard navigation
+                        window.location.href = href;
+                    }
+                });
+                
+                // Add keyboard navigation support
+                link.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.click();
+                    }
+                });
+            });
+
+            // Test file access capability
+            setTimeout(function() {
+                if (window.location.protocol === 'file:') {
+                    const warningDiv = document.createElement('div');
+                    warningDiv.style.cssText = `
+                        background: #fed7d7; 
+                        border: 1px solid #e53e3e; 
+                        color: #822727; 
+                        padding: 1rem; 
+                        border-radius: 8px; 
+                        margin: 1rem 0;
+                        font-size: 0.9rem;
+                    `;
+                    warningDiv.innerHTML = `
+                        <strong>⚠️ Mobile File Access Notice:</strong><br>
+                        If links aren't working on mobile, try:<br>
+                        • Use a local web server (python -m http.server)<br>
+                        • Upload files to a web hosting service<br>
+                        • Use a file manager app that supports HTML viewing<br>
+                        • Open individual files directly from your file manager
+                    `;
+                    
+                    const debugElement = document.getElementById('mobileDebug');
+                    if (debugElement) {
+                        debugElement.parentNode.insertBefore(warningDiv, debugElement.nextSibling);
+                    }
+                }
+            }, 1000);
+        });
+
+        // Add visual feedback for touch interactions
+        document.addEventListener('touchstart', function() {}, true);
+    </script>
+</body>
+</html> 

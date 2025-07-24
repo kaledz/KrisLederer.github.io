@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐍 Python Core + File Operations Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.3rem; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .section-description { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #667eea; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🐍 Python Core + File Operations</h1>
+            <blockquote>Comprehensive guide to Python fundamentals, file I/O operations, and essential libraries for data engineering</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://docs.python.org/3/" target="_blank">Python 3 Documentation</a></li>
+                <li><a href="https://docs.python.org/3/library/pathlib.html" target="_blank">pathlib Module</a></li>
+                <li><a href="https://docs.python.org/3/library/os.html" target="_blank">OS Interface</a></li>
+                <li><a href="https://docs.python.org/3/library/json.html" target="_blank">JSON Module</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#file-io-operations">📁 File I/O Operations</a></li><li><a href="#os-interface-and-system-operations">🗂️ OS Interface and System Operations</a></li><li><a href="#core-python-features">🔧 Core Python Features</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="file-io-operations">
+                <div class="section-header" onclick="toggleSection('file-io-operations')">
+                    <h2>📁 File I/O Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Basic File Reading and Writing</h3>
+            <div class="section-description">
+                <p>File I/O operations are fundamental for data engineering. Always use context managers (with statements) for automatic resource cleanup, handle encoding explicitly, and implement proper error handling for robust data processing pipelines.</p>
+            </div>
+            <pre><code class="language-python">import os
+import json
+from pathlib import Path
+
+# Basic file reading - always use context managers for automatic cleanup
+def read_text_file(file_path):
+    """Read entire text file content safely"""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            content = file.read()  # Read entire file at once
+            return content
+    except FileNotFoundError:
+        print(f"File not found: {file_path}")
+        return None
+    except UnicodeDecodeError as e:
+        print(f"Encoding error reading {file_path}: {e}")
+        return None
+
+# Read file line by line - memory efficient for large files
+def read_lines(file_path):
+    """Read file line by line to handle large files efficiently"""
+    lines = []
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            for line_number, line in enumerate(file, 1):
+                # Strip whitespace and skip empty lines
+                cleaned_line = line.strip()
+                if cleaned_line:  # Only keep non-empty lines
+                    lines.append(cleaned_line)
+                    
+                # Optional: Log progress for very large files
+                if line_number % 10000 == 0:
+                    print(f"Processed {line_number} lines...")
+    except Exception as e:
+        print(f"Error reading file: {e}")
+    
+    return lines
+
+# Writing files with proper error handling
+def write_text_file(file_path, content, mode='w'):
+    """Write content to file with comprehensive error handling"""
+    try:
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        
+        with open(file_path, mode, encoding='utf-8') as file:
+            if isinstance(content, list):
+                # Write list of lines
+                for line in content:
+                    file.write(f"{line}\n")
+            else:
+                # Write string content
+                file.write(content)
+                
+        print(f"Successfully wrote to {file_path}")
+        return True
+    except PermissionError:
+        print(f"Permission denied writing to {file_path}")
+        return False
+    except IOError as e:
+        print(f"IO Error: {e}")
+        return False
+
+# Example usage
+sample_data = ["line 1", "line 2", "line 3"]
+write_text_file("/tmp/sample.txt", sample_data)</code></pre>
+
+            <h3>Working with Different File Formats</h3>
+            <pre><code class="language-python">import csv
+import json
+import pickle
+from datetime import datetime
+
+# CSV file operations - essential for data processing
+def read_csv_file(file_path, delimiter=','):
+    """Read CSV file and return list of dictionaries"""
+    data = []
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            # Use DictReader to automatically map columns to keys
+            csv_reader = csv.DictReader(file, delimiter=delimiter)
+            
+            for row_number, row in enumerate(csv_reader, 1):
+                # Clean up data - strip whitespace from all values
+                cleaned_row = {key.strip(): value.strip() 
+                              for key, value in row.items()}
+                data.append(cleaned_row)
+                
+                # Optional: Validate data integrity
+                if not cleaned_row.get('id'):
+                    print(f"Warning: Row {row_number} missing ID")
+                    
+    except Exception as e:
+        print(f"Error reading CSV: {e}")
+    
+    return data
+
+def write_csv_file(file_path, data, fieldnames=None):
+    """Write list of dictionaries to CSV file"""
+    if not data:
+        print("No data to write")
+        return False
+        
+    try:
+        # Auto-detect fieldnames if not provided
+        if fieldnames is None:
+            fieldnames = data[0].keys()
+            
+        with open(file_path, 'w', newline='', encoding='utf-8') as file:
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()  # Write column headers
+            writer.writerows(data)  # Write all data rows
+            
+        print(f"Successfully wrote {len(data)} rows to {file_path}")
+        return True
+    except Exception as e:
+        print(f"Error writing CSV: {e}")
+        return False
+
+# JSON operations - common for API data and configuration files
+def read_json_file(file_path):
+    """Read and parse JSON file with error handling"""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)  # Parse JSON into Python objects
+            return data
+    except json.JSONDecodeError as e:
+        print(f"Invalid JSON in {file_path}: {e}")
+        return None
+    except Exception as e:
+        print(f"Error reading JSON: {e}")
+        return None
+
+def write_json_file(file_path, data, indent=2):
+    """Write data to JSON file with pretty formatting"""
+    try:
+        with open(file_path, 'w', encoding='utf-8') as file:
+            # Pretty print with indentation for readability
+            json.dump(data, file, indent=indent, ensure_ascii=False)
+            
+        print(f"Successfully wrote JSON to {file_path}")
+        return True
+    except Exception as e:
+        print(f"Error writing JSON: {e}")
+        return False
+
+# Example: Process a configuration file
+config_data = {
+    "database": {
+        "host": "localhost",
+        "port": 5432,
+        "name": "analytics"
+    },
+    "processing": {
+        "batch_size": 1000,
+        "timeout_seconds": 300
+    },
+    "created_at": datetime.now().isoformat()
+}
+
+write_json_file("/tmp/config.json", config_data)</code></pre>
+
+            <h3>Advanced File Operations with pathlib</h3>
+            <pre><code class="language-python">from pathlib import Path
+import shutil
+import glob
+from datetime import datetime
+
+# Modern file path handling with pathlib - preferred over os.path
+def explore_directory(directory_path):
+    """Explore directory structure and file types using pathlib"""
+    path = Path(directory_path)
+    
+    if not path.exists():
+        print(f"Directory {directory_path} does not exist")
+        return
+    
+    print(f"Exploring directory: {path.absolute()}")
+    
+    # Count different file types
+    file_stats = {}
+    total_size = 0
+    
+    # Iterate through all files recursively
+    for file_path in path.rglob('*'):  # ** means recursive
+        if file_path.is_file():
+            # Get file extension and size
+            extension = file_path.suffix.lower() or 'no_extension'
+            file_size = file_path.stat().st_size
+            
+            # Update statistics
+            if extension not in file_stats:
+                file_stats[extension] = {'count': 0, 'total_size': 0}
+            
+            file_stats[extension]['count'] += 1
+            file_stats[extension]['total_size'] += file_size
+            total_size += file_size
+    
+    # Print summary
+    print(f"Total files: {sum(stats['count'] for stats in file_stats.values())}")
+    print(f"Total size: {total_size:,} bytes ({total_size/1024/1024:.1f} MB)")
+    
+    for ext, stats in sorted(file_stats.items()):
+        avg_size = stats['total_size'] / stats['count']
+        print(f"  {ext}: {stats['count']} files, "
+              f"avg size: {avg_size:,.0f} bytes")
+
+def backup_files_by_pattern(source_dir, backup_dir, pattern="*.py"):
+    """Backup files matching a pattern with timestamp"""
+    source_path = Path(source_dir)
+    backup_path = Path(backup_dir)
+    
+    # Create backup directory with timestamp
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamped_backup = backup_path / f"backup_{timestamp}"
+    timestamped_backup.mkdir(parents=True, exist_ok=True)
+    
+    # Find and copy matching files
+    copied_count = 0
+    for file_path in source_path.rglob(pattern):
+        if file_path.is_file():
+            # Preserve directory structure in backup
+            relative_path = file_path.relative_to(source_path)
+            backup_file_path = timestamped_backup / relative_path
+            
+            # Create parent directories if needed
+            backup_file_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Copy the file
+            shutil.copy2(file_path, backup_file_path)
+            copied_count += 1
+    
+    print(f"Backed up {copied_count} files to {timestamped_backup}")
+    return timestamped_backup
+
+# File monitoring and cleanup functions
+def cleanup_old_files(directory, days_old=30, dry_run=True):
+    """Clean up files older than specified days"""
+    path = Path(directory)
+    cutoff_time = datetime.now().timestamp() - (days_old * 24 * 60 * 60)
+    
+    files_to_delete = []
+    total_size_saved = 0
+    
+    for file_path in path.rglob('*'):
+        if file_path.is_file():
+            # Check file modification time
+            if file_path.stat().st_mtime < cutoff_time:
+                file_size = file_path.stat().st_size
+                files_to_delete.append((file_path, file_size))
+                total_size_saved += file_size
+    
+    print(f"Found {len(files_to_delete)} files older than {days_old} days")
+    print(f"Total size to free: {total_size_saved:,} bytes "
+          f"({total_size_saved/1024/1024:.1f} MB)")
+    
+    if not dry_run and files_to_delete:
+        for file_path, _ in files_to_delete:
+            try:
+                file_path.unlink()  # Delete the file
+                print(f"Deleted: {file_path}")
+            except Exception as e:
+                print(f"Error deleting {file_path}: {e}")
+    elif dry_run:
+        print("This was a dry run. Use dry_run=False to actually delete files.")
+    
+    return files_to_delete
+
+# Example usage
+explore_directory("/tmp")
+backup_files_by_pattern("/home/user/scripts", "/backup", "*.py")</code></pre>
+
+            <div class="collapsible-section" id="os-interface-and-system-operations">
+                <div class="section-header" onclick="toggleSection('os-interface-and-system-operations')">
+                    <h2>🗂️ OS Interface and System Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <pre><code class="language-python">import os
+import subprocess
+import platform
+from pathlib import Path
+
+# Environment variables - essential for configuration management
+def get_environment_config():
+    """Get configuration from environment variables with defaults"""
+    config = {
+        'database_url': os.getenv('DATABASE_URL', 'localhost:5432'),
+        'api_key': os.getenv('API_KEY', ''),  # Should be set in environment
+        'debug_mode': os.getenv('DEBUG', 'false').lower() == 'true',
+        'batch_size': int(os.getenv('BATCH_SIZE', '1000')),
+        'log_level': os.getenv('LOG_LEVEL', 'INFO').upper()
+    }
+    
+    # Validate required environment variables
+    if not config['api_key']:
+        raise ValueError("API_KEY environment variable is required")
+    
+    return config
+
+# System information and platform detection
+def get_system_info():
+    """Get comprehensive system information for logging/debugging"""
+    info = {
+        'platform': platform.platform(),
+        'python_version': platform.python_version(),
+        'architecture': platform.architecture()[0],
+        'processor': platform.processor(),
+        'hostname': platform.node(),
+        'current_directory': os.getcwd(),
+        'user': os.getenv('USER', os.getenv('USERNAME', 'unknown')),
+        'path_separator': os.sep,
+        'environment_size': len(os.environ)
+    }
+    
+    # Add disk space information
+    if hasattr(shutil, 'disk_usage'):  # Python 3.3+
+        usage = shutil.disk_usage('.')
+        info['disk_total'] = usage.total
+        info['disk_used'] = usage.used
+        info['disk_free'] = usage.free
+    
+    return info
+
+# Directory operations with error handling
+def create_directory_structure(base_path, structure):
+    """
+    Create a complete directory structure from a nested dictionary
+    
+    Args:
+        base_path: Root directory path
+        structure: Dict representing directory structure
+        
+    Example:
+        structure = {
+            'data': {
+                'raw': {},
+                'processed': {},
+                'archive': {}
+            },
+            'logs': {},
+            'config': {}
+        }
+    """
+    def create_recursive(current_path, struct):
+        for name, children in struct.items():
+            dir_path = current_path / name
+            dir_path.mkdir(exist_ok=True)
+            print(f"Created directory: {dir_path}")
+            
+            # If children is a dict, recurse
+            if isinstance(children, dict):
+                create_recursive(dir_path, children)
+    
+    base = Path(base_path)
+    create_recursive(base, structure)
+
+# Running external commands safely
+def run_command(command, cwd=None, timeout=60):
+    """
+    Run external command safely with proper error handling
+    
+    Args:
+        command: Command to run (string or list)
+        cwd: Working directory for command
+        timeout: Timeout in seconds
+    """
+    try:
+        # Use shell=False for security when command is a list
+        if isinstance(command, str):
+            # Split string command into list for safer execution
+            command = command.split()
+        
+        result = subprocess.run(
+            command,
+            cwd=cwd,
+            capture_output=True,
+            text=True,
+            timeout=timeout,
+            check=True  # Raises exception on non-zero exit code
+        )
+        
+        return {
+            'success': True,
+            'stdout': result.stdout,
+            'stderr': result.stderr,
+            'return_code': result.returncode
+        }
+        
+    except subprocess.TimeoutExpired:
+        return {'success': False, 'error': f'Command timed out after {timeout}s'}
+    except subprocess.CalledProcessError as e:
+        return {
+            'success': False, 
+            'error': f'Command failed with code {e.returncode}',
+            'stdout': e.stdout,
+            'stderr': e.stderr
+        }
+    except Exception as e:
+        return {'success': False, 'error': str(e)}
+
+# Example: Check if git is available and get version
+git_result = run_command(['git', '--version'])
+if git_result['success']:
+    print(f"Git available: {git_result['stdout'].strip()}")
+else:
+    print(f"Git not available: {git_result['error']}")</code></pre>
+
+            <div class="collapsible-section" id="core-python-features">
+                <div class="section-header" onclick="toggleSection('core-python-features')">
+                    <h2>🔧 Core Python Features</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>List Comprehensions and Functional Programming</h3>
+            <pre><code class="language-python"># List comprehensions - concise and efficient way to create lists
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+# Basic list comprehension - square all numbers
+squares = [x**2 for x in numbers]
+print(f"Squares: {squares}")
+
+# List comprehension with condition - only even squares
+even_squares = [x**2 for x in numbers if x % 2 == 0]
+print(f"Even squares: {even_squares}")
+
+# Nested list comprehension - create 2D matrix
+matrix = [[i*j for j in range(3)] for i in range(3)]
+print(f"Matrix: {matrix}")
+
+# Dictionary comprehension - create word length mapping
+words = ["python", "data", "engineering", "spark"]
+word_lengths = {word: len(word) for word in words}
+print(f"Word lengths: {word_lengths}")
+
+# Set comprehension - unique first letters
+first_letters = {word[0].upper() for word in words}
+print(f"First letters: {first_letters}")
+
+# Generator expression - memory efficient for large datasets
+def process_large_dataset(filename):
+    """Process large file line by line without loading into memory"""
+    with open(filename, 'r') as file:
+        # Generator expression - processes one line at a time
+        processed_lines = (
+            line.strip().upper() 
+            for line in file 
+            if line.strip()  # Skip empty lines
+        )
+        
+        # Process each line individually
+        for processed_line in processed_lines:
+            yield processed_line  # Yield instead of storing in memory
+
+# Lambda functions for quick operations
+data = [{'name': 'Alice', 'age': 30}, {'name': 'Bob', 'age': 25}]
+
+# Sort by age using lambda
+sorted_by_age = sorted(data, key=lambda x: x['age'])
+print(f"Sorted by age: {sorted_by_age}")
+
+# Filter using lambda
+adults = list(filter(lambda x: x['age'] >= 18, data))
+print(f"Adults: {adults}")
+
+# Map using lambda to extract names
+names = list(map(lambda x: x['name'], data))
+print(f"Names: {names}")</code></pre>
+
+            <h3>Error Handling and Context Managers</h3>
+            <pre><code class="language-python">import logging
+from contextlib import contextmanager
+import time
+
+# Comprehensive error handling patterns
+def safe_divide(a, b):
+    """Demonstrate comprehensive error handling"""
+    try:
+        result = a / b
+        return {'success': True, 'result': result}
+    except ZeroDivisionError:
+        logging.error(f"Division by zero: {a} / {b}")
+        return {'success': False, 'error': 'Division by zero'}
+    except TypeError as e:
+        logging.error(f"Type error in division: {e}")
+        return {'success': False, 'error': f'Invalid types: {type(a)}, {type(b)}'}
+    except Exception as e:
+        logging.error(f"Unexpected error in division: {e}")
+        return {'success': False, 'error': 'Unexpected error occurred'}
+    finally:
+        # This always executes - useful for cleanup
+        logging.debug(f"Division operation completed for {a}, {b}")
+
+# Custom context manager for timing operations
+@contextmanager
+def timer(operation_name):
+    """Context manager to time operations"""
+    start_time = time.time()
+    try:
+        print(f"Starting {operation_name}...")
+        yield  # This is where the with-block executes
+    except Exception as e:
+        print(f"Error during {operation_name}: {e}")
+        raise  # Re-raise the exception
+    finally:
+        end_time = time.time()
+        duration = end_time - start_time
+        print(f"{operation_name} completed in {duration:.2f} seconds")
+
+# Usage of custom context manager
+with timer("Data Processing"):
+    # Simulate some work
+    time.sleep(0.1)
+    result = sum(range(1000000))
+
+# Custom exception classes for better error handling
+class DataValidationError(Exception):
+    """Raised when data validation fails"""
+    def __init__(self, message, invalid_data=None):
+        super().__init__(message)
+        self.invalid_data = invalid_data
+
+class ProcessingError(Exception):
+    """Raised when data processing fails"""
+    pass
+
+def validate_user_data(user_data):
+    """Validate user data with custom exceptions"""
+    required_fields = ['name', 'email', 'age']
+    
+    for field in required_fields:
+        if field not in user_data:
+            raise DataValidationError(
+                f"Missing required field: {field}",
+                invalid_data=user_data
+            )
+    
+    if not isinstance(user_data['age'], int) or user_data['age'] < 0:
+        raise DataValidationError(
+            "Age must be a positive integer",
+            invalid_data=user_data
+        )
+    
+    if '@' not in user_data['email']:
+        raise DataValidationError(
+            "Invalid email format",
+            invalid_data=user_data
+        )
+    
+    return True
+
+# Example usage with error handling
+test_data = {'name': 'John', 'email': 'john@example.com', 'age': 30}
+
+try:
+    validate_user_data(test_data)
+    print("Data validation passed!")
+except DataValidationError as e:
+    print(f"Validation failed: {e}")
+    print(f"Invalid data: {e.invalid_data}")
+except Exception as e:
+    print(f"Unexpected error: {e}")</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Always use context managers (<code>with</code> statements) for file operations and resource management. They automatically handle cleanup even if errors occur!
+            </div>
+
+            <h3>Decorators and Advanced Functions</h3>
+            <pre><code class="language-python">import functools
+import time
+from datetime import datetime
+import logging
+
+# Function decorator for logging execution time and parameters
+def log_execution(func):
+    """Decorator to log function execution details"""
+    @functools.wraps(func)  # Preserves original function metadata
+    def wrapper(*args, **kwargs):
+        # Log function call with parameters
+        logging.info(f"Calling {func.__name__} with args={args}, kwargs={kwargs}")
+        
+        start_time = time.time()
+        try:
+            result = func(*args, **kwargs)
+            execution_time = time.time() - start_time
+            logging.info(f"{func.__name__} completed successfully in {execution_time:.3f}s")
+            return result
+        except Exception as e:
+            execution_time = time.time() - start_time
+            logging.error(f"{func.__name__} failed after {execution_time:.3f}s: {e}")
+            raise
+    return wrapper
+
+# Retry decorator for handling transient failures
+def retry(max_attempts=3, delay=1, backoff=2):
+    """Decorator to retry function calls with exponential backoff"""
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            attempts = 0
+            current_delay = delay
+            
+            while attempts < max_attempts:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    attempts += 1
+                    if attempts == max_attempts:
+                        logging.error(f"{func.__name__} failed after {max_attempts} attempts")
+                        raise
+                    
+                    logging.warning(f"{func.__name__} attempt {attempts} failed: {e}")
+                    logging.info(f"Retrying in {current_delay} seconds...")
+                    time.sleep(current_delay)
+                    current_delay *= backoff
+                    
+        return wrapper
+    return decorator
+
+# Cache decorator for expensive computations
+def memoize(func):
+    """Decorator to cache function results"""
+    cache = {}
+    
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        # Create cache key from arguments
+        cache_key = str(args) + str(sorted(kwargs.items()))
+        
+        if cache_key in cache:
+            logging.debug(f"Cache hit for {func.__name__}")
+            return cache[cache_key]
+        
+        logging.debug(f"Cache miss for {func.__name__}, computing...")
+        result = func(*args, **kwargs)
+        cache[cache_key] = result
+        return result
+    
+    # Add cache inspection methods
+    wrapper.cache = cache
+    wrapper.cache_info = lambda: {
+        'size': len(cache),
+        'hits': getattr(wrapper, '_hits', 0),
+        'misses': getattr(wrapper, '_misses', 0)
+    }
+    
+    return wrapper
+
+# Example: Apply decorators to a function
+@log_execution
+@retry(max_attempts=3, delay=0.5)
+@memoize
+def expensive_calculation(n):
+    """Simulate an expensive calculation that might fail"""
+    if n < 0:
+        raise ValueError("Negative numbers not supported")
+    
+    # Simulate computation time
+    time.sleep(0.1)
+    return n ** 2 + n + 1
+
+# Property decorators for class methods
+class DataProcessor:
+    def __init__(self, data):
+        self._data = data
+        self._processed = None
+    
+    @property
+    def data(self):
+        """Getter for data"""
+        return self._data
+    
+    @data.setter
+    def data(self, value):
+        """Setter for data - triggers reprocessing"""
+        self._data = value
+        self._processed = None  # Reset processed data
+    
+    @property
+    def processed_data(self):
+        """Lazy loading - only process when needed"""
+        if self._processed is None:
+            print("Processing data...")
+            self._processed = [x * 2 for x in self._data]
+        return self._processed
+    
+    @staticmethod
+    def validate_data(data):
+        """Static method - doesn't need instance"""
+        return all(isinstance(x, (int, float)) for x in data)
+    
+    @classmethod
+    def from_file(cls, filename):
+        """Alternative constructor - creates instance from file"""
+        with open(filename, 'r') as f:
+            data = [float(line.strip()) for line in f]
+        return cls(data)
+
+# Example usage
+processor = DataProcessor([1, 2, 3, 4, 5])
+print(f"Original data: {processor.data}")
+print(f"Processed data: {processor.processed_data}")  # Triggers processing
+print(f"Processed again: {processor.processed_data}")  # Uses cached result</code></pre>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Scikit-learn ML Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.3rem; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🤖 Scikit-learn ML Essentials</h1>
+            <blockquote>Comprehensive guide to machine learning with scikit-learn - from data preprocessing to model deployment</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://scikit-learn.org/stable/user_guide.html" target="_blank">Scikit-learn User Guide</a></li>
+                <li><a href="https://scikit-learn.org/stable/modules/classes.html" target="_blank">API Reference</a></li>
+                <li><a href="https://scikit-learn.org/stable/tutorial/index.html" target="_blank">Tutorials</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#data-loading-and-preparation">📊 Data Loading and Preparation</a></li><li><a href="#data-preprocessing">🔄 Data Preprocessing</a></li><li><a href="#model-training-and-evaluation">🎯 Model Training and Evaluation</a></li><li><a href="#classification-algorithms">🤖 Classification Algorithms</a></li><li><a href="#regression-algorithms">📈 Regression Algorithms</a></li><li><a href="#hyperparameter-tuning">🔍 Hyperparameter Tuning</a></li><li><a href="#model-evaluation-and-metrics">📊 Model Evaluation and Metrics</a></li><li><a href="#production-ml-pipeline">🚀 Production ML Pipeline</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="data-loading-and-preparation">
+                <div class="section-header" onclick="toggleSection('data-loading-and-preparation')">
+                    <h2>📊 Data Loading and Preparation</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Sample Datasets and Basic Setup</h3>
+            <pre><code class="language-python">import numpy as np
+import pandas as pd
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load built-in datasets for practice
+# Classification dataset - Iris flowers
+iris = datasets.load_iris()
+X_iris, y_iris = iris.data, iris.target
+print(f"Iris dataset shape: {X_iris.shape}, Classes: {len(np.unique(y_iris))}")
+
+# Regression dataset - Boston housing prices
+boston = datasets.load_boston()  
+X_boston, y_boston = boston.data, boston.target
+print(f"Boston dataset shape: {X_boston.shape}")
+
+# Create sample binary classification dataset
+X_binary, y_binary = datasets.make_classification(
+    n_samples=1000,  # Number of samples
+    n_features=20,   # Number of features
+    n_informative=10, # Number of informative features
+    n_redundant=5,   # Number of redundant features
+    n_classes=2,     # Binary classification
+    random_state=42  # For reproducibility
+)
+
+# Load real-world dataset from CSV
+def load_and_explore_dataset(file_path):
+    """Load dataset and perform initial exploration"""
+    df = pd.read_csv(file_path)
+    
+    print(f"Dataset shape: {df.shape}")
+    print(f"Column types:\n{df.dtypes}")
+    print(f"Missing values:\n{df.isnull().sum()}")
+    print(f"Statistical summary:\n{df.describe()}")
+    
+    return df
+
+# Example with a sample dataframe
+sample_data = {
+    'age': [25, 30, 35, 40, 45, 50],
+    'income': [50000, 60000, 70000, 80000, 90000, 100000],
+    'experience': [2, 5, 8, 12, 15, 20],
+    'education': ['Bachelor', 'Master', 'PhD', 'Bachelor', 'Master', 'PhD'],
+    'approved': [0, 1, 1, 1, 1, 1]  # Binary target variable
+}
+df = pd.DataFrame(sample_data)
+print(df.head())</code></pre>
+
+            <div class="collapsible-section" id="data-preprocessing">
+                <div class="section-header" onclick="toggleSection('data-preprocessing')">
+                    <h2>🔄 Data Preprocessing</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Feature Scaling and Transformation</h3>
+            <pre><code class="language-python">from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+
+# Numerical feature scaling - choose based on your data distribution
+# StandardScaler: Mean=0, StdDev=1 (assumes normal distribution)
+scaler_standard = StandardScaler()
+X_standardized = scaler_standard.fit_transform(X_boston)
+print(f"Standardized data mean: {np.mean(X_standardized, axis=0)[:3]}")
+print(f"Standardized data std: {np.std(X_standardized, axis=0)[:3]}")
+
+# MinMaxScaler: Scale to [0,1] range (good for bounded data)
+scaler_minmax = MinMaxScaler()
+X_minmax = scaler_minmax.fit_transform(X_boston)
+print(f"MinMax scaled range: [{np.min(X_minmax)}, {np.max(X_minmax)}]")
+
+# RobustScaler: Uses median and IQR (robust to outliers)
+scaler_robust = RobustScaler()
+X_robust = scaler_robust.fit_transform(X_boston)
+
+# Handling categorical variables
+# Label Encoding - for ordinal data (order matters)
+label_encoder = LabelEncoder()
+education_encoded = label_encoder.fit_transform(df['education'])
+print(f"Education encoding: {dict(zip(df['education'], education_encoded))}")
+
+# One-Hot Encoding - for nominal data (no order)
+from sklearn.preprocessing import get_dummies
+education_onehot = pd.get_dummies(df['education'], prefix='education')
+print(f"One-hot encoded columns: {education_onehot.columns.tolist()}")
+
+# Advanced preprocessing pipeline for mixed data types
+# Create sample data with mixed types
+mixed_data = pd.DataFrame({
+    'numeric1': [1.1, 2.2, 3.3, 4.4, 5.5],
+    'numeric2': [10, 20, 30, 40, 50], 
+    'categorical1': ['A', 'B', 'C', 'A', 'B'],
+    'categorical2': ['X', 'Y', 'X', 'Z', 'Y']
+})
+
+# Define preprocessing for numerical and categorical features
+numeric_features = ['numeric1', 'numeric2']
+categorical_features = ['categorical1', 'categorical2']
+
+# Create preprocessing pipeline
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('num', StandardScaler(), numeric_features),
+        ('cat', OneHotEncoder(drop='first'), categorical_features)
+    ]
+)
+
+# Fit and transform the data
+X_processed = preprocessor.fit_transform(mixed_data)
+print(f"Processed data shape: {X_processed.shape}")
+
+# Get feature names after transformation
+feature_names = (numeric_features + 
+                list(preprocessor.named_transformers_['cat']
+                    .get_feature_names_out(categorical_features)))
+print(f"Feature names: {feature_names}")</code></pre>
+
+            <h3>Handling Missing Data</h3>
+            <pre><code class="language-python">from sklearn.impute import SimpleImputer, KNNImputer
+from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import IterativeImputer
+import numpy as np
+
+# Create data with missing values for demonstration
+np.random.seed(42)
+data_with_missing = pd.DataFrame({
+    'feature1': [1, 2, np.nan, 4, 5, 6, np.nan, 8],
+    'feature2': [10, np.nan, 30, 40, np.nan, 60, 70, 80],
+    'feature3': ['A', 'B', 'C', np.nan, 'A', 'B', 'C', 'A']
+})
+
+print("Original data with missing values:")
+print(data_with_missing)
+print(f"\nMissing values count:\n{data_with_missing.isnull().sum()}")
+
+# Simple imputation strategies
+# For numerical data - mean, median, most_frequent, constant
+num_imputer_mean = SimpleImputer(strategy='mean')
+num_imputer_median = SimpleImputer(strategy='median')
+
+# Apply mean imputation to numerical columns
+numeric_cols = ['feature1', 'feature2']
+data_mean_imputed = data_with_missing.copy()
+data_mean_imputed[numeric_cols] = num_imputer_mean.fit_transform(
+    data_with_missing[numeric_cols]
+)
+
+print(f"\nAfter mean imputation:")
+print(data_mean_imputed[numeric_cols])
+
+# For categorical data - most_frequent or constant
+cat_imputer = SimpleImputer(strategy='most_frequent')
+data_with_missing['feature3_imputed'] = cat_imputer.fit_transform(
+    data_with_missing[['feature3']]
+).ravel()
+
+# Advanced imputation - KNN Imputer
+knn_imputer = KNNImputer(n_neighbors=3)
+data_knn_imputed = knn_imputer.fit_transform(data_with_missing[numeric_cols])
+print(f"\nKNN imputed data:\n{data_knn_imputed}")
+
+# Iterative imputation (similar to MICE)
+iterative_imputer = IterativeImputer(random_state=42)
+data_iterative_imputed = iterative_imputer.fit_transform(
+    data_with_missing[numeric_cols]
+)
+print(f"\nIterative imputed data:\n{data_iterative_imputed}")
+
+# Create preprocessing pipeline with imputation
+preprocessing_pipeline = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='median')),
+    ('scaler', StandardScaler())
+])
+
+# This pipeline will handle missing values and scaling in one step
+X_processed = preprocessing_pipeline.fit_transform(data_with_missing[numeric_cols])
+print(f"\nProcessed data shape: {X_processed.shape}")</code></pre>
+
+            <div class="collapsible-section" id="model-training-and-evaluation">
+                <div class="section-header" onclick="toggleSection('model-training-and-evaluation')">
+                    <h2>🎯 Model Training and Evaluation</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Train-Test Split and Cross-Validation</h3>
+            <pre><code class="language-python">from sklearn.model_selection import (
+    train_test_split, cross_val_score, StratifiedKFold, 
+    GridSearchCV, RandomizedSearchCV
+)
+from sklearn.metrics import classification_report, confusion_matrix
+
+# Basic train-test split
+X_train, X_test, y_train, y_test = train_test_split(
+    X_iris, y_iris, 
+    test_size=0.3,      # 30% for testing
+    random_state=42,    # For reproducibility
+    stratify=y_iris     # Maintain class distribution in both sets
+)
+
+print(f"Training set size: {X_train.shape}")
+print(f"Test set size: {X_test.shape}")
+print(f"Class distribution in training: {np.bincount(y_train)}")
+print(f"Class distribution in test: {np.bincount(y_test)}")
+
+# Cross-validation for robust model evaluation
+from sklearn.linear_model import LogisticRegression
+
+# Initialize model
+log_reg = LogisticRegression(random_state=42, max_iter=1000)
+
+# Perform k-fold cross-validation
+cv_scores = cross_val_score(log_reg, X_iris, y_iris, cv=5, scoring='accuracy')
+print(f"\nCross-validation scores: {cv_scores}")
+print(f"Mean CV accuracy: {cv_scores.mean():.3f} (+/- {cv_scores.std() * 2:.3f})")
+
+# Stratified K-Fold for imbalanced datasets
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+stratified_scores = cross_val_score(log_reg, X_iris, y_iris, cv=skf, scoring='accuracy')
+print(f"Stratified CV accuracy: {stratified_scores.mean():.3f}")
+
+# Multiple scoring metrics
+from sklearn.model_selection import cross_validate
+scoring = ['accuracy', 'precision_macro', 'recall_macro', 'f1_macro']
+cv_results = cross_validate(log_reg, X_iris, y_iris, cv=5, scoring=scoring)
+
+for metric in scoring:
+    scores = cv_results[f'test_{metric}']
+    print(f"{metric.capitalize()}: {scores.mean():.3f} (+/- {scores.std() * 2:.3f})")</code></pre>
+
+            <div class="collapsible-section" id="classification-algorithms">
+                <div class="section-header" onclick="toggleSection('classification-algorithms')">
+                    <h2>🤖 Classification Algorithms</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Logistic Regression</h3>
+            <pre><code class="language-python">from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# Basic logistic regression with default parameters
+log_reg = LogisticRegression(random_state=42)
+log_reg.fit(X_train, y_train)
+
+# Make predictions
+y_pred = log_reg.predict(X_test)
+y_pred_proba = log_reg.predict_proba(X_test)  # Get prediction probabilities
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, average='weighted')
+recall = recall_score(y_test, y_pred, average='weighted')
+f1 = f1_score(y_test, y_pred, average='weighted')
+
+print(f"Logistic Regression Results:")
+print(f"Accuracy: {accuracy:.3f}")
+print(f"Precision: {precision:.3f}")
+print(f"Recall: {recall:.3f}")
+print(f"F1-Score: {f1:.3f}")
+
+# Detailed classification report
+print(f"\nDetailed Classification Report:")
+print(classification_report(y_test, y_pred, target_names=iris.target_names))
+
+# Feature importance (coefficients)
+feature_importance = log_reg.coef_[0]  # For first class vs rest
+feature_names = iris.feature_names
+importance_df = pd.DataFrame({
+    'feature': feature_names,
+    'importance': np.abs(feature_importance)
+}).sort_values('importance', ascending=False)
+
+print(f"\nFeature Importance:")
+print(importance_df)</code></pre>
+
+            <h3>Random Forest Classifier</h3>
+            <pre><code class="language-python">from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import roc_auc_score, roc_curve
+import matplotlib.pyplot as plt
+
+# Random Forest with comprehensive parameters
+rf_classifier = RandomForestClassifier(
+    n_estimators=100,        # Number of trees in the forest
+    max_depth=10,           # Maximum depth of trees
+    min_samples_split=5,    # Minimum samples to split a node
+    min_samples_leaf=2,     # Minimum samples at leaf node
+    max_features='sqrt',    # Number of features to consider at each split
+    random_state=42,
+    n_jobs=-1              # Use all available cores
+)
+
+# Train the model
+rf_classifier.fit(X_train, y_train)
+
+# Predictions
+y_pred_rf = rf_classifier.predict(X_test)
+y_pred_proba_rf = rf_classifier.predict_proba(X_test)
+
+# Evaluate Random Forest
+rf_accuracy = accuracy_score(y_test, y_pred_rf)
+print(f"Random Forest Accuracy: {rf_accuracy:.3f}")
+
+# Feature importance from Random Forest
+rf_importance = rf_classifier.feature_importances_
+rf_importance_df = pd.DataFrame({
+    'feature': iris.feature_names,
+    'importance': rf_importance
+}).sort_values('importance', ascending=False)
+
+print(f"\nRandom Forest Feature Importance:")
+print(rf_importance_df)
+
+# Plot feature importance
+plt.figure(figsize=(10, 6))
+plt.barh(rf_importance_df['feature'], rf_importance_df['importance'])
+plt.title('Random Forest Feature Importance')
+plt.xlabel('Importance')
+plt.tight_layout()
+plt.show()
+
+# Model comparison
+models_comparison = pd.DataFrame({
+    'Model': ['Logistic Regression', 'Random Forest'],
+    'Accuracy': [accuracy, rf_accuracy],
+    'Training_Time': ['Fast', 'Medium'],
+    'Interpretability': ['High', 'Medium']
+})
+print(f"\nModel Comparison:")
+print(models_comparison)</code></pre>
+
+            <div class="collapsible-section" id="regression-algorithms">
+                <div class="section-header" onclick="toggleSection('regression-algorithms')">
+                    <h2>📈 Regression Algorithms</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Linear Regression</h3>
+            <pre><code class="language-python">from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
+from sklearn.preprocessing import PolynomialFeatures
+
+# Split Boston housing data
+X_train_reg, X_test_reg, y_train_reg, y_test_reg = train_test_split(
+    X_boston, y_boston, test_size=0.3, random_state=42
+)
+
+# Scale features for regression
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train_reg)
+X_test_scaled = scaler.transform(X_test_reg)
+
+# Simple Linear Regression
+linear_reg = LinearRegression()
+linear_reg.fit(X_train_scaled, y_train_reg)
+
+# Make predictions
+y_pred_linear = linear_reg.predict(X_test_scaled)
+
+# Evaluate regression model
+mse = mean_squared_error(y_test_reg, y_pred_linear)
+rmse = np.sqrt(mse)
+mae = mean_absolute_error(y_test_reg, y_pred_linear)
+r2 = r2_score(y_test_reg, y_pred_linear)
+
+print(f"Linear Regression Results:")
+print(f"RMSE: {rmse:.3f}")
+print(f"MAE: {mae:.3f}")
+print(f"R² Score: {r2:.3f}")
+
+# Polynomial features for non-linear relationships
+poly_features = PolynomialFeatures(degree=2, include_bias=False)
+X_train_poly = poly_features.fit_transform(X_train_scaled)
+X_test_poly = poly_features.transform(X_test_scaled)
+
+# Train polynomial regression
+poly_reg = LinearRegression()
+poly_reg.fit(X_train_poly, y_train_reg)
+
+# Predictions with polynomial features
+y_pred_poly = poly_reg.predict(X_test_poly)
+poly_r2 = r2_score(y_test_reg, y_pred_poly)
+
+print(f"\nPolynomial Regression (degree 2):")
+print(f"R² Score: {poly_r2:.3f}")
+
+# Regularized regression to prevent overfitting
+from sklearn.linear_model import Ridge, Lasso, ElasticNet
+
+# Ridge Regression (L2 regularization)
+ridge_reg = Ridge(alpha=1.0)
+ridge_reg.fit(X_train_scaled, y_train_reg)
+y_pred_ridge = ridge_reg.predict(X_test_scaled)
+ridge_r2 = r2_score(y_test_reg, y_pred_ridge)
+
+# Lasso Regression (L1 regularization) - feature selection
+lasso_reg = Lasso(alpha=0.1)
+lasso_reg.fit(X_train_scaled, y_train_reg)
+y_pred_lasso = lasso_reg.predict(X_test_scaled)
+lasso_r2 = r2_score(y_test_reg, y_pred_lasso)
+
+print(f"\nRegularized Regression Results:")
+print(f"Ridge R² Score: {ridge_r2:.3f}")
+print(f"Lasso R² Score: {lasso_r2:.3f}")
+
+# Feature selection with Lasso - features with non-zero coefficients
+selected_features = np.where(lasso_reg.coef_ != 0)[0]
+print(f"Lasso selected {len(selected_features)} out of {len(boston.feature_names)} features")
+</code></pre>
+
+            <div class="collapsible-section" id="hyperparameter-tuning">
+                <div class="section-header" onclick="toggleSection('hyperparameter-tuning')">
+                    <h2>🔍 Hyperparameter Tuning</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <pre><code class="language-python">from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
+from sklearn.ensemble import RandomForestClassifier
+from scipy.stats import randint, uniform
+
+# Define parameter grid for Grid Search
+param_grid = {
+    'n_estimators': [50, 100, 200],           # Number of trees
+    'max_depth': [None, 10, 20, 30],          # Maximum depth
+    'min_samples_split': [2, 5, 10],          # Minimum samples to split
+    'min_samples_leaf': [1, 2, 4],            # Minimum samples at leaf
+    'max_features': ['auto', 'sqrt', 'log2']  # Features to consider
+}
+
+# Grid Search with cross-validation
+rf = RandomForestClassifier(random_state=42)
+grid_search = GridSearchCV(
+    estimator=rf,
+    param_grid=param_grid,
+    cv=5,                    # 5-fold cross-validation
+    scoring='accuracy',      # Optimization metric
+    n_jobs=-1,              # Use all cores
+    verbose=1               # Print progress
+)
+
+# Fit grid search (this may take a while)
+print("Starting Grid Search...")
+grid_search.fit(X_train, y_train)
+
+# Get best parameters and score
+print(f"Best parameters: {grid_search.best_params_}")
+print(f"Best cross-validation score: {grid_search.best_score_:.3f}")
+
+# Evaluate best model on test set
+best_model = grid_search.best_estimator_
+y_pred_best = best_model.predict(X_test)
+best_accuracy = accuracy_score(y_test, y_pred_best)
+print(f"Test accuracy with best model: {best_accuracy:.3f}")
+
+# Randomized Search - more efficient for large parameter spaces
+param_distributions = {
+    'n_estimators': randint(50, 500),         # Random integer in range
+    'max_depth': randint(3, 50),
+    'min_samples_split': randint(2, 20),
+    'min_samples_leaf': randint(1, 10),
+    'max_features': ['auto', 'sqrt', 'log2']
+}
+
+# Randomized Search
+random_search = RandomizedSearchCV(
+    estimator=rf,
+    param_distributions=param_distributions,
+    n_iter=100,             # Number of random combinations to try
+    cv=5,
+    scoring='accuracy',
+    n_jobs=-1,
+    random_state=42,
+    verbose=1
+)
+
+print("\nStarting Randomized Search...")
+random_search.fit(X_train, y_train)
+
+print(f"Randomized search best parameters: {random_search.best_params_}")
+print(f"Randomized search best score: {random_search.best_score_:.3f}")
+
+# Compare results
+comparison_df = pd.DataFrame({
+    'Method': ['Grid Search', 'Randomized Search'],
+    'Best Score': [grid_search.best_score_, random_search.best_score_],
+    'Search Time': ['Longer', 'Shorter'],
+    'Coverage': ['Exhaustive', 'Random Sample']
+})
+print(f"\nHyperparameter Tuning Comparison:")
+print(comparison_df)</code></pre>
+
+            <div class="collapsible-section" id="model-evaluation-and-metrics">
+                <div class="section-header" onclick="toggleSection('model-evaluation-and-metrics')">
+                    <h2>📊 Model Evaluation and Metrics</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <pre><code class="language-python">from sklearn.metrics import (
+    classification_report, confusion_matrix, 
+    roc_curve, auc, precision_recall_curve
+)
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Comprehensive model evaluation function
+def evaluate_classification_model(model, X_test, y_test, class_names=None):
+    """
+    Comprehensive evaluation of a classification model
+    """
+    # Make predictions
+    y_pred = model.predict(X_test)
+    y_pred_proba = model.predict_proba(X_test)
+    
+    # Basic metrics
+    accuracy = accuracy_score(y_test, y_pred)
+    precision = precision_score(y_test, y_pred, average='weighted')
+    recall = recall_score(y_test, y_pred, average='weighted')
+    f1 = f1_score(y_test, y_pred, average='weighted')
+    
+    print(f"Model Evaluation Results:")
+    print(f"Accuracy: {accuracy:.3f}")
+    print(f"Precision: {precision:.3f}")
+    print(f"Recall: {recall:.3f}")
+    print(f"F1-Score: {f1:.3f}")
+    
+    # Classification report
+    print(f"\nClassification Report:")
+    print(classification_report(y_test, y_pred, target_names=class_names))
+    
+    # Confusion matrix
+    cm = confusion_matrix(y_test, y_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+                xticklabels=class_names, yticklabels=class_names)
+    plt.title('Confusion Matrix')
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    plt.show()
+    
+    # ROC Curve for binary classification
+    if len(np.unique(y_test)) == 2:
+        fpr, tpr, _ = roc_curve(y_test, y_pred_proba[:, 1])
+        roc_auc = auc(fpr, tpr)
+        
+        plt.figure(figsize=(8, 6))
+        plt.plot(fpr, tpr, color='darkorange', lw=2, 
+                label=f'ROC curve (AUC = {roc_auc:.2f})')
+        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.05])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Receiver Operating Characteristic (ROC) Curve')
+        plt.legend(loc="lower right")
+        plt.show()
+    
+    return {
+        'accuracy': accuracy,
+        'precision': precision,
+        'recall': recall,
+        'f1_score': f1
+    }
+
+# Evaluate our best model
+evaluation_results = evaluate_classification_model(
+    best_model, X_test, y_test, class_names=iris.target_names
+)
+
+# Learning curves to diagnose overfitting/underfitting
+from sklearn.model_selection import learning_curve
+
+def plot_learning_curve(estimator, X, y, cv=5):
+    """Plot learning curves to diagnose bias/variance"""
+    train_sizes, train_scores, val_scores = learning_curve(
+        estimator, X, y, cv=cv, n_jobs=-1, 
+        train_sizes=np.linspace(0.1, 1.0, 10),
+        scoring='accuracy'
+    )
+    
+    train_mean = np.mean(train_scores, axis=1)
+    train_std = np.std(train_scores, axis=1)
+    val_mean = np.mean(val_scores, axis=1)
+    val_std = np.std(val_scores, axis=1)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(train_sizes, train_mean, 'o-', color='blue', 
+             label='Training accuracy')
+    plt.fill_between(train_sizes, train_mean - train_std,
+                     train_mean + train_std, alpha=0.1, color='blue')
+    
+    plt.plot(train_sizes, val_mean, 'o-', color='red', 
+             label='Validation accuracy')
+    plt.fill_between(train_sizes, val_mean - val_std,
+                     val_mean + val_std, alpha=0.1, color='red')
+    
+    plt.xlabel('Training Set Size')
+    plt.ylabel('Accuracy')
+    plt.title('Learning Curves')
+    plt.legend(loc='best')
+    plt.grid(True)
+    plt.show()
+
+# Plot learning curves for our model
+plot_learning_curve(best_model, X_iris, y_iris)</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Always use cross-validation for model evaluation and hyperparameter tuning. Single train-test splits can be misleading due to data variance!
+            </div>
+
+            <div class="collapsible-section" id="production-ml-pipeline">
+                <div class="section-header" onclick="toggleSection('production-ml-pipeline')">
+                    <h2>🚀 Production ML Pipeline</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <pre><code class="language-python">from sklearn.pipeline import Pipeline
+from sklearn.compose import ColumnTransformer
+import joblib
+from datetime import datetime
+
+# Complete ML Pipeline for Production
+class ProductionMLPipeline:
+    def __init__(self):
+        self.model = None
+        self.preprocessor = None
+        self.is_trained = False
+        
+    def create_preprocessing_pipeline(self, numeric_features, categorical_features):
+        """Create comprehensive preprocessing pipeline"""
+        # Preprocessing for numerical features
+        numeric_transformer = Pipeline(steps=[
+            ('imputer', SimpleImputer(strategy='median')),
+            ('scaler', StandardScaler())
+        ])
+        
+        # Preprocessing for categorical features
+        categorical_transformer = Pipeline(steps=[
+            ('imputer', SimpleImputer(strategy='constant', fill_value='unknown')),
+            ('onehot', OneHotEncoder(drop='first', handle_unknown='ignore'))
+        ])
+        
+        # Combine preprocessing steps
+        self.preprocessor = ColumnTransformer(
+            transformers=[
+                ('num', numeric_transformer, numeric_features),
+                ('cat', categorical_transformer, categorical_features)
+            ]
+        )
+        
+        return self.preprocessor
+    
+    def create_model_pipeline(self, model_type='random_forest'):
+        """Create complete model pipeline with preprocessing"""
+        if model_type == 'random_forest':
+            classifier = RandomForestClassifier(
+                n_estimators=100,
+                max_depth=10,
+                random_state=42,
+                n_jobs=-1
+            )
+        elif model_type == 'logistic_regression':
+            classifier = LogisticRegression(
+                random_state=42,
+                max_iter=1000
+            )
+        else:
+            raise ValueError(f"Unknown model type: {model_type}")
+        
+        # Complete pipeline
+        self.model = Pipeline(steps=[
+            ('preprocessor', self.preprocessor),
+            ('classifier', classifier)
+        ])
+        
+        return self.model
+    
+    def train(self, X_train, y_train):
+        """Train the model pipeline"""
+        if self.model is None:
+            raise ValueError("Model pipeline not created. Call create_model_pipeline first.")
+        
+        print("Training model pipeline...")
+        self.model.fit(X_train, y_train)
+        self.is_trained = True
+        print("Training completed!")
+    
+    def predict(self, X):
+        """Make predictions"""
+        if not self.is_trained:
+            raise ValueError("Model not trained yet!")
+        
+        return self.model.predict(X)
+    
+    def predict_proba(self, X):
+        """Get prediction probabilities"""
+        if not self.is_trained:
+            raise ValueError("Model not trained yet!")
+        
+        return self.model.predict_proba(X)
+    
+    def save_model(self, filepath):
+        """Save trained model to disk"""
+        if not self.is_trained:
+            raise ValueError("Model not trained yet!")
+        
+        model_info = {
+            'model': self.model,
+            'trained_date': datetime.now().isoformat(),
+            'sklearn_version': sklearn.__version__
+        }
+        
+        joblib.dump(model_info, filepath)
+        print(f"Model saved to {filepath}")
+    
+    def load_model(self, filepath):
+        """Load trained model from disk"""
+        model_info = joblib.load(filepath)
+        self.model = model_info['model']
+        self.is_trained = True
+        
+        print(f"Model loaded from {filepath}")
+        print(f"Trained on: {model_info['trained_date']}")
+        
+    def evaluate_model(self, X_test, y_test):
+        """Comprehensive model evaluation"""
+        if not self.is_trained:
+            raise ValueError("Model not trained yet!")
+        
+        y_pred = self.predict(X_test)
+        
+        metrics = {
+            'accuracy': accuracy_score(y_test, y_pred),
+            'precision': precision_score(y_test, y_pred, average='weighted'),
+            'recall': recall_score(y_test, y_pred, average='weighted'),
+            'f1_score': f1_score(y_test, y_pred, average='weighted')
+        }
+        
+        return metrics
+
+# Example usage of production pipeline
+# Create sample mixed dataset
+sample_data = pd.DataFrame({
+    'age': np.random.randint(20, 70, 1000),
+    'income': np.random.randint(30000, 150000, 1000),
+    'education': np.random.choice(['High School', 'Bachelor', 'Master', 'PhD'], 1000),
+    'location': np.random.choice(['Urban', 'Suburban', 'Rural'], 1000),
+    'target': np.random.randint(0, 2, 1000)  # Binary target
+})
+
+# Define feature types
+numeric_features = ['age', 'income']
+categorical_features = ['education', 'location']
+target = 'target'
+
+# Split data
+X = sample_data.drop(target, axis=1)
+y = sample_data[target]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# Initialize and train production pipeline
+ml_pipeline = ProductionMLPipeline()
+ml_pipeline.create_preprocessing_pipeline(numeric_features, categorical_features)
+ml_pipeline.create_model_pipeline('random_forest')
+ml_pipeline.train(X_train, y_train)
+
+# Evaluate model
+metrics = ml_pipeline.evaluate_model(X_test, y_test)
+print(f"Production Model Metrics: {metrics}")
+
+# Save model for deployment
+ml_pipeline.save_model('production_model.joblib')
+
+print("\n✅ Production ML Pipeline Created Successfully!")</code></pre>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

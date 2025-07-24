@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔄 Conditional Notebook Exit & Retry Logic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; line-height: 1.7; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; line-height: 1.6; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .section-description { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #667eea; }
+        .bullet-explanation { background: #f0f4ff; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 3px solid #4299e1; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        .warning { background: #fef5e7; border: 1px solid #f6ad55; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        .success { background: #f0fff4; border: 1px solid #68d391; padding: 1rem; border-radius: 8px; margin: 1rem 0; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🔄 Conditional Notebook Exit & Retry Logic</h1>
+            <blockquote>Expert guide to implementing robust error handling, conditional exits, and retry mechanisms in Databricks notebooks</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://docs.databricks.com/dev-tools/databricks-utils.html#notebook-workflow-utility-dbutilsnotebook" target="_blank">Databricks Notebook Utilities</a></li>
+                <li><a href="https://docs.databricks.com/workflows/jobs/jobs.html" target="_blank">Databricks Jobs and Workflows</a></li>
+                <li><a href="https://docs.databricks.com/workflows/jobs/create-run-jobs.html" target="_blank">Running Jobs and Pipelines</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#basic-notebook-exit-patterns">🚪 Basic Notebook Exit Patterns</a></li><li><a href="#retry-logic-and-resilience-patterns">🔁 Retry Logic and Resilience Patterns</a></li><li><a href="#advanced-workflow-patterns">🎯 Advanced Workflow Patterns</a></li><li><a href="#best-practices-summary">📋 Best Practices Summary</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <section>
+                <div class="collapsible-section" id="basic-notebook-exit-patterns">
+                <div class="section-header" onclick="toggleSection('basic-notebook-exit-patterns')">
+                    <h2>🚪 Basic Notebook Exit Patterns</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Understanding how to properly exit notebooks with different status codes and messages. Proper exit handling is crucial for workflow orchestration and debugging in production environments.</p>
+                </div>
+
+                <h3>Simple Conditional Exits</h3>
+                <pre><code class="language-python"># Basic conditional exit based on data validation
+def validate_input_data(df):
+    """Validate input data and exit if invalid"""
+    
+    # Check if DataFrame is empty
+    if df.count() == 0:
+        error_msg = "ERROR: Input dataset is empty. Cannot proceed with processing."
+        print(f"❌ {error_msg}")
+        dbutils.notebook.exit(error_msg)
+    
+    # Check for required columns
+    required_columns = ["id", "timestamp", "value"]
+    missing_columns = set(required_columns) - set(df.columns)
+    
+    if missing_columns:
+        error_msg = f"ERROR: Missing required columns: {missing_columns}"
+        print(f"❌ {error_msg}")
+        dbutils.notebook.exit(error_msg)
+    
+    # Check data quality thresholds
+    null_percentage = df.filter(col("value").isNull()).count() / df.count()
+    
+    if null_percentage > 0.5:  # More than 50% nulls
+        error_msg = f"ERROR: Data quality too low. {null_percentage:.2%} null values in 'value' column"
+        print(f"❌ {error_msg}")
+        dbutils.notebook.exit(error_msg)
+    
+    print("✅ Input data validation passed")
+    return True
+
+# Usage in notebook
+try:
+    input_df = spark.read.parquet("/path/to/input/data")
+    validate_input_data(input_df)
+    
+    # Continue with processing if validation passes
+    processed_df = input_df.filter(col("value").isNotNull())
+    
+except Exception as e:
+    error_msg = f"UNEXPECTED_ERROR: {str(e)}"
+    print(f"❌ {error_msg}")
+    dbutils.notebook.exit(error_msg)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Validates data and exits with descriptive error messages</li>
+                        <li><strong>When to use:</strong> Early validation stages to prevent downstream failures</li>
+                        <li><strong>Best practice:</strong> Use descriptive prefixes (ERROR:, WARNING:) for log parsing</li>
+                        <li><strong>Return values:</strong> Exit messages can be captured by orchestration systems</li>
+                    </ul>
+                </div>
+
+                <h3>Status Code Based Exits</h3>
+                <pre><code class="language-python"># Define status codes for different exit scenarios
+class NotebookExitCodes:
+    SUCCESS = "SUCCESS"
+    DATA_NOT_FOUND = "DATA_NOT_FOUND" 
+    DATA_QUALITY_FAILED = "DATA_QUALITY_FAILED"
+    PROCESSING_ERROR = "PROCESSING_ERROR"
+    CONFIGURATION_ERROR = "CONFIGURATION_ERROR"
+    UPSTREAM_DEPENDENCY_FAILED = "UPSTREAM_DEPENDENCY_FAILED"
+
+def exit_with_status(status_code, message, additional_info=None):
+    """Standardized exit function with logging"""
+    import json
+    from datetime import datetime
+    
+    exit_info = {
+        "status_code": status_code,
+        "message": message,
+        "timestamp": datetime.now().isoformat(),
+        "notebook_path": dbutils.notebook.entry_point.getDbutils().notebook().getContext().notebookPath().get(),
+        "additional_info": additional_info or {}
+    }
+    
+    # Log to console for debugging
+    print(f"📋 Notebook Exit Status: {status_code}")
+    print(f"📝 Message: {message}")
+    
+    if additional_info:
+        print(f"ℹ️  Additional Info: {json.dumps(additional_info, indent=2)}")
+    
+    # Exit with JSON formatted status for parsing
+    dbutils.notebook.exit(json.dumps(exit_info))
+
+# Example usage scenarios
+def check_upstream_dependencies():
+    """Check if upstream data sources are available"""
+    upstream_paths = [
+        "/mnt/data/source1/latest/",
+        "/mnt/data/source2/latest/"
+    ]
+    
+    missing_sources = []
+    
+    for path in upstream_paths:
+        try:
+            files = dbutils.fs.ls(path)
+            if not files:
+                missing_sources.append(path)
+        except Exception:
+            missing_sources.append(path)
+    
+    if missing_sources:
+        exit_with_status(
+            NotebookExitCodes.UPSTREAM_DEPENDENCY_FAILED,
+            "Upstream data sources not available",
+            {"missing_paths": missing_sources}
+        )
+    
+    return True
+
+def process_with_exit_handling():
+    """Main processing function with comprehensive exit handling"""
+    
+    try:
+        # Check dependencies
+        check_upstream_dependencies()
+        
+        # Load configuration
+        config = load_processing_config()
+        if not config:
+            exit_with_status(
+                NotebookExitCodes.CONFIGURATION_ERROR,
+                "Failed to load processing configuration"
+            )
+        
+        # Load and validate data
+        df = load_input_data()
+        if df.count() == 0:
+            exit_with_status(
+                NotebookExitCodes.DATA_NOT_FOUND,
+                "No input data found for processing date",
+                {"processing_date": config.get("processing_date")}
+            )
+        
+        # Process data
+        result_df = transform_data(df)
+        
+        # Save results
+        save_results(result_df)
+        
+        # Success exit
+        exit_with_status(
+            NotebookExitCodes.SUCCESS,
+            "Processing completed successfully",
+            {"records_processed": result_df.count()}
+        )
+        
+    except Exception as e:
+        exit_with_status(
+            NotebookExitCodes.PROCESSING_ERROR,
+            f"Unexpected error during processing: {str(e)}",
+            {"error_type": type(e).__name__}
+        )</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Creates standardized exit codes and structured logging</li>
+                        <li><strong>When to use:</strong> Complex workflows requiring detailed status tracking</li>
+                        <li><strong>Advantage:</strong> Enables automated error classification and response</li>
+                        <li><strong>JSON format:</strong> Makes exit messages easily parseable by monitoring systems</li>
+                    </ul>
+                </div>
+
+                <h3>Environment-Specific Exit Logic</h3>
+                <pre><code class="language-python"># Different exit behavior based on environment
+def get_environment():
+    """Detect current environment from cluster tags or widgets"""
+    try:
+        # Try to get from notebook widget
+        env = dbutils.widgets.get("environment")
+        return env.lower()
+    except:
+        # Fall back to cluster tags or default
+        try:
+            cluster_info = json.loads(dbutils.notebook.entry_point.getDbutils().notebook().getContext().tags().get("clusterUsageTags").get())
+            return cluster_info.get("environment", "development").lower()
+        except:
+            return "development"
+
+def environment_aware_exit(error_condition, message):
+    """Exit behavior that varies by environment"""
+    env = get_environment()
+    
+    if env == "production":
+        # In production, always exit on errors
+        print(f"❌ PRODUCTION ERROR: {message}")
+        dbutils.notebook.exit(f"PRODUCTION_ERROR: {message}")
+        
+    elif env == "staging":
+        # In staging, log warning but continue with reduced dataset
+        print(f"⚠️  STAGING WARNING: {message}")
+        print("📝 Continuing with sample data for testing...")
+        return "continue_with_sample"
+        
+    else:  # development
+        # In development, just log and continue
+        print(f"🔍 DEV NOTE: {message}")
+        print("📝 Continuing for development testing...")
+        return "continue"
+
+# Example usage
+def load_data_with_environment_handling():
+    """Load data with environment-specific error handling"""
+    
+    try:
+        df = spark.read.parquet("/mnt/data/input/")
+        
+        if df.count() < 1000:  # Minimum record threshold
+            action = environment_aware_exit(
+                "low_record_count",
+                f"Only {df.count()} records found, expected at least 1000"
+            )
+            
+            if action == "continue_with_sample":
+                # Create sample data for staging
+                df = create_sample_data(1000)
+            elif action == "continue":
+                # In dev, continue with whatever data we have
+                print("📝 Proceeding with available data in development")
+        
+        return df
+        
+    except Exception as e:
+        environment_aware_exit("data_load_failed", f"Failed to load data: {str(e)}")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Adapts error handling behavior based on deployment environment</li>
+                        <li><strong>Production behavior:</strong> Strict error handling prevents bad data from propagating</li>
+                        <li><strong>Development flexibility:</strong> Allows testing with incomplete or sample data</li>
+                        <li><strong>Configuration:</strong> Uses widgets or cluster tags to detect environment</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="retry-logic-and-resilience-patterns">
+                <div class="section-header" onclick="toggleSection('retry-logic-and-resilience-patterns')">
+                    <h2>🔁 Retry Logic and Resilience Patterns</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Implementing robust retry mechanisms for handling transient failures, network issues, and resource contention. Retry logic is essential for building resilient data pipelines that can handle temporary failures gracefully.</p>
+                </div>
+
+                <h3>Basic Retry Decorator</h3>
+                <pre><code class="language-python">import time
+import random
+from functools import wraps
+from typing import Union, List, Type
+
+def retry_with_backoff(
+    max_retries: int = 3,
+    base_delay: float = 1.0,
+    exponential_base: float = 2.0,
+    jitter: bool = True,
+    retry_on_exceptions: Union[Type[Exception], List[Type[Exception]]] = Exception
+):
+    """
+    Decorator that retries a function with exponential backoff
+    
+    Args:
+        max_retries: Maximum number of retry attempts
+        base_delay: Base delay in seconds before first retry
+        exponential_base: Multiplier for exponential backoff
+        jitter: Add randomness to prevent thundering herd
+        retry_on_exceptions: Exception types to retry on
+    """
+    
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            last_exception = None
+            
+            # Convert single exception type to list
+            if isinstance(retry_on_exceptions, type):
+                exceptions_to_retry = [retry_on_exceptions]
+            else:
+                exceptions_to_retry = retry_on_exceptions
+            
+            for attempt in range(max_retries + 1):
+                try:
+                    result = func(*args, **kwargs)
+                    
+                    # Log success if we had previous failures
+                    if attempt > 0:
+                        print(f"✅ Function {func.__name__} succeeded on attempt {attempt + 1}")
+                    
+                    return result
+                    
+                except Exception as e:
+                    last_exception = e
+                    
+                    # Check if this exception type should trigger retry
+                    should_retry = any(isinstance(e, exc_type) for exc_type in exceptions_to_retry)
+                    
+                    if not should_retry or attempt == max_retries:
+                        print(f"❌ Function {func.__name__} failed permanently: {str(e)}")
+                        raise e
+                    
+                    # Calculate delay with exponential backoff and jitter
+                    delay = base_delay * (exponential_base ** attempt)
+                    
+                    if jitter:
+                        # Add random jitter (±25% of delay)
+                        jitter_range = delay * 0.25
+                        delay += random.uniform(-jitter_range, jitter_range)
+                    
+                    print(f"⚠️  Function {func.__name__} failed (attempt {attempt + 1}): {str(e)}")
+                    print(f"🔄 Retrying in {delay:.1f} seconds...")
+                    
+                    time.sleep(delay)
+            
+            # This should never be reached, but just in case
+            raise last_exception
+        
+        return wrapper
+    return decorator
+
+# Example usage with specific exception types
+@retry_with_backoff(
+    max_retries=5,
+    base_delay=2.0,
+    retry_on_exceptions=[ConnectionError, TimeoutError, OSError]
+)
+def read_data_from_external_source(path):
+    """Read data with automatic retry for network-related issues"""
+    print(f"📖 Attempting to read data from {path}")
+    
+    # Simulate potential network issues
+    import random
+    if random.random() < 0.6:  # 60% chance of failure for demo
+        raise ConnectionError("Network temporarily unavailable")
+    
+    # Actual data reading logic
+    df = spark.read.parquet(path)
+    print(f"✅ Successfully read {df.count()} records")
+    return df
+
+@retry_with_backoff(max_retries=3, base_delay=1.0)
+def write_data_with_retry(df, output_path):
+    """Write data with retry logic for storage issues"""
+    print(f"💾 Writing data to {output_path}")
+    
+    try:
+        df.write.mode("overwrite").parquet(output_path)
+        print(f"✅ Successfully wrote data to {output_path}")
+        return True
+    except Exception as e:
+        print(f"❌ Write failed: {str(e)}")
+        raise</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Automatically retries functions that fail due to transient issues</li>
+                        <li><strong>Exponential backoff:</strong> Increases wait time between retries to avoid overwhelming services</li>
+                        <li><strong>Jitter:</strong> Adds randomness to prevent multiple processes retrying simultaneously</li>
+                        <li><strong>Exception filtering:</strong> Only retries on specific, recoverable exception types</li>
+                    </ul>
+                </div>
+
+                <h3>Notebook-Level Retry with dbutils</h3>
+                <pre><code class="language-python">def run_notebook_with_retry(
+    notebook_path: str,
+    timeout_seconds: int = 3600,
+    arguments: dict = None,
+    max_retries: int = 3,
+    retry_delay: int = 300  # 5 minutes between retries
+):
+    """
+    Run a notebook with retry logic and comprehensive error handling
+    
+    Args:
+        notebook_path: Path to the notebook to run
+        timeout_seconds: Timeout for notebook execution
+        arguments: Parameters to pass to the notebook
+        max_retries: Maximum number of retry attempts
+        retry_delay: Delay between retries in seconds
+    """
+    
+    arguments = arguments or {}
+    
+    for attempt in range(max_retries + 1):
+        try:
+            print(f"🚀 Running notebook {notebook_path} (attempt {attempt + 1})")
+            print(f"📋 Arguments: {arguments}")
+            
+            # Run the notebook
+            result = dbutils.notebook.run(
+                notebook_path,
+                timeout_seconds,
+                arguments
+            )
+            
+            # Parse result to check for success
+            if result.startswith("SUCCESS"):
+                print(f"✅ Notebook completed successfully: {result}")
+                return result
+            elif result.startswith("ERROR") or result.startswith("FAILED"):
+                print(f"❌ Notebook failed with error: {result}")
+                
+                # Check if this is a retryable error
+                if is_retryable_error(result) and attempt < max_retries:
+                    print(f"🔄 Error appears retryable, will retry in {retry_delay} seconds")
+                    time.sleep(retry_delay)
+                    continue
+                else:
+                    # Non-retryable error or max retries reached
+                    error_msg = f"Notebook {notebook_path} failed permanently: {result}"
+                    print(f"❌ {error_msg}")
+                    dbutils.notebook.exit(error_msg)
+            else:
+                # Unexpected result format
+                print(f"⚠️  Unexpected notebook result: {result}")
+                return result
+                
+        except Exception as e:
+            error_msg = f"Failed to run notebook {notebook_path}: {str(e)}"
+            print(f"❌ {error_msg}")
+            
+            if attempt < max_retries:
+                print(f"🔄 Retrying in {retry_delay} seconds...")
+                time.sleep(retry_delay)
+            else:
+                dbutils.notebook.exit(f"RETRY_EXHAUSTED: {error_msg}")
+    
+    # Should not reach here
+    dbutils.notebook.exit("UNEXPECTED_END: Retry loop ended unexpectedly")
+
+def is_retryable_error(error_message: str) -> bool:
+    """Determine if an error message indicates a retryable condition"""
+    
+    retryable_indicators = [
+        "TIMEOUT",
+        "CONNECTION_ERROR", 
+        "TEMPORARY_UNAVAILABLE",
+        "RESOURCE_CONTENTION",
+        "CLUSTER_OVERLOADED",
+        "NETWORK_ERROR"
+    ]
+    
+    error_upper = error_message.upper()
+    
+    for indicator in retryable_indicators:
+        if indicator in error_upper:
+            return True
+    
+    return False
+
+# Example usage in orchestration notebook
+def orchestrate_data_pipeline():
+    """Main orchestration function with retry logic"""
+    
+    try:
+        # Step 1: Data ingestion with retry
+        ingestion_result = run_notebook_with_retry(
+            notebook_path="/path/to/ingestion_notebook",
+            timeout_seconds=1800,  # 30 minutes
+            arguments={"source": "external_api", "batch_date": "2024-01-15"},
+            max_retries=3,
+            retry_delay=300
+        )
+        
+        # Step 2: Data transformation (retry on failure)
+        transform_result = run_notebook_with_retry(
+            notebook_path="/path/to/transform_notebook", 
+            timeout_seconds=3600,  # 1 hour
+            arguments={"input_path": "/mnt/raw/2024-01-15/"},
+            max_retries=2,
+            retry_delay=600  # 10 minutes
+        )
+        
+        # Step 3: Data quality validation
+        validation_result = run_notebook_with_retry(
+            notebook_path="/path/to/validation_notebook",
+            timeout_seconds=900,   # 15 minutes
+            arguments={"data_path": "/mnt/processed/2024-01-15/"},
+            max_retries=1,  # Quality checks shouldn't need many retries
+            retry_delay=60
+        )
+        
+        print("✅ Pipeline completed successfully!")
+        dbutils.notebook.exit("SUCCESS: Pipeline completed all steps")
+        
+    except Exception as e:
+        error_msg = f"Pipeline failed: {str(e)}"
+        print(f"❌ {error_msg}")
+        dbutils.notebook.exit(f"PIPELINE_FAILED: {error_msg}")
+
+# Run the orchestration
+orchestrate_data_pipeline()</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Implements retry logic for notebook orchestration workflows</li>
+                        <li><strong>Error classification:</strong> Distinguishes between retryable and permanent failures</li>
+                        <li><strong>Configurable delays:</strong> Different retry strategies for different notebook types</li>
+                        <li><strong>Comprehensive logging:</strong> Detailed logging for debugging and monitoring</li>
+                    </ul>
+                </div>
+
+                <h3>Circuit Breaker Pattern</h3>
+                <pre><code class="language-python">from datetime import datetime, timedelta
+from enum import Enum
+
+class CircuitState(Enum):
+    CLOSED = "closed"      # Normal operation
+    OPEN = "open"          # Circuit is open, failing fast
+    HALF_OPEN = "half_open"  # Testing if service is back
+
+class CircuitBreaker:
+    """
+    Circuit breaker pattern implementation for notebook operations
+    Prevents cascading failures by temporarily disabling failing operations
+    """
+    
+    def __init__(self, 
+                 failure_threshold: int = 5,
+                 recovery_timeout: int = 300,  # 5 minutes
+                 expected_exception: type = Exception):
+        
+        self.failure_threshold = failure_threshold
+        self.recovery_timeout = recovery_timeout
+        self.expected_exception = expected_exception
+        
+        self.failure_count = 0
+        self.last_failure_time = None
+        self.state = CircuitState.CLOSED
+        self.last_success_time = datetime.now()
+    
+    def call(self, func, *args, **kwargs):
+        """Execute function with circuit breaker protection"""
+        
+        # Check if we should attempt to reset circuit
+        if self.state == CircuitState.OPEN:
+            if self._should_attempt_reset():
+                self.state = CircuitState.HALF_OPEN
+                print("🔄 Circuit breaker moving to HALF_OPEN state")
+            else:
+                error_msg = f"Circuit breaker is OPEN for {func.__name__}. Fast failing."
+                print(f"⚡ {error_msg}")
+                raise Exception(error_msg)
+        
+        try:
+            # Execute the function
+            result = func(*args, **kwargs)
+            self._on_success()
+            return result
+            
+        except self.expected_exception as e:
+            self._on_failure()
+            print(f"❌ Circuit breaker recorded failure for {func.__name__}: {str(e)}")
+            raise e
+    
+    def _should_attempt_reset(self):
+        """Check if enough time has passed to attempt reset"""
+        if self.last_failure_time is None:
+            return True
+        
+        time_since_failure = datetime.now() - self.last_failure_time
+        return time_since_failure.total_seconds() >= self.recovery_timeout
+    
+    def _on_success(self):
+        """Handle successful execution"""
+        if self.state == CircuitState.HALF_OPEN:
+            print("✅ Circuit breaker reset to CLOSED state after successful execution")
+        
+        self.failure_count = 0
+        self.state = CircuitState.CLOSED
+        self.last_success_time = datetime.now()
+    
+    def _on_failure(self):
+        """Handle failed execution"""
+        self.failure_count += 1
+        self.last_failure_time = datetime.now()
+        
+        if self.failure_count >= self.failure_threshold:
+            self.state = CircuitState.OPEN
+            print(f"⚡ Circuit breaker OPENED after {self.failure_count} failures")
+    
+    def get_status(self):
+        """Get current circuit breaker status"""
+        return {
+            "state": self.state.value,
+            "failure_count": self.failure_count,
+            "last_failure_time": self.last_failure_time.isoformat() if self.last_failure_time else None,
+            "last_success_time": self.last_success_time.isoformat()
+        }
+
+# Global circuit breakers for different operations
+external_api_circuit = CircuitBreaker(failure_threshold=3, recovery_timeout=600)
+database_circuit = CircuitBreaker(failure_threshold=5, recovery_timeout=300)
+
+def call_external_api_with_circuit_breaker():
+    """Example external API call with circuit breaker protection"""
+    
+    def make_api_call():
+        # Simulate API call that might fail
+        import random
+        if random.random() < 0.7:  # 70% failure rate for demo
+            raise ConnectionError("API temporarily unavailable")
+        return {"status": "success", "data": [1, 2, 3]}
+    
+    try:
+        result = external_api_circuit.call(make_api_call)
+        print("✅ API call successful")
+        return result
+    except Exception as e:
+        print(f"❌ API call failed: {str(e)}")
+        
+        # Check circuit state and decide next action
+        status = external_api_circuit.get_status()
+        
+        if status["state"] == "open":
+            print("⚠️  Using cached data due to circuit breaker")
+            return get_cached_data()
+        else:
+            raise e
+
+def get_cached_data():
+    """Fallback function to get cached data when circuit is open"""
+    return {"status": "cached", "data": [0, 0, 0]}  # Placeholder cached data</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Prevents cascading failures by temporarily disabling failing operations</li>
+                        <li><strong>Fast failure:</strong> Immediately fails when circuit is open, preventing resource waste</li>
+                        <li><strong>Automatic recovery:</strong> Periodically tests if the failing service has recovered</li>
+                        <li><strong>Fallback strategy:</strong> Allows graceful degradation with cached or default data</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="advanced-workflow-patterns">
+                <div class="section-header" onclick="toggleSection('advanced-workflow-patterns')">
+                    <h2>🎯 Advanced Workflow Patterns</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Sophisticated patterns for complex workflow orchestration, including conditional branching, parallel execution, and dynamic workflow generation based on data characteristics.</p>
+                </div>
+
+                <h3>Conditional Workflow Branching</h3>
+                <pre><code class="language-python">def execute_conditional_workflow(processing_date: str, data_volume_threshold: int = 1000000):
+    """
+    Execute different workflow branches based on data characteristics
+    
+    Args:
+        processing_date: Date to process (YYYY-MM-DD format)
+        data_volume_threshold: Threshold for determining processing strategy
+    """
+    
+    try:
+        # Step 1: Analyze input data characteristics
+        data_stats = analyze_input_data(processing_date)
+        
+        if data_stats is None:
+            dbutils.notebook.exit("NO_DATA: No data found for processing date")
+        
+        volume = data_stats["record_count"]
+        complexity = data_stats["complexity_score"]  # Custom metric
+        
+        print(f"📊 Data Analysis Results:")
+        print(f"   Volume: {volume:,} records")
+        print(f"   Complexity Score: {complexity}")
+        
+        # Step 2: Choose processing strategy based on data characteristics
+        if volume < 1000:
+            # Small dataset - single node processing
+            strategy = "single_node"
+            notebook_path = "/workflows/single_node_processing"
+            timeout = 900  # 15 minutes
+            
+        elif volume < data_volume_threshold:
+            # Medium dataset - standard distributed processing
+            strategy = "standard_distributed"
+            notebook_path = "/workflows/standard_distributed_processing"
+            timeout = 3600  # 1 hour
+            
+        else:
+            # Large dataset - optimized processing with multiple strategies
+            if complexity > 0.8:
+                strategy = "large_complex"
+                notebook_path = "/workflows/large_complex_processing"
+                timeout = 7200  # 2 hours
+            else:
+                strategy = "large_simple"
+                notebook_path = "/workflows/large_simple_processing"  
+                timeout = 5400  # 1.5 hours
+        
+        print(f"🎯 Selected processing strategy: {strategy}")
+        
+        # Step 3: Execute chosen strategy with appropriate parameters
+        processing_args = {
+            "processing_date": processing_date,
+            "volume": volume,
+            "complexity": complexity,
+            "strategy": strategy
+        }
+        
+        # Add strategy-specific parameters
+        if strategy == "single_node":
+            processing_args["executor_memory"] = "2g"
+            processing_args["executor_cores"] = "1"
+        elif strategy.startswith("large"):
+            processing_args["executor_memory"] = "8g"
+            processing_args["executor_cores"] = "4"
+            processing_args["dynamic_allocation"] = "true"
+        
+        # Execute processing notebook
+        result = dbutils.notebook.run(
+            notebook_path,
+            timeout,
+            processing_args
+        )
+        
+        # Step 4: Validate results and determine next steps
+        if result.startswith("SUCCESS"):
+            print(f"✅ Processing completed successfully with strategy: {strategy}")
+            
+            # Execute post-processing based on strategy
+            post_process_result = execute_post_processing(strategy, processing_date)
+            
+            if post_process_result.startswith("SUCCESS"):
+                dbutils.notebook.exit(f"SUCCESS: Workflow completed with {strategy} strategy")
+            else:
+                dbutils.notebook.exit(f"POST_PROCESSING_FAILED: {post_process_result}")
+                
+        else:
+            # Processing failed - try fallback strategy if available
+            fallback_result = attempt_fallback_processing(strategy, processing_date, result)
+            
+            if fallback_result.startswith("SUCCESS"):
+                dbutils.notebook.exit(f"SUCCESS: Completed with fallback processing")
+            else:
+                dbutils.notebook.exit(f"FAILED: Both primary and fallback processing failed")
+        
+    except Exception as e:
+        error_msg = f"Workflow orchestration failed: {str(e)}"
+        print(f"❌ {error_msg}")
+        dbutils.notebook.exit(f"ORCHESTRATION_ERROR: {error_msg}")
+
+def analyze_input_data(processing_date: str) -> dict:
+    """Analyze input data to determine processing strategy"""
+    
+    input_path = f"/mnt/raw/{processing_date}/"
+    
+    try:
+        df = spark.read.parquet(input_path)
+        
+        record_count = df.count()
+        
+        if record_count == 0:
+            return None
+        
+        # Calculate complexity score based on schema and data characteristics
+        column_count = len(df.columns)
+        nested_columns = len([col for col in df.dtypes if col[1].startswith('array') or col[1].startswith('struct')])
+        
+        # Simple complexity scoring (0.0 to 1.0)
+        complexity_score = min(1.0, (nested_columns / column_count) + (column_count / 100))
+        
+        return {
+            "record_count": record_count,
+            "column_count": column_count,
+            "nested_columns": nested_columns,
+            "complexity_score": complexity_score
+        }
+        
+    except Exception as e:
+        print(f"❌ Failed to analyze input data: {str(e)}")
+        return None
+
+def execute_post_processing(strategy: str, processing_date: str) -> str:
+    """Execute strategy-specific post-processing steps"""
+    
+    post_processing_configs = {
+        "single_node": {
+            "notebook": "/workflows/post_process_simple",
+            "timeout": 300
+        },
+        "standard_distributed": {
+            "notebook": "/workflows/post_process_standard", 
+            "timeout": 600
+        },
+        "large_complex": {
+            "notebook": "/workflows/post_process_advanced",
+            "timeout": 1800
+        },
+        "large_simple": {
+            "notebook": "/workflows/post_process_bulk",
+            "timeout": 1200
+        }
+    }
+    
+    config = post_processing_configs.get(strategy)
+    
+    if not config:
+        return f"ERROR: No post-processing configuration for strategy {strategy}"
+    
+    try:
+        result = dbutils.notebook.run(
+            config["notebook"],
+            config["timeout"],
+            {"processing_date": processing_date, "strategy": strategy}
+        )
+        
+        return result
+        
+    except Exception as e:
+        return f"ERROR: Post-processing failed: {str(e)}"
+
+def attempt_fallback_processing(primary_strategy: str, processing_date: str, error_message: str) -> str:
+    """Attempt fallback processing when primary strategy fails"""
+    
+    print(f"🔄 Attempting fallback processing for failed strategy: {primary_strategy}")
+    print(f"📝 Original error: {error_message}")
+    
+    # Define fallback strategies
+    fallback_map = {
+        "large_complex": "standard_distributed",
+        "large_simple": "standard_distributed", 
+        "standard_distributed": "single_node"
+    }
+    
+    fallback_strategy = fallback_map.get(primary_strategy)
+    
+    if not fallback_strategy:
+        return f"ERROR: No fallback available for strategy {primary_strategy}"
+    
+    print(f"🎯 Trying fallback strategy: {fallback_strategy}")
+    
+    try:
+        # Use simpler processing approach
+        fallback_notebook = f"/workflows/{fallback_strategy}_processing"
+        
+        result = dbutils.notebook.run(
+            fallback_notebook,
+            1800,  # Reduced timeout for fallback
+            {
+                "processing_date": processing_date,
+                "fallback_mode": "true",
+                "original_strategy": primary_strategy
+            }
+        )
+        
+        if result.startswith("SUCCESS"):
+            print(f"✅ Fallback processing succeeded with {fallback_strategy}")
+        
+        return result
+        
+    except Exception as e:
+        return f"ERROR: Fallback processing also failed: {str(e)}"
+
+# Execute the conditional workflow
+processing_date = dbutils.widgets.get("processing_date")
+execute_conditional_workflow(processing_date)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Dynamically selects processing strategy based on data characteristics</li>
+                        <li><strong>Adaptive processing:</strong> Optimizes resource usage based on actual data volume and complexity</li>
+                        <li><strong>Fallback mechanism:</strong> Automatically tries simpler approaches when advanced strategies fail</li>
+                        <li><strong>Strategy pattern:</strong> Cleanly separates different processing approaches for maintainability</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="pro-tip">
+                <strong>💡 Expert Tip:</strong> Always implement comprehensive logging and status tracking in your retry and exit logic. Use structured exit messages (JSON) for easy parsing by monitoring systems, and consider implementing circuit breakers for external dependencies to prevent cascading failures!
+            </div>
+
+            <section>
+                <div class="collapsible-section" id="best-practices-summary">
+                <div class="section-header" onclick="toggleSection('best-practices-summary')">
+                    <h2>📋 Best Practices Summary</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <ul>
+                    <li><strong>Exit Messages:</strong> Use structured, descriptive exit messages with error codes</li>
+                    <li><strong>Environment Awareness:</strong> Adapt behavior based on deployment environment</li>
+                    <li><strong>Retry Strategy:</strong> Implement exponential backoff with jitter for transient failures</li>
+                    <li><strong>Circuit Breakers:</strong> Prevent cascading failures with circuit breaker pattern</li>
+                    <li><strong>Comprehensive Logging:</strong> Log all retry attempts and failure reasons</li>
+                    <li><strong>Fallback Mechanisms:</strong> Always have a plan B for critical workflows</li>
+                    <li><strong>Monitoring Integration:</strong> Design exit codes for easy monitoring and alerting</li>
+                    <li><strong>Resource Management:</strong> Consider resource constraints when implementing retry logic</li>
+                </ul>
+            </section>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

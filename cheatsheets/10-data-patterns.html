@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔧 Data Engineering Patterns & Best Practices</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.3rem; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🔧 Data Engineering Patterns & Best Practices</h1>
+            <blockquote>Essential patterns, architectures, and troubleshooting guide for production data systems</blockquote>
+
+            <div class="collapsible-section" id="references">
+                <div class="section-header" onclick="toggleSection('references')">
+                    <h2>🔗 References</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <ul>
+                <li><a href="https://www.oreilly.com/library/view/fundamentals-of-data/9781098108298/" target="_blank">Data Engineering Principles</a></li>
+                <li><a href="https://dataintensive.net/" target="_blank">Designing Data-Intensive Applications</a></li>
+                <li><a href="https://github.com/DataEngineerOne/data-engineer-handbook" target="_blank">The Data Engineering Handbook</a></li>
+            </ul>
+
+            <div class="collapsible-section" id="data-architecture-patterns">
+                <div class="section-header" onclick="toggleSection('data-architecture-patterns')">
+                    <h2>🏗️ Data Architecture Patterns</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Lambda Architecture</h3>
+            <pre><code class="language-python"># Lambda Architecture Implementation
+class LambdaArchitecture:
+    def __init__(self):
+        self.batch_layer = BatchLayer()
+        self.speed_layer = SpeedLayer()
+        self.serving_layer = ServingLayer()
+    
+    def process_data(self, raw_data):
+        # Batch Layer: Complete, accurate views from immutable data
+        batch_view = self.batch_layer.process(raw_data)
+        
+        # Speed Layer: Fast, approximate views for recent data
+        realtime_view = self.speed_layer.process(raw_data)
+        
+        # Serving Layer: Merge batch and speed views
+        unified_view = self.serving_layer.merge(batch_view, realtime_view)
+        
+        return unified_view
+
+class BatchLayer:
+    """Handles large-scale batch processing"""
+    def __init__(self):
+        self.storage = "HDFS/S3"  # Immutable storage
+        self.compute = "Spark/MapReduce"
+    
+    def process(self, data):
+        # Process complete dataset periodically
+        return self.compute_batch_views(data)
+    
+    def compute_batch_views(self, data):
+        """Example: Daily aggregations"""
+        daily_stats = (
+            spark.read.parquet(data)
+            .groupBy("date", "user_id")
+            .agg(
+                count("events").alias("event_count"),
+                sum("revenue").alias("total_revenue")
+            )
+        )
+        return daily_stats</code></pre>
+
+            <h3>Kappa Architecture (Stream-First)</h3>
+            <pre><code class="language-python">class KappaArchitecture:
+    """Simplified architecture using only stream processing"""
+    
+    def __init__(self):
+        self.stream_processor = StreamProcessor()
+        self.state_store = StateStore()
+    
+    def process_event(self, event):
+        # Single stream processing pipeline handles all data
+        processed_event = self.stream_processor.process(event)
+        
+        # Update materialized views
+        self.update_views(processed_event)
+        
+        return processed_event
+    
+    def reprocess_historical_data(self, start_time, end_time):
+        """Reprocess data by replaying streams"""
+        # Reset state to start_time
+        self.state_store.reset_to_timestamp(start_time)
+        
+        # Replay events from Kafka
+        events = self.replay_events(start_time, end_time)
+        
+        for event in events:
+            self.process_event(event)</code></pre>
+
+            <h3>Medallion Architecture (Bronze-Silver-Gold)</h3>
+            <pre><code class="language-python"># Medallion Architecture with Delta Lake
+import delta
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+
+class MedallionPipeline:
+    def __init__(self, spark):
+        self.spark = spark
+        self.bronze_path = "/delta/bronze"
+        self.silver_path = "/delta/silver" 
+        self.gold_path = "/delta/gold"
+    
+    def bronze_layer(self, raw_data_path):
+        """Bronze: Raw data ingestion with minimal transformation"""
+        bronze_df = (
+            self.spark.read
+            .option("multiline", "true")
+            .json(raw_data_path)
+            .withColumn("_ingestion_timestamp", current_timestamp())
+            .withColumn("_source_file", input_file_name())
+        )
+        
+        # Write to Bronze Delta table
+        (
+            bronze_df.write
+            .format("delta")
+            .mode("append")
+            .option("mergeSchema", "true")  # Handle schema evolution
+            .save(self.bronze_path)
+        )
+        
+        return bronze_df
+    
+    def silver_layer(self):
+        """Silver: Cleaned, validated, deduplicated data"""
+        bronze_df = self.spark.read.format("delta").load(self.bronze_path)
+        
+        silver_df = (
+            bronze_df
+            # Data quality checks
+            .filter(col("user_id").isNotNull())
+            .filter(col("event_timestamp").isNotNull())
+            
+            # Data standardization
+            .withColumn("event_timestamp", 
+                       to_timestamp(col("event_timestamp"), "yyyy-MM-dd HH:mm:ss"))
+            .withColumn("user_id", upper(trim(col("user_id"))))
+            
+            # Deduplication
+            .dropDuplicates(["user_id", "event_timestamp", "event_type"])
+        )
+        
+        return silver_df</code></pre>
+
+            <div class="collapsible-section" id="etlelt-patterns">
+                <div class="section-header" onclick="toggleSection('etlelt-patterns')">
+                    <h2>🔄 ETL/ELT Patterns</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Incremental Processing Pattern</h3>
+            <pre><code class="language-python">class IncrementalProcessor:
+    def __init__(self, spark, table_name, watermark_column="updated_at"):
+        self.spark = spark
+        self.table_name = table_name
+        self.watermark_column = watermark_column
+        self.checkpoint_table = f"{table_name}_checkpoint"
+    
+    def get_last_processed_timestamp(self):
+        """Get the last processed timestamp from checkpoint"""
+        try:
+            checkpoint_df = self.spark.table(self.checkpoint_table)
+            last_timestamp = checkpoint_df.agg(max("last_processed_timestamp")).collect()[0][0]
+            return last_timestamp
+        except:
+            # First run - start from beginning or specific date
+            return "1900-01-01 00:00:00"
+    
+    def process_incremental_data(self, source_table):
+        """Process only new/updated data since last checkpoint"""
+        last_processed = self.get_last_processed_timestamp()
+        
+        # Read only incremental data
+        incremental_df = (
+            self.spark.table(source_table)
+            .filter(col(self.watermark_column) > last_processed)
+        )
+        
+        if incremental_df.count() == 0:
+            print("No new data to process")
+            return None
+        
+        # Process the incremental data
+        processed_df = self.transform_data(incremental_df)
+        
+        # Update checkpoint
+        new_watermark = incremental_df.agg(max(self.watermark_column)).collect()[0][0]
+        self.update_checkpoint(new_watermark)
+        
+        return processed_df</code></pre>
+
+            <div class="collapsible-section" id="data-quality-framework">
+                <div class="section-header" onclick="toggleSection('data-quality-framework')">
+                    <h2>📊 Data Quality Framework</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <pre><code class="language-python">from pyspark.sql.functions import *
+from pyspark.sql.types import *
+
+class DataQualityFramework:
+    def __init__(self, spark):
+        self.spark = spark
+        self.quality_rules = []
+        self.results = []
+    
+    def add_rule(self, rule_name, condition, action="flag"):
+        """Add data quality rule"""
+        self.quality_rules.append({
+            "name": rule_name,
+            "condition": condition,
+            "action": action
+        })
+    
+    def validate_data(self, df, table_name="unknown"):
+        """Apply all quality rules to dataframe"""
+        results = []
+        
+        for rule in self.quality_rules:
+            result = self.apply_rule(df, rule, table_name)
+            results.append(result)
+        
+        return results
+    
+    def apply_rule(self, df, rule, table_name):
+        """Apply single quality rule"""
+        condition = rule["condition"]
+        
+        # Count violations
+        violations_df = df.filter(~condition)  # NOT condition
+        violation_count = violations_df.count()
+        total_count = df.count()
+        
+        result = {
+            "table_name": table_name,
+            "rule_name": rule["name"],
+            "total_records": total_count,
+            "violations": violation_count,
+            "violation_rate": violation_count / total_count if total_count > 0 else 0,
+            "timestamp": current_timestamp(),
+            "action": rule["action"]
+        }
+        
+        # Take action based on rule
+        if rule["action"] == "fail" and violation_count > 0:
+            raise DataQualityException(f"Quality rule failed: {rule['name']}")
+        elif rule["action"] == "quarantine" and violation_count > 0:
+            self.quarantine_bad_data(violations_df, rule["name"])
+        
+        return result
+
+# Usage example
+dq = DataQualityFramework(spark)
+
+# Define quality rules
+dq.add_rule("not_null_user_id", col("user_id").isNotNull(), "fail")
+dq.add_rule("valid_email_format", col("email").rlike(r"^[^@]+@[^@]+\.[^@]+$"), "quarantine")
+dq.add_rule("reasonable_age", col("age").between(0, 150), "flag")</code></pre>
+
+            <div class="collapsible-section" id="monitoring-and-observability">
+                <div class="section-header" onclick="toggleSection('monitoring-and-observability')">
+                    <h2>🔍 Monitoring and Observability</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Pipeline Monitoring</h3>
+            <pre><code class="language-python">import logging
+import time
+from datetime import datetime
+from typing import Dict, Any
+
+class PipelineMonitor:
+    def __init__(self, pipeline_name: str):
+        self.pipeline_name = pipeline_name
+        self.metrics = {}
+        self.alerts = []
+        
+        # Setup logging
+        logging.basicConfig(level=logging.INFO)
+        self.logger = logging.getLogger(f"pipeline.{pipeline_name}")
+    
+    def track_execution(self, stage_name: str):
+        """Decorator to track stage execution"""
+        def decorator(func):
+            def wrapper(*args, **kwargs):
+                start_time = time.time()
+                stage_id = f"{self.pipeline_name}.{stage_name}"
+                
+                self.logger.info(f"Starting stage: {stage_name}")
+                
+                try:
+                    result = func(*args, **kwargs)
+                    
+                    # Track success metrics
+                    execution_time = time.time() - start_time
+                    self.record_metric(stage_id, "execution_time", execution_time)
+                    self.record_metric(stage_id, "status", "success")
+                    
+                    if hasattr(result, 'count'):
+                        record_count = result.count()
+                        self.record_metric(stage_id, "record_count", record_count)
+                        self.logger.info(f"Stage {stage_name} processed {record_count} records in {execution_time:.2f}s")
+                    
+                    return result
+                    
+                except Exception as e:
+                    # Track failure metrics
+                    self.record_metric(stage_id, "status", "failed")
+                    self.record_metric(stage_id, "error", str(e))
+                    self.logger.error(f"Stage {stage_name} failed: {str(e)}")
+                    
+                    # Send alert
+                    self.send_alert(f"Pipeline stage failed: {stage_name}", str(e))
+                    raise
+                    
+            return wrapper
+        return decorator</code></pre>
+
+            <div class="collapsible-section" id="error-handling-and-recovery">
+                <div class="section-header" onclick="toggleSection('error-handling-and-recovery')">
+                    <h2>🚨 Error Handling and Recovery</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Circuit Breaker Pattern</h3>
+            <pre><code class="language-python">import time
+from enum import Enum
+from datetime import datetime, timedelta
+
+class CircuitState(Enum):
+    CLOSED = "closed"      # Normal operation
+    OPEN = "open"          # Circuit is open, failing fast
+    HALF_OPEN = "half_open"  # Testing if service is back
+
+class CircuitBreaker:
+    def __init__(self, 
+                 failure_threshold: int = 5,
+                 timeout: int = 60,
+                 expected_exception: type = Exception):
+        
+        self.failure_threshold = failure_threshold
+        self.timeout = timeout
+        self.expected_exception = expected_exception
+        
+        self.failure_count = 0
+        self.last_failure_time = None
+        self.state = CircuitState.CLOSED
+    
+    def call(self, func, *args, **kwargs):
+        """Execute function with circuit breaker protection"""
+        
+        if self.state == CircuitState.OPEN:
+            if self._should_attempt_reset():
+                self.state = CircuitState.HALF_OPEN
+            else:
+                raise CircuitBreakerOpenError("Circuit breaker is OPEN")
+        
+        try:
+            result = func(*args, **kwargs)
+            self._on_success()
+            return result
+            
+        except self.expected_exception as e:
+            self._on_failure()
+            raise e
+    
+    def _on_failure(self):
+        """Handle failed execution"""
+        self.failure_count += 1
+        self.last_failure_time = datetime.now()
+        
+        if self.failure_count >= self.failure_threshold:
+            self.state = CircuitState.OPEN</code></pre>
+
+            <h3>Retry with Exponential Backoff</h3>
+            <pre><code class="language-python">import random
+import time
+from functools import wraps
+
+def retry_with_backoff(max_retries: int = 3, 
+                      base_delay: float = 1.0,
+                      max_delay: float = 60.0,
+                      exponential_base: float = 2.0,
+                      jitter: bool = True):
+    """Decorator for retrying functions with exponential backoff"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            last_exception = None
+            
+            for attempt in range(max_retries + 1):
+                try:
+                    return func(*args, **kwargs)
+                    
+                except Exception as e:
+                    last_exception = e
+                    
+                    if attempt == max_retries:
+                        # Last attempt, re-raise exception
+                        raise e
+                    
+                    # Calculate delay
+                    delay = min(
+                        base_delay * (exponential_base ** attempt),
+                        max_delay
+                    )
+                    
+                    # Add jitter to avoid thundering herd
+                    if jitter:
+                        delay = delay * (0.5 + random.random() * 0.5)
+                    
+                    print(f"Attempt {attempt + 1} failed: {e}. Retrying in {delay:.2f}s...")
+                    time.sleep(delay)
+            
+            raise last_exception
+        
+        return wrapper
+    return decorator
+
+# Usage example
+@retry_with_backoff(max_retries=3, base_delay=1.0, max_delay=30.0)
+def unreliable_operation():
+    """Simulate an unreliable operation"""
+    if random.random() < 0.7:  # 70% failure rate
+        raise ConnectionError("Service temporarily unavailable")
+    
+    return {"status": "success"}</code></pre>
+
+            <div class="collapsible-section" id="performance-optimization-patterns">
+                <div class="section-header" onclick="toggleSection('performance-optimization-patterns')">
+                    <h2>🎯 Performance Optimization Patterns</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Caching Strategies</h3>
+            <pre><code class="language-python">import time
+from functools import wraps
+from typing import Any, Dict, Callable
+
+class CacheManager:
+    def __init__(self):
+        self.memory_cache = {}
+        self.cache_stats = {
+            "hits": 0,
+            "misses": 0,
+            "evictions": 0
+        }
+    
+    def cache_with_ttl(self, ttl_seconds: int = 300):
+        """Cache decorator with time-to-live"""
+        def decorator(func: Callable) -> Callable:
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                # Create cache key
+                cache_key = self._create_cache_key(func.__name__, args, kwargs)
+                
+                # Check cache
+                cached_result = self._get_from_cache(cache_key)
+                if cached_result is not None:
+                    self.cache_stats["hits"] += 1
+                    return cached_result
+                
+                # Cache miss - execute function
+                self.cache_stats["misses"] += 1
+                result = func(*args, **kwargs)
+                
+                # Store in cache
+                self._put_in_cache(cache_key, result, ttl_seconds)
+                
+                return result
+            
+            return wrapper
+        return decorator
+    
+    def get_cache_stats(self) -> Dict:
+        """Get cache statistics"""
+        total_requests = self.cache_stats["hits"] + self.cache_stats["misses"]
+        hit_rate = self.cache_stats["hits"] / total_requests if total_requests > 0 else 0
+        
+        return {
+            **self.cache_stats,
+            "hit_rate": hit_rate,
+            "cache_size": len(self.memory_cache)
+        }</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Always implement comprehensive monitoring and alerting for production data pipelines. Monitor not just technical metrics but also business metrics like data freshness, completeness, and accuracy!
+            </div>
+
+            <div class="collapsible-section" id="production-monitoring-checklist">
+                <div class="section-header" onclick="toggleSection('production-monitoring-checklist')">
+                    <h2>📋 Production Monitoring Checklist</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <ul>
+                <li><strong>Technical Metrics:</strong>
+                    <ul>
+                        <li>Pipeline execution time</li>
+                        <li>Memory and CPU usage</li>
+                        <li>Error rates and types</li>
+                        <li>Data throughput (records/second)</li>
+                    </ul>
+                </li>
+                <li><strong>Business Metrics:</strong>
+                    <ul>
+                        <li>Data freshness (time since last update)</li>
+                        <li>Data completeness (% of expected records)</li>
+                        <li>Data quality scores</li>
+                        <li>SLA compliance</li>
+                    </ul>
+                </li>
+                <li><strong>Operational Metrics:</strong>
+                    <ul>
+                        <li>Cost per pipeline run</li>
+                        <li>Resource utilization</li>
+                        <li>Alert response times</li>
+                        <li>Pipeline success rate</li>
+                    </ul>
+                </li>
+            </ul>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

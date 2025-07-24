@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐼 pandas + NumPy Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.3rem; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🐼 pandas + NumPy Cheat Sheet</h1>
+            <blockquote>Essential data manipulation and numerical operations for data analysis</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://pandas.pydata.org/docs/" target="_blank">pandas Documentation</a></li>
+                <li><a href="https://numpy.org/doc/" target="_blank">NumPy Documentation</a></li>
+                <li><a href="https://pandas.pydata.org/docs/user_guide/" target="_blank">pandas User Guide</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#pandas-fundamentals">📊 pandas Fundamentals</a></li><li><a href="#data-transformation">🔄 Data Transformation</a></li><li><a href="#numpy-essentials">🔢 NumPy Essentials</a></li><li><a href="#advanced-pandas-operations">📈 Advanced pandas Operations</a></li><li><a href="#time-series-operations">📅 Time Series Operations</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="pandas-fundamentals">
+                <div class="section-header" onclick="toggleSection('pandas-fundamentals')">
+                    <h2>📊 pandas Fundamentals</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>DataFrame Creation and Basic Operations</h3>
+            <pre><code class="language-python">import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+
+# Create DataFrame from dictionary
+data = {
+    'name': ['Alice', 'Bob', 'Charlie', 'Diana'],
+    'age': [25, 30, 35, 28],
+    'city': ['NYC', 'LA', 'Chicago', 'Boston'],
+    'salary': [50000, 75000, 80000, 65000]
+}
+df = pd.DataFrame(data)
+
+# Create from CSV
+df = pd.read_csv('data.csv', 
+                 encoding='utf-8',
+                 parse_dates=['date_column'],
+                 dtype={'id': str, 'amount': float})
+
+# Basic info
+print(df.head())          # First 5 rows
+print(df.tail(3))         # Last 3 rows
+print(df.info())          # Data types and memory usage
+print(df.describe())      # Statistical summary
+print(df.shape)           # (rows, columns)
+print(df.columns.tolist()) # Column names</code></pre>
+
+            <h3>DataFrame Indexing and Selection</h3>
+            <pre><code class="language-python"># Column selection
+ages = df['age']                    # Series
+subset = df[['name', 'age']]       # DataFrame with multiple columns
+new_df = df.loc[:, 'name':'salary'] # Range of columns
+
+# Row selection
+first_row = df.iloc[0]             # First row by position
+first_three = df.iloc[:3]          # First three rows
+last_row = df.iloc[-1]             # Last row
+
+# Boolean indexing
+high_earners = df[df['salary'] > 60000]
+nyc_people = df[df['city'] == 'NYC']
+complex_filter = df[(df['age'] > 25) & (df['salary'] > 60000)]
+
+# Setting values
+df.loc[df['city'] == 'NYC', 'salary'] = df.loc[df['city'] == 'NYC', 'salary'] * 1.1
+df.at[0, 'age'] = 26  # Set single value
+df['bonus'] = df['salary'] * 0.1  # New column</code></pre>
+
+            <h3>Data Cleaning and Preprocessing</h3>
+            <pre><code class="language-python"># Handle missing data
+df_with_na = pd.DataFrame({
+    'A': [1, 2, np.nan, 4],
+    'B': [5, np.nan, 7, 8],
+    'C': ['a', 'b', 'c', np.nan]
+})
+
+# Check for missing values
+print(df_with_na.isnull().sum())
+print(df_with_na.notnull().sum())
+
+# Drop missing values
+df_dropped = df_with_na.dropna()                    # Drop any row with NA
+df_thresh = df_with_na.dropna(thresh=2)             # Keep rows with at least 2 non-NA values
+
+# Fill missing values
+df_filled = df_with_na.fillna(0)                    # Fill with 0
+df_filled = df_with_na.fillna({'A': 0, 'B': -1})   # Fill different columns
+df_filled = df_with_na.fillna(method='ffill')      # Forward fill
+df_filled = df_with_na.fillna(df_with_na.mean())   # Fill with mean
+
+# Remove duplicates
+df_unique = df.drop_duplicates()
+df_unique_subset = df.drop_duplicates(subset=['name', 'city'])
+
+# Data type conversion
+df['age'] = df['age'].astype(int)
+df['salary'] = pd.to_numeric(df['salary'], errors='coerce')
+df['date'] = pd.to_datetime(df['date_string'])</code></pre>
+
+            <div class="collapsible-section" id="data-transformation">
+                <div class="section-header" onclick="toggleSection('data-transformation')">
+                    <h2>🔄 Data Transformation</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>GroupBy Operations</h3>
+            <pre><code class="language-python"># Basic groupby
+city_stats = df.groupby('city')['salary'].mean()
+city_multiple = df.groupby('city')[['salary', 'age']].mean()
+
+# Multiple grouping columns
+dept_city = df.groupby(['department', 'city'])['salary'].agg(['mean', 'std', 'count'])
+
+# Custom aggregations
+def salary_range(series):
+    return series.max() - series.min()
+
+city_custom = df.groupby('city')['salary'].agg([
+    'mean', 
+    'std', 
+    ('range', salary_range),
+    ('q75', lambda x: x.quantile(0.75))
+])
+
+# Transform (return same shape as input)
+df['salary_normalized'] = df.groupby('city')['salary'].transform(
+    lambda x: (x - x.mean()) / x.std()
+)</code></pre>
+
+            <h3>Pivoting and Reshaping</h3>
+            <pre><code class="language-python"># Pivot table
+pivot_df = df.pivot_table(
+    values='salary',
+    index='city',
+    columns='department',
+    aggfunc='mean',
+    fill_value=0
+)
+
+# Melt (wide to long)
+df_wide = pd.DataFrame({
+    'id': [1, 2, 3],
+    'jan': [100, 200, 300],
+    'feb': [150, 250, 350],
+    'mar': [200, 300, 400]
+})
+
+df_long = pd.melt(
+    df_wide,
+    id_vars=['id'],
+    value_vars=['jan', 'feb', 'mar'],
+    var_name='month',
+    value_name='sales'
+)
+
+# Cross-tabulation
+crosstab = pd.crosstab(df['city'], df['department'], margins=True)</code></pre>
+
+            <h3>Merging and Joining</h3>
+            <pre><code class="language-python"># Sample DataFrames
+df1 = pd.DataFrame({
+    'id': [1, 2, 3, 4],
+    'name': ['Alice', 'Bob', 'Charlie', 'Diana']
+})
+
+df2 = pd.DataFrame({
+    'id': [2, 3, 4, 5],
+    'salary': [50000, 60000, 70000, 80000]
+})
+
+# Different join types
+inner_join = pd.merge(df1, df2, on='id', how='inner')  # Only matching
+left_join = pd.merge(df1, df2, on='id', how='left')    # All from left
+right_join = pd.merge(df1, df2, on='id', how='right')  # All from right
+outer_join = pd.merge(df1, df2, on='id', how='outer')  # All records
+
+# Join on different column names
+result = pd.merge(df1, df2, left_on='emp_id', right_on='employee_id')
+
+# Concatenate
+vertical_concat = pd.concat([df1, df2], ignore_index=True)
+horizontal_concat = pd.concat([df1, df2], axis=1)</code></pre>
+
+            <div class="collapsible-section" id="numpy-essentials">
+                <div class="section-header" onclick="toggleSection('numpy-essentials')">
+                    <h2>🔢 NumPy Essentials</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Array Creation and Basic Operations</h3>
+            <pre><code class="language-python">import numpy as np
+
+# Array creation
+arr1d = np.array([1, 2, 3, 4, 5])
+arr2d = np.array([[1, 2, 3], [4, 5, 6]])
+
+# Special arrays
+zeros = np.zeros((3, 4))
+ones = np.ones((2, 3))
+full = np.full((2, 2), 7)
+identity = np.eye(3)
+random = np.random.randn(3, 4)
+
+# Array from ranges
+range_arr = np.arange(0, 10, 2)        # [0, 2, 4, 6, 8]
+linspace_arr = np.linspace(0, 1, 5)    # [0, 0.25, 0.5, 0.75, 1]
+
+# Array properties
+print(arr2d.shape)        # (2, 3)
+print(arr2d.dtype)        # Data type
+print(arr2d.size)         # Total elements
+print(arr2d.ndim)         # Number of dimensions</code></pre>
+
+            <h3>Array Operations and Mathematics</h3>
+            <pre><code class="language-python"># Element-wise operations
+arr = np.array([1, 2, 3, 4, 5])
+result = arr * 2              # Multiply by scalar
+result = arr + arr            # Element-wise addition
+result = np.sqrt(arr)         # Square root
+result = np.exp(arr)          # Exponential
+
+# Matrix operations
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+
+element_wise = A * B          # Element-wise multiplication
+matrix_mult = np.dot(A, B)    # Matrix multiplication
+matrix_mult = A @ B           # Alternative matrix multiplication
+
+# Statistical operations
+arr = np.random.randn(1000)
+print(f"Mean: {np.mean(arr)}")
+print(f"Std: {np.std(arr)}")
+print(f"Min: {np.min(arr)}")
+print(f"Max: {np.max(arr)}")
+print(f"Median: {np.median(arr)}")
+
+# Along specific axes
+arr2d = np.random.randn(5, 3)
+col_means = np.mean(arr2d, axis=0)    # Mean of each column
+row_sums = np.sum(arr2d, axis=1)      # Sum of each row</code></pre>
+
+            <h3>Array Indexing and Advanced Operations</h3>
+            <pre><code class="language-python"># Array indexing and slicing
+arr = np.array([0, 1, 2, 3, 4, 5])
+print(arr[0])           # First element
+print(arr[-1])          # Last element
+print(arr[1:4])         # Slice [1, 2, 3]
+
+# 2D array indexing
+arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print(arr2d[0, 1])      # Element at row 0, column 1
+print(arr2d[1, :])      # Entire row 1
+print(arr2d[:, 2])      # Entire column 2
+
+# Boolean indexing
+mask = arr > 3
+result = arr[mask]      # Elements greater than 3
+
+# Array reshaping
+arr = np.arange(12)
+reshaped = arr.reshape(3, 4)
+flattened = reshaped.flatten()
+
+# Broadcasting example
+arr2d = np.array([[1, 2, 3], [4, 5, 6]])
+arr1d = np.array([10, 20, 30])
+result = arr2d + arr1d  # Broadcasting: adds arr1d to each row
+
+# Universal functions (ufuncs)
+arr = np.array([-1, 0, 1, 2])
+result = np.abs(arr)           # Absolute value
+result = np.square(arr)        # Square
+result = np.where(arr > 1, arr, 0)  # Conditional selection</code></pre>
+
+            <div class="collapsible-section" id="advanced-pandas-operations">
+                <div class="section-header" onclick="toggleSection('advanced-pandas-operations')">
+                    <h2>📈 Advanced pandas Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Apply Functions and String Operations</h3>
+            <pre><code class="language-python"># Apply functions
+df['name_length'] = df['name'].apply(len)
+df['name_upper'] = df['name'].apply(str.upper)
+
+# Custom functions
+def categorize_age(age):
+    if age < 25:
+        return 'Young'
+    elif age < 35:
+        return 'Middle'
+    else:
+        return 'Senior'
+
+df['age_category'] = df['age'].apply(categorize_age)
+
+# Apply to entire row
+def calculate_bonus(row):
+    if row['department'] == 'Sales':
+        return row['salary'] * 0.1
+    else:
+        return row['salary'] * 0.05
+
+df['bonus'] = df.apply(calculate_bonus, axis=1)
+
+# String operations
+df['name_upper'] = df['name'].str.upper()
+df['name_length'] = df['name'].str.len()
+df['contains_a'] = df['name'].str.contains('a', case=False)
+
+# String splitting
+df[['first', 'last']] = df['full_name'].str.split(' ', expand=True)</code></pre>
+
+            <div class="collapsible-section" id="time-series-operations">
+                <div class="section-header" onclick="toggleSection('time-series-operations')">
+                    <h2>📅 Time Series Operations</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <pre><code class="language-python"># Create datetime data
+dates = pd.date_range('2023-01-01', periods=100, freq='D')
+ts_df = pd.DataFrame({
+    'date': dates,
+    'value': np.random.randn(100).cumsum()
+})
+
+# Set datetime index
+ts_df = ts_df.set_index('date')
+
+# DateTime operations
+ts_df['year'] = ts_df.index.year
+ts_df['month'] = ts_df.index.month
+ts_df['day_of_week'] = ts_df.index.day_name()
+
+# Resample time series
+daily_mean = ts_df.resample('D').mean()      # Daily average
+weekly_sum = ts_df.resample('W').sum()       # Weekly sum
+monthly_max = ts_df.resample('M').max()      # Monthly maximum
+
+# Rolling calculations
+ts_df['rolling_mean_7'] = ts_df['value'].rolling(window=7).mean()
+ts_df['rolling_std_30'] = ts_df['value'].rolling(window=30).std()
+ts_df['ewm_mean'] = ts_df['value'].ewm(span=10).mean()
+
+# Shift operations
+ts_df['lagged_value'] = ts_df['value'].shift(1)        # Previous day
+ts_df['pct_change'] = ts_df['value'].pct_change()      # Percentage change</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Always use vectorized operations in pandas and NumPy instead of Python loops. They are typically 10-100x faster!
+            </div>
+
+            <pre><code class="language-python"># ❌ Slow Python loop
+result = []
+for i in range(len(df)):
+    result.append(df.iloc[i]['col1'] * df.iloc[i]['col2'])
+
+# ✅ Fast vectorized operation  
+result = df['col1'] * df['col2']</code></pre>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ AWS Kinesis Streaming Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.3rem; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">⚡ AWS Kinesis Streaming Cheat Sheet</h1>
+            <blockquote>Complete guide to AWS Kinesis Data Streams, Firehose, and Analytics for real-time data processing</blockquote>
+
+            <h2>🔗 Official Documentation</h2>
+            <ul>
+                <li><a href="https://docs.aws.amazon.com/kinesis/" target="_blank">AWS Kinesis Documentation</a></li>
+                <li><a href="https://docs.aws.amazon.com/kinesis/latest/dev/" target="_blank">Kinesis Data Streams Developer Guide</a></li>
+                <li><a href="https://docs.aws.amazon.com/firehose/latest/dev/" target="_blank">Kinesis Data Firehose Developer Guide</a></li>
+                <li><a href="https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/kinesis.html" target="_blank">Boto3 Kinesis Reference</a></li>
+            </ul>
+
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#kinesis-data-streams-setup-and-configuration">🚀 Kinesis Data Streams - Setup and Configuration</a></li><li><a href="#producing-data-to-kinesis-streams">📤 Producing Data to Kinesis Streams</a></li><li><a href="#consuming-data-from-kinesis-streams">📥 Consuming Data from Kinesis Streams</a></li><li><a href="#kinesis-data-firehose">🔥 Kinesis Data Firehose</a></li><li><a href="#kinesis-data-analytics">📊 Kinesis Data Analytics</a></li><li><a href="#production-patterns-and-best-practices">🔧 Production Patterns and Best Practices</a></li><li><a href="#performance-optimization">🎯 Performance Optimization</a></li><li><a href="#production-checklist">📋 Production Checklist</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="kinesis-data-streams-setup-and-configuration">
+                <div class="section-header" onclick="toggleSection('kinesis-data-streams-setup-and-configuration')">
+                    <h2>🚀 Kinesis Data Streams - Setup and Configuration</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Creating and Managing Streams</h3>
+            <pre><code class="language-python">import boto3
+import json
+import time
+from datetime import datetime
+import uuid
+
+# Initialize Kinesis client with proper configuration
+kinesis_client = boto3.client(
+    'kinesis',
+    region_name='us-east-1',  # Choose appropriate region
+    aws_access_key_id='your-access-key',
+    aws_secret_access_key='your-secret-key'
+)
+
+# Alternative: Use IAM roles (recommended for production)
+kinesis_client = boto3.client('kinesis', region_name='us-east-1')
+
+# Create a new Kinesis stream
+def create_kinesis_stream(stream_name, shard_count=1):
+    """
+    Create a new Kinesis Data Stream
+    
+    Args:
+        stream_name (str): Name of the stream
+        shard_count (int): Number of shards for the stream
+    """
+    try:
+        response = kinesis_client.create_stream(
+            StreamName=stream_name,
+            ShardCount=shard_count
+        )
+        print(f"Stream '{stream_name}' creation initiated")
+        
+        # Wait for stream to become active
+        print("Waiting for stream to become active...")
+        waiter = kinesis_client.get_waiter('stream_exists')
+        waiter.wait(StreamName=stream_name)
+        
+        print(f"Stream '{stream_name}' is now active!")
+        return True
+        
+    except kinesis_client.exceptions.ResourceInUseException:
+        print(f"Stream '{stream_name}' already exists")
+        return True
+    except Exception as e:
+        print(f"Error creating stream: {e}")
+        return False
+
+# Get stream information
+def describe_stream(stream_name):
+    """Get detailed information about a Kinesis stream"""
+    try:
+        response = kinesis_client.describe_stream(StreamName=stream_name)
+        stream_description = response['StreamDescription']
+        
+        print(f"Stream Name: {stream_description['StreamName']}")
+        print(f"Status: {stream_description['StreamStatus']}")
+        print(f"Retention Period: {stream_description['RetentionPeriodHours']} hours")
+        print(f"Shard Count: {len(stream_description['Shards'])}")
+        print(f"Stream ARN: {stream_description['StreamARN']}")
+        
+        # Display shard information
+        print("\nShard Details:")
+        for i, shard in enumerate(stream_description['Shards']):
+            print(f"  Shard {i}: {shard['ShardId']}")
+            print(f"    Hash Key Range: {shard['HashKeyRange']['StartingHashKey']} - {shard['HashKeyRange']['EndingHashKey']}")
+        
+        return stream_description
+    except Exception as e:
+        print(f"Error describing stream: {e}")
+        return None
+
+# Example: Create and describe a stream
+stream_name = "user-activity-stream"
+create_kinesis_stream(stream_name, shard_count=2)
+stream_info = describe_stream(stream_name)</code></pre>
+
+            <div class="collapsible-section" id="producing-data-to-kinesis-streams">
+                <div class="section-header" onclick="toggleSection('producing-data-to-kinesis-streams')">
+                    <h2>📤 Producing Data to Kinesis Streams</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Single Record Production</h3>
+            <pre><code class="language-python">import json
+import hashlib
+from datetime import datetime
+
+def put_single_record(stream_name, data, partition_key=None):
+    """
+    Send a single record to Kinesis Data Stream
+    
+    Args:
+        stream_name (str): Name of the target stream
+        data (dict): Data to send (will be JSON serialized)
+        partition_key (str): Key to determine which shard receives the record
+    """
+    try:
+        # Generate partition key if not provided
+        if partition_key is None:
+            partition_key = str(uuid.uuid4())
+        
+        # Serialize data to JSON
+        data_blob = json.dumps(data)
+        
+        # Put record to stream
+        response = kinesis_client.put_record(
+            StreamName=stream_name,
+            Data=data_blob,
+            PartitionKey=partition_key
+        )
+        
+        print(f"Record sent successfully!")
+        print(f"Shard ID: {response['ShardId']}")
+        print(f"Sequence Number: {response['SequenceNumber']}")
+        
+        return response
+        
+    except Exception as e:
+        print(f"Error sending record: {e}")
+        return None
+
+# Example: Send user activity data
+user_activity = {
+    "user_id": "user_12345",
+    "action": "product_view",
+    "product_id": "prod_67890", 
+    "timestamp": datetime.now().isoformat(),
+    "session_id": "session_abc123",
+    "user_agent": "Mozilla/5.0...",
+    "ip_address": "192.168.1.1"
+}
+
+# Send with user_id as partition key to ensure events from same user go to same shard
+put_single_record(
+    stream_name="user-activity-stream",
+    data=user_activity,
+    partition_key=user_activity["user_id"]
+)</code></pre>
+
+            <h3>Batch Record Production</h3>
+            <pre><code class="language-python">def put_records_batch(stream_name, records_data, partition_key_field="id"):
+    """
+    Send multiple records to Kinesis in a single batch (up to 500 records)
+    
+    Args:
+        stream_name (str): Name of the target stream
+        records_data (list): List of dictionaries containing record data
+        partition_key_field (str): Field to use as partition key
+    """
+    # Prepare records for batch sending
+    records = []
+    for record_data in records_data:
+        # Use specified field as partition key, or generate UUID
+        if partition_key_field in record_data:
+            partition_key = str(record_data[partition_key_field])
+        else:
+            partition_key = str(uuid.uuid4())
+        
+        # Add timestamp if not present
+        if 'timestamp' not in record_data:
+            record_data['timestamp'] = datetime.now().isoformat()
+        
+        record = {
+            'Data': json.dumps(record_data),
+            'PartitionKey': partition_key
+        }
+        records.append(record)
+    
+    # Send records in batches of 500 (Kinesis limit)
+    batch_size = 500
+    total_sent = 0
+    failed_records = []
+    
+    for i in range(0, len(records), batch_size):
+        batch = records[i:i + batch_size]
+        
+        try:
+            response = kinesis_client.put_records(
+                Records=batch,
+                StreamName=stream_name
+            )
+            
+            # Check for failed records
+            failed_count = response['FailedRecordCount']
+            if failed_count > 0:
+                print(f"Warning: {failed_count} records failed in this batch")
+                
+                # Collect failed records for retry
+                for j, record_result in enumerate(response['Records']):
+                    if 'ErrorCode' in record_result:
+                        failed_records.append(batch[j])
+                        print(f"Failed record: {record_result['ErrorCode']} - {record_result['ErrorMessage']}")
+            
+            successful_count = len(batch) - failed_count
+            total_sent += successful_count
+            print(f"Batch sent: {successful_count} successful, {failed_count} failed")
+            
+        except Exception as e:
+            print(f"Error sending batch: {e}")
+            failed_records.extend(batch)
+    
+    print(f"Total records sent successfully: {total_sent}")
+    print(f"Total failed records: {len(failed_records)}")
+    
+    return failed_records
+
+# Example: Send multiple user events
+user_events = [
+    {"user_id": "user_001", "action": "login", "page": "/home"},
+    {"user_id": "user_002", "action": "search", "query": "python books"},
+    {"user_id": "user_003", "action": "purchase", "amount": 29.99},
+    {"user_id": "user_001", "action": "logout", "session_duration": 1800},
+    {"user_id": "user_004", "action": "signup", "email": "user@example.com"}
+]
+
+# Send batch with user_id as partition key
+failed_records = put_records_batch(
+    stream_name="user-activity-stream",
+    records_data=user_events,
+    partition_key_field="user_id"
+)
+
+# Retry failed records if any
+if failed_records:
+    print("Retrying failed records...")
+    time.sleep(1)  # Brief delay before retry
+    retry_failed = put_records_batch("user-activity-stream", failed_records)</code></pre>
+
+            <div class="collapsible-section" id="consuming-data-from-kinesis-streams">
+                <div class="section-header" onclick="toggleSection('consuming-data-from-kinesis-streams')">
+                    <h2>📥 Consuming Data from Kinesis Streams</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Basic Consumer Implementation</h3>
+            <pre><code class="language-python">import base64
+import time
+
+class KinesisConsumer:
+    """Basic Kinesis Data Stream consumer"""
+    
+    def __init__(self, stream_name, region_name='us-east-1'):
+        self.stream_name = stream_name
+        self.kinesis_client = boto3.client('kinesis', region_name=region_name)
+        self.shard_iterators = {}
+        
+    def get_shard_iterator(self, shard_id, iterator_type='LATEST', sequence_number=None):
+        """
+        Get shard iterator for consuming records
+        
+        Args:
+            shard_id (str): ID of the shard to read from
+            iterator_type (str): Where to start reading ('LATEST', 'TRIM_HORIZON', 'AT_SEQUENCE_NUMBER', etc.)
+            sequence_number (str): Required if iterator_type is 'AT_SEQUENCE_NUMBER'
+        """
+        try:
+            params = {
+                'StreamName': self.stream_name,
+                'ShardId': shard_id,
+                'ShardIteratorType': iterator_type
+            }
+            
+            if sequence_number and iterator_type in ['AT_SEQUENCE_NUMBER', 'AFTER_SEQUENCE_NUMBER']:
+                params['StartingSequenceNumber'] = sequence_number
+            
+            response = self.kinesis_client.get_shard_iterator(**params)
+            return response['ShardIterator']
+        
+        except Exception as e:
+            print(f"Error getting shard iterator for {shard_id}: {e}")
+            return None
+    
+    def process_record(self, record):
+        """
+        Process individual record - override this method for custom processing
+        
+        Args:
+            record (dict): Kinesis record containing data and metadata
+        """
+        # Decode the record data
+        data = json.loads(record['Data'])
+        
+        print(f"Processing record:")
+        print(f"  Sequence Number: {record['SequenceNumber']}")
+        print(f"  Partition Key: {record['PartitionKey']}")
+        print(f"  Data: {data}")
+        
+        # Add your custom processing logic here
+        # Examples:
+        # - Store in database
+        # - Send to another service
+        # - Transform and forward to another stream
+        
+        return data
+    
+    def consume_shard(self, shard_id, max_records=100, poll_interval=1):
+        """
+        Continuously consume records from a specific shard
+        
+        Args:
+            shard_id (str): ID of the shard to consume from
+            max_records (int): Maximum records to retrieve per call
+            poll_interval (float): Seconds to wait between polls
+        """
+        print(f"Starting consumer for shard: {shard_id}")
+        
+        # Get initial shard iterator
+        shard_iterator = self.get_shard_iterator(shard_id, 'LATEST')
+        
+        if not shard_iterator:
+            print(f"Failed to get shard iterator for {shard_id}")
+            return
+        
+        record_count = 0
+        
+        try:
+            while shard_iterator:
+                try:
+                    # Get records from the shard
+                    response = self.kinesis_client.get_records(
+                        ShardIterator=shard_iterator,
+                        Limit=max_records
+                    )
+                    
+                    records = response['Records']
+                    shard_iterator = response.get('NextShardIterator')
+                    
+                    if records:
+                        print(f"Received {len(records)} records from {shard_id}")
+                        
+                        # Process each record
+                        for record in records:
+                            try:
+                                self.process_record(record)
+                                record_count += 1
+                            except Exception as e:
+                                print(f"Error processing record: {e}")
+                                continue
+                    else:
+                        print(f"No new records from {shard_id}")
+                    
+                    # Wait before next poll
+                    time.sleep(poll_interval)
+                    
+                except Exception as e:
+                    print(f"Error getting records from {shard_id}: {e}")
+                    time.sleep(poll_interval * 2)  # Wait longer on error
+                    
+        except KeyboardInterrupt:
+            print(f"\nConsumer stopped. Processed {record_count} records from {shard_id}")
+    
+    def consume_all_shards(self):
+        """Start consuming from all shards in the stream"""
+        try:
+            # Get stream description to find all shards
+            stream_description = self.kinesis_client.describe_stream(
+                StreamName=self.stream_name
+            )['StreamDescription']
+            
+            shards = stream_description['Shards']
+            print(f"Found {len(shards)} shards in stream {self.stream_name}")
+            
+            # In a real application, you'd typically run each shard consumer in a separate thread/process
+            # For demonstration, we'll just consume from the first shard
+            if shards:
+                first_shard_id = shards[0]['ShardId']
+                self.consume_shard(first_shard_id)
+            
+        except Exception as e:
+            print(f"Error starting consumer: {e}")
+
+# Example: Start consuming from the stream
+consumer = KinesisConsumer("user-activity-stream")
+
+# Custom record processor
+class CustomKinesisConsumer(KinesisConsumer):
+    def __init__(self, stream_name):
+        super().__init__(stream_name)
+        self.processed_users = set()
+        self.user_actions = {}
+    
+    def process_record(self, record):
+        """Custom processing logic for user activity data"""
+        data = json.loads(record['Data'])
+        
+        user_id = data.get('user_id')
+        action = data.get('action')
+        timestamp = data.get('timestamp')
+        
+        # Track unique users
+        self.processed_users.add(user_id)
+        
+        # Count actions per user
+        if user_id not in self.user_actions:
+            self.user_actions[user_id] = {}
+        
+        if action not in self.user_actions[user_id]:
+            self.user_actions[user_id][action] = 0
+        
+        self.user_actions[user_id][action] += 1
+        
+        print(f"User {user_id} performed {action} at {timestamp}")
+        print(f"Total unique users processed: {len(self.processed_users)}")
+        
+        return data
+
+# Start custom consumer
+custom_consumer = CustomKinesisConsumer("user-activity-stream")
+# custom_consumer.consume_all_shards()  # Uncomment to run</code></pre>
+
+            <div class="collapsible-section" id="kinesis-data-firehose">
+                <div class="section-header" onclick="toggleSection('kinesis-data-firehose')">
+                    <h2>🔥 Kinesis Data Firehose</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Setting up Firehose Delivery Stream</h3>
+            <pre><code class="language-python">import boto3
+
+# Initialize Firehose client
+firehose_client = boto3.client('firehose', region_name='us-east-1')
+
+def create_firehose_delivery_stream(stream_name, s3_bucket, s3_prefix="data/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/hour=!{timestamp:HH}/"):
+    """
+    Create Kinesis Data Firehose delivery stream to S3
+    
+    Args:
+        stream_name (str): Name of the Firehose delivery stream
+        s3_bucket (str): Target S3 bucket name
+        s3_prefix (str): S3 prefix pattern for organizing data
+    """
+    
+    delivery_stream_config = {
+        'DeliveryStreamName': stream_name,
+        'DeliveryStreamType': 'DirectPut',
+        'ExtendedS3DestinationConfiguration': {
+            'RoleARN': 'arn:aws:iam::ACCOUNT-ID:role/firehose_delivery_role',  # Replace with actual role ARN
+            'BucketARN': f'arn:aws:s3:::{s3_bucket}',
+            'Prefix': s3_prefix,
+            'ErrorOutputPrefix': 'errors/',
+            'BufferingHints': {
+                'SizeInMBs': 5,      # Buffer size in MB (1-128 MB)
+                'IntervalInSeconds': 300  # Buffer time in seconds (60-900 seconds)
+            },
+            'CompressionFormat': 'GZIP',  # Compress files to save storage
+            'CloudWatchLoggingOptions': {
+                'Enabled': True,
+                'LogGroupName': f'/aws/kinesisfirehose/{stream_name}'
+            },
+            'ProcessingConfiguration': {
+                'Enabled': False,  # Set to True to enable data transformation
+            },
+            'S3BackupMode': 'Disabled',  # Set to 'Enabled' to backup all data
+            'DataFormatConversionConfiguration': {
+                'Enabled': True,
+                'OutputFormatConfiguration': {
+                    'Serializer': {
+                        'ParquetSerDe': {}  # Convert to Parquet for better analytics performance
+                    }
+                },
+                'SchemaConfiguration': {
+                    'DatabaseName': 'your_glue_database',  # AWS Glue database name
+                    'TableName': 'your_table_name',        # AWS Glue table name
+                    'RoleARN': 'arn:aws:iam::ACCOUNT-ID:role/firehose_delivery_role'
+                }
+            }
+        }
+    }
+    
+    try:
+        response = firehose_client.create_delivery_stream(**delivery_stream_config)
+        print(f"Firehose delivery stream '{stream_name}' created successfully")
+        print(f"Stream ARN: {response['DeliveryStreamARN']}")
+        return response
+    
+    except Exception as e:
+        print(f"Error creating Firehose delivery stream: {e}")
+        return None
+
+# Send data to Firehose
+def send_to_firehose(stream_name, records):
+    """
+    Send records to Kinesis Data Firehose
+    
+    Args:
+        stream_name (str): Name of the Firehose delivery stream
+        records (list): List of record data (dictionaries)
+    """
+    # Prepare records for Firehose
+    firehose_records = []
+    for record in records:
+        # Add newline for proper JSON Lines format
+        data_with_newline = json.dumps(record) + '\n'
+        firehose_records.append({'Data': data_with_newline})
+    
+    # Send records in batches (up to 500 records per batch)
+    batch_size = 500
+    for i in range(0, len(firehose_records), batch_size):
+        batch = firehose_records[i:i + batch_size]
+        
+        try:
+            response = firehose_client.put_record_batch(
+                DeliveryStreamName=stream_name,
+                Records=batch
+            )
+            
+            failed_count = response['FailedPutCount']
+            successful_count = len(batch) - failed_count
+            
+            print(f"Firehose batch: {successful_count} successful, {failed_count} failed")
+            
+            if failed_count > 0:
+                for j, result in enumerate(response['RequestResponses']):
+                    if 'ErrorCode' in result:
+                        print(f"Failed record {j}: {result['ErrorCode']} - {result['ErrorMessage']}")
+        
+        except Exception as e:
+            print(f"Error sending batch to Firehose: {e}")
+
+# Example: Send data to Firehose
+sample_events = [
+    {"user_id": "user_001", "event": "page_view", "page": "/products", "timestamp": datetime.now().isoformat()},
+    {"user_id": "user_002", "event": "search", "query": "laptop", "timestamp": datetime.now().isoformat()},
+    {"user_id": "user_003", "event": "purchase", "product_id": "prod_123", "amount": 999.99, "timestamp": datetime.now().isoformat()}
+]
+
+send_to_firehose("user-events-delivery-stream", sample_events)</code></pre>
+
+            <div class="collapsible-section" id="kinesis-data-analytics">
+                <div class="section-header" onclick="toggleSection('kinesis-data-analytics')">
+                    <h2>📊 Kinesis Data Analytics</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Real-time Analytics with SQL</h3>
+            <pre><code class="language-sql">-- Create in-application stream from Kinesis Data Stream
+CREATE STREAM "SOURCE_SQL_STREAM_001" (
+    "user_id"       VARCHAR(64),
+    "event_type"    VARCHAR(32),
+    "page"          VARCHAR(256),
+    "timestamp"     TIMESTAMP,
+    "session_id"    VARCHAR(64),
+    "user_agent"    VARCHAR(512),
+    "ip_address"    VARCHAR(45)
+);
+
+-- Create pump to populate stream from Kinesis source
+CREATE OR REPLACE PUMP "STREAM_PUMP" AS INSERT INTO "SOURCE_SQL_STREAM_001"
+SELECT STREAM 
+    "user_id",
+    "event_type",
+    "page", 
+    ROWTIME_TO_TIMESTAMP(ROWTIME) AS "timestamp",
+    "session_id",
+    "user_agent",
+    "ip_address"
+FROM "SOURCE_SQL_STREAM_001"_001;
+
+-- Real-time aggregations: Count events by user in 5-minute windows
+CREATE OR REPLACE STREAM "USER_ACTIVITY_STREAM" AS
+SELECT STREAM
+    "user_id",
+    COUNT(*) AS "event_count",
+    ROWTIME_TO_TIMESTAMP(ROWTIME) AS "window_end"
+FROM "SOURCE_SQL_STREAM_001"
+GROUP BY "user_id", RANGE_INTERVAL '5' MINUTE;
+
+-- Detect anomalies: Users with unusually high activity
+CREATE OR REPLACE STREAM "HIGH_ACTIVITY_USERS" AS
+SELECT STREAM
+    "user_id",
+    "event_count",
+    "window_end"
+FROM "USER_ACTIVITY_STREAM"
+WHERE "event_count" > 100;  -- Threshold for high activity
+
+-- Session analysis: Track page views per session
+CREATE OR REPLACE STREAM "SESSION_PAGE_VIEWS" AS
+SELECT STREAM
+    "session_id",
+    COUNT(DISTINCT "page") AS "unique_pages",
+    COUNT(*) AS "total_page_views",
+    ROWTIME_TO_TIMESTAMP(ROWTIME) AS "window_end"
+FROM "SOURCE_SQL_STREAM_001"
+WHERE "event_type" = 'page_view'
+GROUP BY "session_id", RANGE_INTERVAL '10' MINUTE;
+
+-- Top pages in real-time
+CREATE OR REPLACE STREAM "TOP_PAGES" AS
+SELECT STREAM
+    "page",
+    COUNT(*) AS "view_count",
+    ROWTIME_TO_TIMESTAMP(ROWTIME) AS "window_end"
+FROM "SOURCE_SQL_STREAM_001"
+WHERE "event_type" = 'page_view'
+GROUP BY "page", RANGE_INTERVAL '1' MINUTE
+HAVING COUNT(*) > 10;
+</code></pre>
+
+            <div class="collapsible-section" id="production-patterns-and-best-practices">
+                <div class="section-header" onclick="toggleSection('production-patterns-and-best-practices')">
+                    <h2>🔧 Production Patterns and Best Practices</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Error Handling and Monitoring</h3>
+            <pre><code class="language-python">import boto3
+import logging
+from botocore.exceptions import ClientError
+import time
+from functools import wraps
+
+# Setup logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+class KinesisProducer:
+    """Production-ready Kinesis producer with error handling and monitoring"""
+    
+    def __init__(self, stream_name, region_name='us-east-1'):
+        self.stream_name = stream_name
+        self.kinesis_client = boto3.client('kinesis', region_name=region_name)
+        self.cloudwatch = boto3.client('cloudwatch', region_name=region_name)
+        
+        # Metrics tracking
+        self.metrics = {
+            'records_sent': 0,
+            'records_failed': 0,
+            'bytes_sent': 0,
+            'api_calls': 0
+        }
+    
+    def retry_with_backoff(self, max_retries=3, base_delay=1):
+        """Decorator for exponential backoff retry logic"""
+        def decorator(func):
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                for attempt in range(max_retries + 1):
+                    try:
+                        result = func(*args, **kwargs)
+                        return result
+                    except ClientError as e:
+                        error_code = e.response['Error']['Code']
+                        
+                        # Don't retry for certain errors
+                        if error_code in ['InvalidArgumentException', 'AccessDeniedException']:
+                            logger.error(f"Non-retryable error: {error_code}")
+                            raise e
+                        
+                        if attempt == max_retries:
+                            logger.error(f"Max retries exceeded for {func.__name__}")
+                            raise e
+                        
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"Attempt {attempt + 1} failed, retrying in {delay}s: {error_code}")
+                        time.sleep(delay)
+                    except Exception as e:
+                        logger.error(f"Unexpected error in {func.__name__}: {e}")
+                        raise e
+            return wrapper
+        return decorator
+    
+    @retry_with_backoff(max_retries=3)
+    def put_record_safe(self, data, partition_key):
+        """Send single record with error handling and retries"""
+        try:
+            data_blob = json.dumps(data) if isinstance(data, dict) else data
+            
+            response = self.kinesis_client.put_record(
+                StreamName=self.stream_name,
+                Data=data_blob,
+                PartitionKey=partition_key
+            )
+            
+            # Update metrics
+            self.metrics['records_sent'] += 1
+            self.metrics['bytes_sent'] += len(data_blob.encode('utf-8'))
+            self.metrics['api_calls'] += 1
+            
+            logger.info(f"Record sent to shard {response['ShardId']}")
+            return response
+            
+        except ClientError as e:
+            self.metrics['records_failed'] += 1
+            self.metrics['api_calls'] += 1
+            
+            error_code = e.response['Error']['Code']
+            logger.error(f"Kinesis API error: {error_code}")
+            
+            # Send custom metric to CloudWatch
+            self.send_custom_metric('RecordsFailed', 1)
+            raise e
+    
+    @retry_with_backoff(max_retries=3)
+    def put_records_batch_safe(self, records):
+        """Send batch records with comprehensive error handling"""
+        try:
+            # Prepare records
+            kinesis_records = []
+            for record in records:
+                data_blob = json.dumps(record['data']) if isinstance(record['data'], dict) else record['data']
+                kinesis_records.append({
+                    'Data': data_blob,
+                    'PartitionKey': record['partition_key']
+                })
+            
+            response = self.kinesis_client.put_records(
+                Records=kinesis_records,
+                StreamName=self.stream_name
+            )
+            
+            # Process response and handle partial failures
+            failed_records = []
+            successful_count = 0
+            
+            for i, record_result in enumerate(response['Records']):
+                if 'ErrorCode' in record_result:
+                    # Record failed - add to retry list
+                    failed_records.append(records[i])
+                    logger.warning(f"Record {i} failed: {record_result['ErrorCode']} - {record_result['ErrorMessage']}")
+                else:
+                    successful_count += 1
+            
+            # Update metrics
+            self.metrics['records_sent'] += successful_count
+            self.metrics['records_failed'] += len(failed_records)
+            self.metrics['api_calls'] += 1
+            
+            # Send metrics to CloudWatch
+            self.send_custom_metric('RecordsSent', successful_count)
+            if failed_records:
+                self.send_custom_metric('RecordsFailed', len(failed_records))
+            
+            logger.info(f"Batch result: {successful_count} successful, {len(failed_records)} failed")
+            
+            return failed_records
+            
+        except ClientError as e:
+            self.metrics['api_calls'] += 1
+            self.metrics['records_failed'] += len(records)
+            
+            logger.error(f"Batch send failed: {e.response['Error']['Code']}")
+            self.send_custom_metric('BatchSendErrors', 1)
+            raise e
+    
+    def send_custom_metric(self, metric_name, value, unit='Count'):
+        """Send custom metrics to CloudWatch"""
+        try:
+            self.cloudwatch.put_metric_data(
+                Namespace='Kinesis/Producer',
+                MetricData=[
+                    {
+                        'MetricName': metric_name,
+                        'Dimensions': [
+                            {
+                                'Name': 'StreamName',
+                                'Value': self.stream_name
+                            }
+                        ],
+                        'Value': value,
+                        'Unit': unit,
+                        'Timestamp': datetime.now()
+                    }
+                ]
+            )
+        except Exception as e:
+            logger.warning(f"Failed to send metric {metric_name}: {e}")
+    
+    def get_metrics_summary(self):
+        """Get summary of producer metrics"""
+        return {
+            'stream_name': self.stream_name,
+            'records_sent': self.metrics['records_sent'],
+            'records_failed': self.metrics['records_failed'],
+            'success_rate': (self.metrics['records_sent'] / 
+                           max(1, self.metrics['records_sent'] + self.metrics['records_failed']) * 100),
+            'bytes_sent': self.metrics['bytes_sent'],
+            'api_calls': self.metrics['api_calls']
+        }
+
+# Example usage of production producer
+producer = KinesisProducer("user-activity-stream")
+
+# Send records with proper error handling
+sample_records = [
+    {"data": {"user_id": "user_001", "action": "login"}, "partition_key": "user_001"},
+    {"data": {"user_id": "user_002", "action": "search"}, "partition_key": "user_002"},
+    {"data": {"user_id": "user_003", "action": "purchase"}, "partition_key": "user_003"}
+]
+
+try:
+    failed_records = producer.put_records_batch_safe(sample_records)
+    
+    # Retry failed records
+    if failed_records:
+        logger.info(f"Retrying {len(failed_records)} failed records...")
+        time.sleep(1)
+        remaining_failed = producer.put_records_batch_safe(failed_records)
+        
+        if remaining_failed:
+            logger.error(f"{len(remaining_failed)} records still failing after retry")
+    
+    # Print metrics summary
+    metrics = producer.get_metrics_summary()
+    logger.info(f"Producer metrics: {metrics}")
+    
+except Exception as e:
+    logger.error(f"Critical error in producer: {e}")
+</code></pre>
+
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Always implement proper retry logic with exponential backoff for Kinesis operations. Monitor your shard utilization and scale your streams based on throughput requirements!
+            </div>
+
+            <div class="collapsible-section" id="performance-optimization">
+                <div class="section-header" onclick="toggleSection('performance-optimization')">
+                    <h2>🎯 Performance Optimization</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <h3>Shard Management and Scaling</h3>
+            <pre><code class="language-python"># Monitor shard metrics and auto-scale
+def monitor_and_scale_stream(stream_name, target_utilization=70):
+    """
+    Monitor stream metrics and automatically scale shards based on utilization
+    
+    Args:
+        stream_name (str): Name of the stream to monitor
+        target_utilization (float): Target utilization percentage for scaling decisions
+    """
+    cloudwatch = boto3.client('cloudwatch')
+    
+    # Get shard-level metrics from CloudWatch
+    end_time = datetime.now()
+    start_time = end_time - timedelta(minutes=15)
+    
+    metrics_response = cloudwatch.get_metric_statistics(
+        Namespace='AWS/Kinesis',
+        MetricName='IncomingRecords',
+        Dimensions=[
+            {'Name': 'StreamName', 'Value': stream_name}
+        ],
+        StartTime=start_time,
+        EndTime=end_time,
+        Period=300,  # 5-minute periods
+        Statistics=['Average', 'Maximum']
+    )
+    
+    if metrics_response['Datapoints']:
+        latest_metric = max(metrics_response['Datapoints'], key=lambda x: x['Timestamp'])
+        avg_records_per_sec = latest_metric['Average'] / 60  # Convert per minute to per second
+        
+        # Get stream description for current shard count
+        stream_desc = kinesis_client.describe_stream(StreamName=stream_name)
+        current_shards = len(stream_desc['StreamDescription']['Shards'])
+        
+        # Calculate utilization (assuming 1000 records/sec per shard capacity)
+        records_per_shard_capacity = 1000
+        total_capacity = current_shards * records_per_shard_capacity
+        utilization = (avg_records_per_sec / total_capacity) * 100
+        
+        print(f"Stream: {stream_name}")
+        print(f"Current shards: {current_shards}")
+        print(f"Average records/sec: {avg_records_per_sec:.1f}")
+        print(f"Utilization: {utilization:.1f}%")
+        
+        # Scale up if utilization is too high
+        if utilization > target_utilization:
+            new_shard_count = int(current_shards * 1.5)  # 50% increase
+            print(f"High utilization detected. Scaling up to {new_shard_count} shards")
+            
+            # Update shard count
+            kinesis_client.update_shard_count(
+                StreamName=stream_name,
+                TargetShardCount=new_shard_count,
+                ScalingType='UNIFORM_SCALING'
+            )
+        
+        # Scale down if utilization is very low (be more conservative)
+        elif utilization < target_utilization * 0.3 and current_shards > 1:
+            new_shard_count = max(1, int(current_shards * 0.75))  # 25% decrease
+            print(f"Low utilization detected. Scaling down to {new_shard_count} shards")
+            
+            kinesis_client.update_shard_count(
+                StreamName=stream_name,
+                TargetShardCount=new_shard_count,
+                ScalingType='UNIFORM_SCALING'
+            )
+
+# Partition key strategies for optimal distribution
+def generate_optimal_partition_key(record_data, strategy='hash'):
+    """
+    Generate optimal partition key for even distribution across shards
+    
+    Args:
+        record_data (dict): The record data
+        strategy (str): Partitioning strategy ('hash', 'user_id', 'round_robin', 'timestamp')
+    """
+    if strategy == 'hash':
+        # Use hash of multiple fields for even distribution
+        key_fields = ['user_id', 'session_id', 'ip_address']
+        available_fields = [str(record_data.get(field, '')) for field in key_fields if record_data.get(field)]
+        combined_key = '|'.join(available_fields)
+        return hashlib.md5(combined_key.encode()).hexdigest()
+    
+    elif strategy == 'user_id':
+        # Use user_id directly (good for maintaining user session ordering)
+        return str(record_data.get('user_id', uuid.uuid4()))
+    
+    elif strategy == 'round_robin':
+        # Simple round-robin based on timestamp
+        return str(int(time.time()) % 100)
+    
+    elif strategy == 'timestamp':
+        # Use timestamp-based key (good for time-based analytics)
+        timestamp = record_data.get('timestamp', datetime.now().isoformat())
+        return hashlib.sha256(timestamp.encode()).hexdigest()[:16]
+    
+    else:
+        return str(uuid.uuid4())
+
+# Example: Use different partition key strategies
+sample_record = {
+    "user_id": "user_12345",
+    "session_id": "session_abc",
+    "ip_address": "192.168.1.1",
+    "timestamp": datetime.now().isoformat(),
+    "action": "page_view"
+}
+
+print("Partition key strategies:")
+for strategy in ['hash', 'user_id', 'round_robin', 'timestamp']:
+    key = generate_optimal_partition_key(sample_record, strategy)
+    print(f"  {strategy}: {key}")
+
+# Monitor performance with these settings
+monitor_and_scale_stream("user-activity-stream")</code></pre>
+
+            <div class="collapsible-section" id="production-checklist">
+                <div class="section-header" onclick="toggleSection('production-checklist')">
+                    <h2>📋 Production Checklist</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+            <ul>
+                <li><strong>Security:</strong>
+                    <ul>
+                        <li>Use IAM roles instead of hardcoded credentials</li>
+                        <li>Enable encryption at rest and in transit</li>
+                        <li>Implement proper VPC and security group configurations</li>
+                    </ul>
+                </li>
+                <li><strong>Monitoring:</strong>
+                    <ul>
+                        <li>Set up CloudWatch alarms for key metrics (IncomingRecords, PutRecord.Success)</li>
+                        <li>Monitor shard-level metrics and iterator age</li>
+                        <li>Track application-level metrics (processing latency, error rates)</li>
+                    </ul>
+                </li>
+                <li><strong>Scaling:</strong>
+                    <ul>
+                        <li>Design partition keys for even distribution</li>
+                        <li>Monitor shard utilization and scale appropriately</li>
+                        <li>Consider using enhanced fan-out for multiple consumers</li>
+                    </ul>
+                </li>
+                <li><strong>Error Handling:</strong>
+                    <ul>
+                        <li>Implement retry logic with exponential backoff</li>
+                        <li>Handle partial batch failures gracefully</li>
+                        <li>Set up dead letter queues for failed records</li>
+                    </ul>
+                </li>
+                <li><strong>Cost Optimization:</strong>
+                    <ul>
+                        <li>Right-size your streams based on actual throughput</li>
+                        <li>Use Firehose for simple ETL to reduce operational overhead</li>
+                        <li>Consider data compression and efficient serialization formats</li>
+                    </ul>
+                </li>
+            </ul>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>                </div>
+            </div>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔗 SQL Functions: SQL vs PySpark Comparison</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        nav {
+            background: white;
+            padding: 1rem 0;
+            margin-bottom: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            background: #f1f5f9;
+        }
+
+        .home-link {
+            background: #667eea !important;
+            color: white !important;
+        }
+
+        .content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            color: #4a5568;
+            margin: 2rem 0 1rem 0;
+            font-size: 1.8rem;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            color: #2d3748;
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.3rem;
+        }
+
+        blockquote {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0 5px 5px 0;
+            font-style: italic;
+            color: #4a5568;
+        }
+
+        .section-description {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #48bb78;
+        }
+
+        .section-description p {
+            margin: 0;
+            color: #2d3748;
+            font-weight: 500;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .sql-section, .pyspark-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+            min-width: 0; /* Allow shrinking */
+        }
+
+        .sql-section {
+            border-left: 4px solid #3182ce;
+        }
+
+        .pyspark-section {
+            border-left: 4px solid #e53e3e;
+        }
+
+        .section-header {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .sql-section .section-header {
+            color: #3182ce;
+        }
+
+        .pyspark-section .section-header {
+            color: #e53e3e;
+        }
+
+        pre {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin: 1rem 0;
+        }
+
+        code {
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+        }
+
+        .bullet-explanation {
+            background: #edf2f7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .bullet-explanation ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+
+        .bullet-explanation li {
+            margin: 0.5rem 0;
+            color: #4a5568;
+        }
+
+        .function-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .function-table th,
+        .function-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .function-table th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .function-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .pro-tip {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .pro-tip strong {
+            color: #ffd700;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #667eea;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: background 0.2s;
+        }
+
+        .back-to-top:hover {
+            background: #5a67d8;
+        }
+        
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header-toggle { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header-toggle:hover { background: #e2e8f0; }
+        .section-header-toggle h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(-90deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { 
+            .container { padding: 10px; } 
+            .nav-links { flex-direction: column; align-items: stretch; } 
+            .nav-links a { text-align: center; } 
+            h1 { font-size: 2rem; } 
+            h2 { font-size: 1.5rem; } 
+            pre { padding: 1rem; font-size: 0.85rem; overflow-x: auto; } 
+            .section-header-toggle { padding: 0.8rem 1rem; } 
+            .section-content { padding: 1rem; }
+            .comparison-grid { grid-template-columns: 1fr; }
+            .sql-section, .pyspark-section { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🔗 SQL Functions: SQL vs PySpark Comparison</h1>
+            <blockquote>Complete reference for SQL functions with side-by-side SQL and PySpark implementations</blockquote>
+
+            <h2>📚 Official Documentation</h2>
+            <ul>
+                <li><a href="https://spark.apache.org/docs/latest/sql-ref-functions.html" target="_blank">Spark SQL Functions Reference</a></li>
+                <li><a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/functions.html" target="_blank">PySpark SQL Functions</a></li>
+                <li><a href="https://docs.databricks.com/sql/language-manual/sql-ref-functions.html" target="_blank">Databricks SQL Functions</a></li>
+                <li><a href="https://spark.apache.org/docs/latest/sql-ref-functions-builtin.html" target="_blank">Built-in SQL Functions</a></li>
+            </ul>
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#null-handling">🛡️ NULL Handling Functions</a></li>
+                        <li><a href="#conditional-functions">🔀 Conditional Functions</a></li>
+                        <li><a href="#string-functions">📝 String Functions</a></li>
+                        <li><a href="#date-time-functions">📅 Date & Time Functions</a></li>
+                        <li><a href="#numeric-functions">🔢 Numeric & Math Functions</a></li>
+                        <li><a href="#aggregate-functions">📊 Aggregate Functions</a></li>
+                        <li><a href="#window-functions">🪟 Window Functions</a></li>
+                        <li><a href="#array-functions">📋 Array Functions</a></li>
+                        <li><a href="#json-functions">🗂️ JSON Functions</a></li>
+                        <li><a href="#conversion-functions">🔄 Type Conversion Functions</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="null-handling">
+                <div class="section-header-toggle" onclick="toggleSection('null-handling')">
+                    <h2>🛡️ NULL Handling Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Functions for handling NULL values, providing defaults, and checking for NULLs. These are essential for data quality and preventing errors in calculations.</p>
+                    </div>
+
+                    <h3>COALESCE - Return First Non-NULL Value</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Return first non-null value from list
+SELECT 
+    COALESCE(column1, column2, 'default') AS result,
+    COALESCE(price, 0) AS clean_price,
+    COALESCE(name, 'Unknown') AS customer_name
+FROM table_name;
+
+-- Multiple column coalesce for data cleaning
+SELECT 
+    customer_id,
+    COALESCE(email_primary, email_secondary, email_backup) AS contact_email,
+    COALESCE(phone_mobile, phone_home, phone_work) AS contact_phone
+FROM customers;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Using coalesce function
+df.select(
+    F.coalesce(F.col("column1"), F.col("column2"), F.lit("default")).alias("result"),
+    F.coalesce(F.col("price"), F.lit(0)).alias("clean_price"),
+    F.coalesce(F.col("name"), F.lit("Unknown")).alias("customer_name")
+)
+
+# Multiple column coalesce
+df.select(
+    "customer_id",
+    F.coalesce("email_primary", "email_secondary", "email_backup").alias("contact_email"),
+    F.coalesce("phone_mobile", "phone_home", "phone_work").alias("contact_phone")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>ISNULL / ISNOTNULL - Check for NULL Values</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Check for NULL values
+SELECT *
+FROM customers
+WHERE email IS NULL;
+
+SELECT *
+FROM customers
+WHERE email IS NOT NULL;
+
+-- Count NULL values
+SELECT 
+    COUNT(*) as total_rows,
+    COUNT(email) as non_null_emails,
+    COUNT(*) - COUNT(email) as null_emails
+FROM customers;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Check for NULL values
+df.filter(F.col("email").isNull())
+df.filter(F.isnull("email"))
+
+df.filter(F.col("email").isNotNull())
+df.filter(F.isnan("email"))  # For NaN values
+
+# Count NULL values
+df.select(
+    F.count("*").alias("total_rows"),
+    F.count("email").alias("non_null_emails"),
+    (F.count("*") - F.count("email")).alias("null_emails")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>NULLIF - Return NULL if Values Match</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Return NULL if values match (useful for cleaning)
+SELECT 
+    NULLIF(status, '') AS clean_status,  -- Convert empty strings to NULL
+    NULLIF(age, 0) AS valid_age,         -- Convert 0 to NULL
+    NULLIF(score, -1) AS actual_score    -- Convert placeholder -1 to NULL
+FROM users;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Using when/otherwise for NULLIF behavior
+df.select(
+    F.when(F.col("status") == "", None).otherwise(F.col("status")).alias("clean_status"),
+    F.when(F.col("age") == 0, None).otherwise(F.col("age")).alias("valid_age"),
+    F.when(F.col("score") == -1, None).otherwise(F.col("score")).alias("actual_score")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>COALESCE:</strong> Essential for providing default values and combining multiple nullable columns</li>
+                            <li><strong>NULL checks:</strong> Critical for data quality validation and filtering</li>
+                            <li><strong>NULLIF:</strong> Useful for converting placeholder values (empty strings, zeros) to proper NULLs</li>
+                            <li><strong>Performance tip:</strong> NULL checks are generally fast, but consider indexing on nullable columns</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="conditional-functions">
+                <div class="section-header-toggle" onclick="toggleSection('conditional-functions')">
+                    <h2>🔀 Conditional Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Functions for implementing conditional logic in SQL queries. These allow you to create dynamic columns and implement business rules directly in your queries.</p>
+                    </div>
+
+                    <h3>CASE WHEN - Complex Conditional Logic</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Basic CASE WHEN
+SELECT 
+    customer_id,
+    CASE 
+        WHEN age < 18 THEN 'Minor'
+        WHEN age < 65 THEN 'Adult'
+        ELSE 'Senior'
+    END AS age_group,
+    
+    -- Complex business logic
+    CASE 
+        WHEN total_purchases > 10000 AND years_active > 5 THEN 'VIP'
+        WHEN total_purchases > 5000 THEN 'Premium'
+        WHEN total_purchases > 1000 THEN 'Standard'
+        ELSE 'Basic'
+    END AS customer_tier
+FROM customers;
+
+-- CASE with aggregations
+SELECT 
+    department,
+    COUNT(CASE WHEN status = 'active' THEN 1 END) as active_count,
+    COUNT(CASE WHEN status = 'inactive' THEN 1 END) as inactive_count
+FROM employees
+GROUP BY department;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Basic CASE WHEN using when/otherwise
+df.select(
+    "customer_id",
+    F.when(F.col("age") < 18, "Minor")
+     .when(F.col("age") < 65, "Adult")
+     .otherwise("Senior").alias("age_group"),
+    
+    # Complex business logic
+    F.when((F.col("total_purchases") > 10000) & (F.col("years_active") > 5), "VIP")
+     .when(F.col("total_purchases") > 5000, "Premium")
+     .when(F.col("total_purchases") > 1000, "Standard")
+     .otherwise("Basic").alias("customer_tier")
+)
+
+# CASE with aggregations
+df.groupBy("department").agg(
+    F.count(F.when(F.col("status") == "active", 1)).alias("active_count"),
+    F.count(F.when(F.col("status") == "inactive", 1)).alias("inactive_count")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>IF Function - Simple Conditional</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Simple IF statements (Spark SQL)
+SELECT 
+    customer_id,
+    IF(is_premium, 'Premium Customer', 'Regular Customer') AS customer_type,
+    IF(age >= 18, age, NULL) AS adult_age,
+    IF(email LIKE '%@gmail.com', 'Gmail', 'Other') AS email_provider
+FROM customers;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Simple conditional using when/otherwise
+df.select(
+    "customer_id",
+    F.when(F.col("is_premium"), "Premium Customer")
+     .otherwise("Regular Customer").alias("customer_type"),
+    F.when(F.col("age") >= 18, F.col("age")).otherwise(None).alias("adult_age"),
+    F.when(F.col("email").like("%@gmail.com"), "Gmail")
+     .otherwise("Other").alias("email_provider")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>CASE WHEN:</strong> Most flexible conditional logic, supports multiple conditions and complex expressions</li>
+                            <li><strong>IF function:</strong> Simpler syntax for binary conditions (true/false scenarios)</li>
+                            <li><strong>Performance:</strong> Both are optimized by Spark's Catalyst optimizer</li>
+                            <li><strong>Readability:</strong> Use CASE WHEN for complex logic, IF for simple binary conditions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="string-functions">
+                <div class="section-header-toggle" onclick="toggleSection('string-functions')">
+                    <h2>📝 String Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>String manipulation functions for cleaning, transforming, and analyzing text data. Essential for data preprocessing and text analysis tasks.</p>
+                    </div>
+
+                    <h3>String Manipulation Functions</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Basic string functions
+SELECT 
+    UPPER(name) AS name_upper,
+    LOWER(email) AS email_lower,
+    TRIM(description) AS description_clean,
+    LENGTH(phone) AS phone_length,
+    
+    -- String concatenation
+    CONCAT(first_name, ' ', last_name) AS full_name,
+    CONCAT_WS(' - ', department, title) AS role_description,
+    
+    -- Substring operations
+    SUBSTRING(phone, 1, 3) AS area_code,
+    LEFT(postal_code, 2) AS region_code,
+    RIGHT(account_number, 4) AS last_four_digits
+FROM employees;
+
+-- Pattern matching and replacement
+SELECT 
+    REGEXP_REPLACE(phone, '[^0-9]', '') AS clean_phone,
+    REGEXP_EXTRACT(email, '(.+)@(.+)', 2) AS domain,
+    REPLACE(description, 'old_term', 'new_term') AS updated_desc
+FROM contacts;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Basic string functions
+df.select(
+    F.upper("name").alias("name_upper"),
+    F.lower("email").alias("email_lower"),
+    F.trim("description").alias("description_clean"),
+    F.length("phone").alias("phone_length"),
+    
+    # String concatenation
+    F.concat("first_name", F.lit(" "), "last_name").alias("full_name"),
+    F.concat_ws(" - ", "department", "title").alias("role_description"),
+    
+    # Substring operations
+    F.substring("phone", 1, 3).alias("area_code"),
+    F.substring("postal_code", 1, 2).alias("region_code"),
+    F.substring("account_number", -4, 4).alias("last_four_digits")
+)
+
+# Pattern matching and replacement
+df.select(
+    F.regexp_replace("phone", "[^0-9]", "").alias("clean_phone"),
+    F.regexp_extract("email", r"(.+)@(.+)", 2).alias("domain"),
+    F.regexp_replace("description", "old_term", "new_term").alias("updated_desc")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Advanced String Operations</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- String splitting and position finding
+SELECT 
+    SPLIT(full_name, ' ')[0] AS first_name,
+    SPLIT(tags, ',') AS tag_array,
+    POSITION('@' IN email) AS at_position,
+    
+    -- String padding and formatting
+    LPAD(id, 6, '0') AS padded_id,
+    RPAD(code, 10, '-') AS formatted_code,
+    
+    -- String validation
+    CASE 
+        WHEN email RLIKE '^[A-Za-z0-9+_.-]+@(.+)$' THEN 'Valid'
+        ELSE 'Invalid'
+    END AS email_status
+FROM users;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# String splitting and position finding
+df.select(
+    F.split("full_name", " ").getItem(0).alias("first_name"),
+    F.split("tags", ",").alias("tag_array"),
+    F.instr("email", "@").alias("at_position"),
+    
+    # String padding and formatting
+    F.lpad("id", 6, "0").alias("padded_id"),
+    F.rpad("code", 10, "-").alias("formatted_code"),
+    
+    # String validation
+    F.when(F.col("email").rlike(r"^[A-Za-z0-9+_.-]+@(.+)$"), "Valid")
+     .otherwise("Invalid").alias("email_status")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>CONCAT vs CONCAT_WS:</strong> Use CONCAT_WS for separator-based concatenation to avoid NULL issues</li>
+                            <li><strong>TRIM variants:</strong> LTRIM, RTRIM for left/right trimming, TRIM for both sides</li>
+                            <li><strong>Regular expressions:</strong> Powerful for pattern matching but can be performance-intensive</li>
+                            <li><strong>String arrays:</strong> SPLIT creates arrays that can be processed with array functions</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="date-time-functions">
+                <div class="section-header-toggle" onclick="toggleSection('date-time-functions')">
+                    <h2>📅 Date & Time Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Date and time manipulation functions for temporal data analysis, time series processing, and date calculations.</p>
+                    </div>
+
+                    <h3>Date Arithmetic and Extraction</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Date arithmetic
+SELECT 
+    DATE_ADD(current_date, 30) AS thirty_days_later,
+    DATE_SUB(current_date, 90) AS ninety_days_ago,
+    DATEDIFF(end_date, start_date) AS days_difference,
+    
+    -- Date extraction
+    YEAR(created_at) AS creation_year,
+    MONTH(created_at) AS creation_month,
+    DAY(created_at) AS creation_day,
+    DAYOFWEEK(created_at) AS day_of_week,
+    QUARTER(created_at) AS creation_quarter,
+    
+    -- Date formatting
+    DATE_FORMAT(created_at, 'yyyy-MM-dd') AS formatted_date,
+    DATE_FORMAT(created_at, 'MM/dd/yyyy HH:mm:ss') AS us_format
+FROM events;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Date arithmetic
+df.select(
+    F.date_add(F.current_date(), 30).alias("thirty_days_later"),
+    F.date_sub(F.current_date(), 90).alias("ninety_days_ago"),
+    F.datediff("end_date", "start_date").alias("days_difference"),
+    
+    # Date extraction
+    F.year("created_at").alias("creation_year"),
+    F.month("created_at").alias("creation_month"),
+    F.dayofmonth("created_at").alias("creation_day"),
+    F.dayofweek("created_at").alias("day_of_week"),
+    F.quarter("created_at").alias("creation_quarter"),
+    
+    # Date formatting
+    F.date_format("created_at", "yyyy-MM-dd").alias("formatted_date"),
+    F.date_format("created_at", "MM/dd/yyyy HH:mm:ss").alias("us_format")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Advanced Date Operations</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Date truncation and windows
+SELECT 
+    DATE_TRUNC('month', created_at) AS month_start,
+    DATE_TRUNC('year', created_at) AS year_start,
+    DATE_TRUNC('week', created_at) AS week_start,
+    
+    -- Current date/time functions
+    CURRENT_DATE() AS today,
+    CURRENT_TIMESTAMP() AS now,
+    UNIX_TIMESTAMP() AS epoch_seconds,
+    
+    -- Date parsing and conversion
+    TO_DATE('2024-01-15', 'yyyy-MM-dd') AS parsed_date,
+    TO_TIMESTAMP('2024-01-15 14:30:00', 'yyyy-MM-dd HH:mm:ss') AS parsed_timestamp,
+    FROM_UNIXTIME(unix_timestamp) AS converted_datetime
+FROM transactions;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Date truncation and windows
+df.select(
+    F.date_trunc("month", "created_at").alias("month_start"),
+    F.date_trunc("year", "created_at").alias("year_start"),
+    F.date_trunc("week", "created_at").alias("week_start"),
+    
+    # Current date/time functions
+    F.current_date().alias("today"),
+    F.current_timestamp().alias("now"),
+    F.unix_timestamp().alias("epoch_seconds"),
+    
+    # Date parsing and conversion
+    F.to_date(F.lit("2024-01-15"), "yyyy-MM-dd").alias("parsed_date"),
+    F.to_timestamp(F.lit("2024-01-15 14:30:00"), "yyyy-MM-dd HH:mm:ss").alias("parsed_timestamp"),
+    F.from_unixtime("unix_timestamp").alias("converted_datetime")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="pro-tip">
+                        <strong>💡 Pro Tip:</strong> Use DATE_TRUNC for time-based grouping in analytics queries. It's much more efficient than extracting date parts and grouping by multiple columns.
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>DATE_TRUNC:</strong> Essential for time-based analytics and creating time buckets</li>
+                            <li><strong>DATEDIFF:</strong> Returns difference in days, use other functions for hours/minutes</li>
+                            <li><strong>Timezone handling:</strong> Be aware of timezone conversions when working with timestamps</li>
+                            <li><strong>Performance:</strong> Date operations are generally fast, but parsing string dates can be slow</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="numeric-functions">
+                <div class="section-header-toggle" onclick="toggleSection('numeric-functions')">
+                    <h2>🔢 Numeric & Math Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Mathematical and numeric functions for calculations, rounding, and statistical operations.</p>
+                    </div>
+
+                    <h3>Basic Math Functions</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Rounding and precision
+SELECT 
+    ROUND(price, 2) AS rounded_price,
+    CEIL(rating) AS rating_ceiling,
+    FLOOR(score) AS score_floor,
+    TRUNCATE(value, 1) AS truncated_value,
+    
+    -- Absolute and sign functions
+    ABS(difference) AS absolute_difference,
+    SIGN(profit_loss) AS profit_indicator,
+    
+    -- Power and roots
+    POWER(base, 2) AS squared,
+    SQRT(area) AS square_root,
+    
+    -- Random numbers
+    RAND() AS random_value,
+    RAND(42) AS seeded_random
+FROM financial_data;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+import pyspark.sql.functions as F
+
+# Rounding and precision
+df.select(
+    F.round("price", 2).alias("rounded_price"),
+    F.ceil("rating").alias("rating_ceiling"),
+    F.floor("score").alias("score_floor"),
+    F.truncate("value", 1).alias("truncated_value"),
+    
+    # Absolute and sign functions
+    F.abs("difference").alias("absolute_difference"),
+    F.signum("profit_loss").alias("profit_indicator"),
+    
+    # Power and roots
+    F.pow("base", 2).alias("squared"),
+    F.sqrt("area").alias("square_root"),
+    
+    # Random numbers
+    F.rand().alias("random_value"),
+    F.rand(42).alias("seeded_random")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Advanced Math Functions</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Trigonometric functions
+SELECT 
+    SIN(angle_radians) AS sine_value,
+    COS(angle_radians) AS cosine_value,
+    TAN(angle_radians) AS tangent_value,
+    
+    -- Logarithmic functions
+    LOG(value) AS natural_log,
+    LOG10(value) AS base_10_log,
+    LOG2(value) AS base_2_log,
+    
+    -- Statistical functions
+    GREATEST(col1, col2, col3) AS maximum_value,
+    LEAST(col1, col2, col3) AS minimum_value,
+    
+    -- Modulo and division
+    MOD(dividend, divisor) AS remainder,
+    dividend / NULLIF(divisor, 0) AS safe_division
+FROM calculations;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Trigonometric functions
+df.select(
+    F.sin("angle_radians").alias("sine_value"),
+    F.cos("angle_radians").alias("cosine_value"),
+    F.tan("angle_radians").alias("tangent_value"),
+    
+    # Logarithmic functions
+    F.log("value").alias("natural_log"),
+    F.log10("value").alias("base_10_log"),
+    F.log2("value").alias("base_2_log"),
+    
+    # Statistical functions
+    F.greatest("col1", "col2", "col3").alias("maximum_value"),
+    F.least("col1", "col2", "col3").alias("minimum_value"),
+    
+    # Modulo and division
+    (F.col("dividend") % F.col("divisor")).alias("remainder"),
+    (F.col("dividend") / F.when(F.col("divisor") != 0, F.col("divisor"))).alias("safe_division")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>ROUND vs TRUNCATE:</strong> ROUND uses standard rounding rules, TRUNCATE simply cuts off decimals</li>
+                            <li><strong>Division by zero:</strong> Always use NULLIF or conditional logic to prevent division by zero errors</li>
+                            <li><strong>GREATEST/LEAST:</strong> Work across columns, not rows (use MAX/MIN for aggregations)</li>
+                            <li><strong>Precision:</strong> Be aware of floating-point precision limitations in calculations</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="aggregate-functions">
+                <div class="section-header-toggle" onclick="toggleSection('aggregate-functions')">
+                    <h2>📊 Aggregate Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Functions for aggregating data across rows, essential for analytics and reporting queries.</p>
+                    </div>
+
+                    <h3>Basic Aggregations</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Standard aggregations
+SELECT 
+    department,
+    COUNT(*) AS total_employees,
+    COUNT(DISTINCT employee_id) AS unique_employees,
+    SUM(salary) AS total_salary,
+    AVG(salary) AS average_salary,
+    MIN(hire_date) AS earliest_hire,
+    MAX(hire_date) AS latest_hire,
+    
+    -- Statistical aggregations
+    STDDEV(salary) AS salary_std_dev,
+    VARIANCE(salary) AS salary_variance,
+    
+    -- Conditional aggregations
+    SUM(CASE WHEN status = 'active' THEN salary ELSE 0 END) AS active_salary_total,
+    COUNT(CASE WHEN performance_rating > 4 THEN 1 END) AS high_performers
+FROM employees
+GROUP BY department;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Standard aggregations
+df.groupBy("department").agg(
+    F.count("*").alias("total_employees"),
+    F.countDistinct("employee_id").alias("unique_employees"),
+    F.sum("salary").alias("total_salary"),
+    F.avg("salary").alias("average_salary"),
+    F.min("hire_date").alias("earliest_hire"),
+    F.max("hire_date").alias("latest_hire"),
+    
+    # Statistical aggregations
+    F.stddev("salary").alias("salary_std_dev"),
+    F.variance("salary").alias("salary_variance"),
+    
+    # Conditional aggregations
+    F.sum(F.when(F.col("status") == "active", F.col("salary")).otherwise(0)).alias("active_salary_total"),
+    F.count(F.when(F.col("performance_rating") > 4, 1)).alias("high_performers")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Advanced Aggregations</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Percentiles and quantiles
+SELECT 
+    department,
+    PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY salary) AS median_salary,
+    PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY salary) AS q1_salary,
+    PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY salary) AS q3_salary,
+    
+    -- String aggregations
+    COLLECT_LIST(employee_name) AS all_employees,
+    COLLECT_SET(skill) AS unique_skills,
+    
+    -- First/Last values
+    FIRST(salary ORDER BY hire_date) AS first_hire_salary,
+    LAST(salary ORDER BY hire_date) AS last_hire_salary
+FROM employees
+GROUP BY department;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Percentiles and quantiles
+df.groupBy("department").agg(
+    F.expr("percentile_cont(0.5) WITHIN GROUP (ORDER BY salary)").alias("median_salary"),
+    F.expr("percentile_cont(0.25) WITHIN GROUP (ORDER BY salary)").alias("q1_salary"),
+    F.expr("percentile_cont(0.75) WITHIN GROUP (ORDER BY salary)").alias("q3_salary"),
+    
+    # Alternative percentile syntax
+    F.percentile_approx("salary", 0.5).alias("approx_median"),
+    F.percentile_approx("salary", [0.25, 0.5, 0.75]).alias("quartiles"),
+    
+    # String aggregations
+    F.collect_list("employee_name").alias("all_employees"),
+    F.collect_set("skill").alias("unique_skills"),
+    
+    # First/Last values (need window function for ordering)
+    F.first("salary").alias("first_salary"),
+    F.last("salary").alias("last_salary")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>COUNT vs COUNT DISTINCT:</strong> COUNT(*) includes NULLs, COUNT(column) excludes NULLs</li>
+                            <li><strong>PERCENTILE_CONT vs PERCENTILE_APPROX:</strong> CONT is exact but slower, APPROX is faster for large datasets</li>
+                            <li><strong>COLLECT functions:</strong> Return arrays, be careful with memory usage on large groups</li>
+                            <li><strong>Statistical functions:</strong> Useful for data quality checks and outlier detection</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="window-functions">
+                <div class="section-header-toggle" onclick="toggleSection('window-functions')">
+                    <h2>🪟 Window Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Window functions perform calculations across a set of rows related to the current row, enabling advanced analytics without grouping.</p>
+                    </div>
+
+                    <h3>Ranking Functions</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Ranking functions
+SELECT 
+    employee_id,
+    department,
+    salary,
+    ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank,
+    RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_dense_rank,
+    DENSE_RANK() OVER (PARTITION BY department ORDER BY salary DESC) AS salary_rank_dense,
+    NTILE(4) OVER (PARTITION BY department ORDER BY salary DESC) AS salary_quartile,
+    
+    -- Percentage ranks
+    PERCENT_RANK() OVER (PARTITION BY department ORDER BY salary) AS percentile_rank,
+    CUME_DIST() OVER (PARTITION BY department ORDER BY salary) AS cumulative_dist
+FROM employees;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+
+# Define window specification
+window_spec = Window.partitionBy("department").orderBy(F.desc("salary"))
+
+# Ranking functions
+df.select(
+    "employee_id", "department", "salary",
+    F.row_number().over(window_spec).alias("salary_rank"),
+    F.rank().over(window_spec).alias("salary_dense_rank"),
+    F.dense_rank().over(window_spec).alias("salary_rank_dense"),
+    F.ntile(4).over(window_spec).alias("salary_quartile"),
+    
+    # Percentage ranks
+    F.percent_rank().over(Window.partitionBy("department").orderBy("salary")).alias("percentile_rank"),
+    F.cume_dist().over(Window.partitionBy("department").orderBy("salary")).alias("cumulative_dist")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Lag/Lead and Offset Functions</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Lag/Lead functions for time series analysis
+SELECT 
+    date,
+    revenue,
+    LAG(revenue, 1) OVER (ORDER BY date) AS previous_day_revenue,
+    LEAD(revenue, 1) OVER (ORDER BY date) AS next_day_revenue,
+    
+    -- Calculate changes
+    revenue - LAG(revenue, 1) OVER (ORDER BY date) AS daily_change,
+    (revenue - LAG(revenue, 1) OVER (ORDER BY date)) / LAG(revenue, 1) OVER (ORDER BY date) * 100 AS pct_change,
+    
+    -- First/Last values in window
+    FIRST_VALUE(revenue) OVER (ORDER BY date ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS first_revenue,
+    LAST_VALUE(revenue) OVER (ORDER BY date ROWS BETWEEN CURRENT ROW AND UNBOUNDED FOLLOWING) AS last_revenue
+FROM daily_sales;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+
+# Define window specifications
+time_window = Window.orderBy("date")
+unbounded_window = Window.orderBy("date").rowsBetween(Window.unboundedPreceding, Window.currentRow)
+full_window = Window.orderBy("date").rowsBetween(Window.currentRow, Window.unboundedFollowing)
+
+# Lag/Lead functions
+df.select(
+    "date", "revenue",
+    F.lag("revenue", 1).over(time_window).alias("previous_day_revenue"),
+    F.lead("revenue", 1).over(time_window).alias("next_day_revenue"),
+    
+    # Calculate changes
+    (F.col("revenue") - F.lag("revenue", 1).over(time_window)).alias("daily_change"),
+    ((F.col("revenue") - F.lag("revenue", 1).over(time_window)) / F.lag("revenue", 1).over(time_window) * 100).alias("pct_change"),
+    
+    # First/Last values in window
+    F.first("revenue").over(unbounded_window).alias("first_revenue"),
+    F.last("revenue").over(full_window).alias("last_revenue")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Moving Averages and Running Totals</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Moving averages and running calculations
+SELECT 
+    date,
+    sales,
+    
+    -- Running totals
+    SUM(sales) OVER (ORDER BY date ROWS UNBOUNDED PRECEDING) AS running_total,
+    
+    -- Moving averages
+    AVG(sales) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS seven_day_avg,
+    AVG(sales) OVER (ORDER BY date ROWS BETWEEN 29 PRECEDING AND CURRENT ROW) AS thirty_day_avg,
+    
+    -- Rolling statistics
+    MIN(sales) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS seven_day_min,
+    MAX(sales) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS seven_day_max,
+    STDDEV(sales) OVER (ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW) AS seven_day_stddev
+FROM daily_sales;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+from pyspark.sql.window import Window
+
+# Define window specifications for different periods
+running_window = Window.orderBy("date").rowsBetween(Window.unboundedPreceding, Window.currentRow)
+seven_day_window = Window.orderBy("date").rowsBetween(-6, Window.currentRow)
+thirty_day_window = Window.orderBy("date").rowsBetween(-29, Window.currentRow)
+
+# Moving averages and running calculations
+df.select(
+    "date", "sales",
+    
+    # Running totals
+    F.sum("sales").over(running_window).alias("running_total"),
+    
+    # Moving averages
+    F.avg("sales").over(seven_day_window).alias("seven_day_avg"),
+    F.avg("sales").over(thirty_day_window).alias("thirty_day_avg"),
+    
+    # Rolling statistics
+    F.min("sales").over(seven_day_window).alias("seven_day_min"),
+    F.max("sales").over(seven_day_window).alias("seven_day_max"),
+    F.stddev("sales").over(seven_day_window).alias("seven_day_stddev")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="pro-tip">
+                        <strong>💡 Pro Tip:</strong> Window functions are incredibly powerful for time series analysis. Use them instead of self-joins for better performance when calculating running totals, moving averages, and period-over-period comparisons.
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>ROW_NUMBER vs RANK:</strong> ROW_NUMBER gives unique ranks, RANK can have ties</li>
+                            <li><strong>ROWS vs RANGE:</strong> ROWS counts physical rows, RANGE considers logical ranges based on values</li>
+                            <li><strong>Performance:</strong> Window functions are optimized but can be memory-intensive for large windows</li>
+                            <li><strong>Order matters:</strong> Always specify ORDER BY in window functions for consistent results</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="array-functions">
+                <div class="section-header-toggle" onclick="toggleSection('array-functions')">
+                    <h2>📋 Array Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Functions for working with array data types, essential for processing complex nested data structures and handling multi-valued attributes.</p>
+                    </div>
+
+                    <h3>Array Creation and Basic Operations</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Array creation and basic operations
+SELECT 
+    -- Creating arrays
+    ARRAY(1, 2, 3, 4, 5) AS number_array,
+    ARRAY('red', 'green', 'blue') AS color_array,
+    SPLIT('apple,banana,cherry', ',') AS fruit_array,
+    
+    -- Array access and properties
+    tags[0] AS first_tag,
+    SIZE(tags) AS tag_count,
+    ARRAY_CONTAINS(tags, 'important') AS has_important_tag,
+    
+    -- Array operations
+    ARRAY_DISTINCT(duplicate_array) AS unique_values,
+    ARRAY_UNION(array1, array2) AS combined_array,
+    ARRAY_INTERSECT(array1, array2) AS common_elements,
+    ARRAY_EXCEPT(array1, array2) AS difference
+FROM products;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Array creation and basic operations
+df.select(
+    # Creating arrays
+    F.array(F.lit(1), F.lit(2), F.lit(3), F.lit(4), F.lit(5)).alias("number_array"),
+    F.array(F.lit("red"), F.lit("green"), F.lit("blue")).alias("color_array"),
+    F.split(F.lit("apple,banana,cherry"), ",").alias("fruit_array"),
+    
+    # Array access and properties
+    F.col("tags").getItem(0).alias("first_tag"),
+    F.size("tags").alias("tag_count"),
+    F.array_contains("tags", "important").alias("has_important_tag"),
+    
+    # Array operations
+    F.array_distinct("duplicate_array").alias("unique_values"),
+    F.array_union("array1", "array2").alias("combined_array"),
+    F.array_intersect("array1", "array2").alias("common_elements"),
+    F.array_except("array1", "array2").alias("difference")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Array Transformation Functions</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Array transformations and advanced operations
+SELECT 
+    product_id,
+    
+    -- Exploding arrays (creating rows from array elements)
+    EXPLODE(tags) AS individual_tag,
+    POSEXPLODE(tags) AS (tag_position, tag_value),
+    
+    -- Array sorting and filtering
+    ARRAY_SORT(prices) AS sorted_prices,
+    FILTER(prices, x -> x > 100) AS expensive_prices,
+    
+    -- Array transformations
+    TRANSFORM(prices, x -> x * 1.1) AS prices_with_tax,
+    TRANSFORM(names, x -> UPPER(x)) AS uppercase_names,
+    
+    -- Array aggregations
+    AGGREGATE(numbers, 0, (acc, x) -> acc + x) AS array_sum,
+    REDUCE(numbers, 0, (acc, x) -> acc + x) AS reduced_sum
+FROM inventory;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Array transformations and advanced operations
+df.select("product_id").withColumn(
+    # Exploding arrays (creating rows from array elements)
+    "individual_tag", F.explode("tags")
+).select("product_id").withColumn(
+    "tag_info", F.posexplode("tags")  # Returns struct with pos and col
+)
+
+# Array operations
+df.select(
+    "product_id",
+    # Array sorting and filtering
+    F.array_sort("prices").alias("sorted_prices"),
+    F.filter("prices", lambda x: x > 100).alias("expensive_prices"),
+    
+    # Array transformations
+    F.transform("prices", lambda x: x * 1.1).alias("prices_with_tax"),
+    F.transform("names", lambda x: F.upper(x)).alias("uppercase_names"),
+    
+    # Array aggregations
+    F.aggregate("numbers", F.lit(0), lambda acc, x: acc + x).alias("array_sum"),
+    F.reduce("numbers", F.lit(0), lambda acc, x: acc + x).alias("reduced_sum")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>EXPLODE vs POSEXPLODE:</strong> EXPLODE creates one row per element, POSEXPLODE includes position</li>
+                            <li><strong>Higher-order functions:</strong> FILTER, TRANSFORM, AGGREGATE enable functional programming on arrays</li>
+                            <li><strong>Performance:</strong> Array operations can be memory-intensive for large arrays</li>
+                            <li><strong>NULL handling:</strong> Array functions generally handle NULLs gracefully</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="json-functions">
+                <div class="section-header-toggle" onclick="toggleSection('json-functions')">
+                    <h2>🗂️ JSON Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Functions for parsing, extracting, and manipulating JSON data, essential for modern data processing with semi-structured data.</p>
+                    </div>
+
+                    <h3>JSON Extraction and Parsing</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- JSON extraction functions
+SELECT 
+    event_id,
+    
+    -- Basic JSON extraction
+    GET_JSON_OBJECT(json_data, '$.user.name') AS user_name,
+    GET_JSON_OBJECT(json_data, '$.user.age') AS user_age,
+    GET_JSON_OBJECT(json_data, '$.event.timestamp') AS event_time,
+    
+    -- JSON path expressions (alternative syntax)
+    json_data:user.name AS user_name_alt,
+    json_data:user.age::int AS user_age_typed,
+    json_data:event.properties.category AS event_category,
+    
+    -- Extract JSON arrays
+    GET_JSON_OBJECT(json_data, '$.tags[0]') AS first_tag,
+    GET_JSON_OBJECT(json_data, '$.tags[*]') AS all_tags,
+    
+    -- JSON validation
+    CASE 
+        WHEN GET_JSON_OBJECT(json_data, '$') IS NOT NULL THEN 'Valid JSON'
+        ELSE 'Invalid JSON'
+    END AS json_status
+FROM events;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# JSON extraction functions
+df.select(
+    "event_id",
+    
+    # Basic JSON extraction
+    F.get_json_object("json_data", "$.user.name").alias("user_name"),
+    F.get_json_object("json_data", "$.user.age").alias("user_age"),
+    F.get_json_object("json_data", "$.event.timestamp").alias("event_time"),
+    
+    # JSON path expressions with casting
+    F.get_json_object("json_data", "$.user.age").cast("int").alias("user_age_typed"),
+    F.get_json_object("json_data", "$.event.properties.category").alias("event_category"),
+    
+    # Extract JSON arrays
+    F.get_json_object("json_data", "$.tags[0]").alias("first_tag"),
+    F.get_json_object("json_data", "$.tags").alias("all_tags_json"),
+    
+    # JSON validation
+    F.when(F.get_json_object("json_data", "$").isNotNull(), "Valid JSON")
+     .otherwise("Invalid JSON").alias("json_status")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>JSON Schema and Structure Operations</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- JSON schema and structure operations
+SELECT 
+    -- Parse JSON into structured data
+    FROM_JSON(json_string, 'struct<name:string,age:int,city:string>') AS parsed_struct,
+    
+    -- Convert to JSON
+    TO_JSON(struct_column) AS json_representation,
+    
+    -- JSON array operations
+    JSON_ARRAY_LENGTH(json_data, '$.tags') AS tag_count,
+    
+    -- Flattening nested JSON
+    GET_JSON_OBJECT(json_data, '$.user.*') AS user_fields,
+    
+    -- JSON manipulation
+    JSON_SET(json_data, '$.user.status', 'active') AS updated_json,
+    JSON_REMOVE(json_data, '$.user.temp_field') AS cleaned_json
+FROM user_events;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+from pyspark.sql.types import StructType, StructField, StringType, IntegerType
+
+# Define schema for parsing
+json_schema = StructType([
+    StructField("name", StringType(), True),
+    StructField("age", IntegerType(), True),
+    StructField("city", StringType(), True)
+])
+
+# JSON schema and structure operations
+df.select(
+    # Parse JSON into structured data
+    F.from_json("json_string", json_schema).alias("parsed_struct"),
+    
+    # Convert to JSON
+    F.to_json("struct_column").alias("json_representation"),
+    
+    # JSON array operations (custom approach)
+    F.size(F.from_json(F.get_json_object("json_data", "$.tags"), "array<string>")).alias("tag_count"),
+    
+    # Flattening nested JSON
+    F.get_json_object("json_data", "$.user").alias("user_json")
+)
+
+# For complex JSON manipulation, often better to parse first
+parsed_df = df.select(
+    "*",
+    F.from_json("json_data", "struct<user:struct<name:string,age:int,status:string>,event:struct<timestamp:string>>").alias("parsed")
+)
+# Then work with structured columns</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="pro-tip">
+                        <strong>💡 Pro Tip:</strong> When working with JSON data regularly, consider parsing it into structured columns early in your pipeline. This improves performance and makes subsequent queries easier to write and maintain.
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>GET_JSON_OBJECT:</strong> Most versatile for ad-hoc JSON extraction</li>
+                            <li><strong>FROM_JSON:</strong> Better performance when you know the schema and need structured access</li>
+                            <li><strong>Path syntax:</strong> Use JSONPath expressions for complex nested access</li>
+                            <li><strong>Type casting:</strong> JSON values are strings by default, cast to appropriate types</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="conversion-functions">
+                <div class="section-header-toggle" onclick="toggleSection('conversion-functions')">
+                    <h2>🔄 Type Conversion Functions</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Functions for converting between different data types, essential for data cleaning and ensuring proper data types in your analysis.</p>
+                    </div>
+
+                    <h3>Basic Type Conversions</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Basic type conversions
+SELECT 
+    -- String conversions
+    CAST(age AS STRING) AS age_string,
+    CAST(price AS DECIMAL(10,2)) AS price_decimal,
+    CAST(is_active AS BOOLEAN) AS active_flag,
+    
+    -- Date/timestamp conversions
+    CAST(date_string AS DATE) AS parsed_date,
+    CAST(timestamp_string AS TIMESTAMP) AS parsed_timestamp,
+    
+    -- Numeric conversions
+    CAST(string_number AS INT) AS integer_value,
+    CAST(string_number AS DOUBLE) AS double_value,
+    CAST(string_number AS BIGINT) AS bigint_value,
+    
+    -- Safe conversions (return NULL on failure)
+    TRY_CAST(potentially_invalid AS INT) AS safe_integer,
+    TRY_CAST(maybe_date AS DATE) AS safe_date
+FROM raw_data;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+from pyspark.sql.types import *
+
+# Basic type conversions
+df.select(
+    # String conversions
+    F.col("age").cast(StringType()).alias("age_string"),
+    F.col("price").cast(DecimalType(10, 2)).alias("price_decimal"),
+    F.col("is_active").cast(BooleanType()).alias("active_flag"),
+    
+    # Date/timestamp conversions
+    F.col("date_string").cast(DateType()).alias("parsed_date"),
+    F.col("timestamp_string").cast(TimestampType()).alias("parsed_timestamp"),
+    
+    # Numeric conversions
+    F.col("string_number").cast(IntegerType()).alias("integer_value"),
+    F.col("string_number").cast(DoubleType()).alias("double_value"),
+    F.col("string_number").cast(LongType()).alias("bigint_value"),
+    
+    # Safe conversions using when/otherwise for error handling
+    F.when(F.col("potentially_invalid").rlike("^[0-9]+$"), 
+           F.col("potentially_invalid").cast(IntegerType())).alias("safe_integer")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Advanced Conversions and Formatting</h3>
+                    <div class="comparison-grid">
+                        <div class="sql-section">
+                            <div class="section-header">🔵 SQL Syntax</div>
+                            <pre><code class="language-sql">-- Advanced conversions and formatting
+SELECT 
+    -- Binary conversions
+    BASE64(binary_data) AS base64_encoded,
+    UNBASE64(base64_string) AS decoded_binary,
+    HEX(binary_data) AS hex_representation,
+    UNHEX(hex_string) AS binary_from_hex,
+    
+    -- Array/Map conversions
+    MAP('key1', value1, 'key2', value2) AS map_from_values,
+    MAP_FROM_ARRAYS(keys_array, values_array) AS map_from_arrays,
+    
+    -- Format conversions
+    FORMAT_NUMBER(large_number, 2) AS formatted_number,
+    FORMAT_STRING('%s: %d', name, count) AS formatted_string,
+    
+    -- Boolean conversions
+    CASE WHEN status = 'Y' THEN TRUE ELSE FALSE END AS boolean_from_char,
+    IF(numeric_flag > 0, TRUE, FALSE) AS boolean_from_number
+FROM mixed_data;</code></pre>
+                        </div>
+                        <div class="pyspark-section">
+                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <pre><code class="language-python">from pyspark.sql import functions as F
+
+# Advanced conversions and formatting
+df.select(
+    # Binary conversions
+    F.base64("binary_data").alias("base64_encoded"),
+    F.unbase64("base64_string").alias("decoded_binary"),
+    F.hex("binary_data").alias("hex_representation"),
+    F.unhex("hex_string").alias("binary_from_hex"),
+    
+    # Map conversions
+    F.create_map(F.lit("key1"), F.col("value1"), F.lit("key2"), F.col("value2")).alias("map_from_values"),
+    F.map_from_arrays("keys_array", "values_array").alias("map_from_arrays"),
+    
+    # Format conversions
+    F.format_number("large_number", 2).alias("formatted_number"),
+    F.format_string("%s: %d", F.col("name"), F.col("count")).alias("formatted_string"),
+    
+    # Boolean conversions
+    F.when(F.col("status") == "Y", True).otherwise(False).alias("boolean_from_char"),
+    F.when(F.col("numeric_flag") > 0, True).otherwise(False).alias("boolean_from_number")
+)</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="bullet-explanation">
+                        <ul>
+                            <li><strong>CAST vs TRY_CAST:</strong> CAST throws errors on invalid conversions, TRY_CAST returns NULL</li>
+                            <li><strong>Precision matters:</strong> Always specify precision for DECIMAL types</li>
+                            <li><strong>Date formats:</strong> Use explicit parsing functions for non-standard date formats</li>
+                            <li><strong>Performance:</strong> Type conversions can be expensive, do them early in your pipeline</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ Top</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 

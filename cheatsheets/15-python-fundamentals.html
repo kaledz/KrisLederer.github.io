@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔣 Python Language Fundamentals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
+        .nav-links a:hover { background: #f0f0f0; }
+        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
+        .nav-links .home-link:hover { background: #5a67d8; }
+        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
+        h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
+        p { margin-bottom: 1rem; line-height: 1.7; }
+        ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+        li { margin-bottom: 0.5rem; line-height: 1.6; }
+        code { background: #f7fafc; padding: 0.2rem 0.4rem; border-radius: 3px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 0.9em; border: 1px solid #e2e8f0; }
+        pre { background: #2d3748; color: #f7fafc; padding: 1.5rem; border-radius: 8px; overflow-x: auto; margin: 1.5rem 0; border-left: 4px solid #667eea; }
+        pre code { background: transparent; padding: 0; border: none; color: inherit; }
+        blockquote { border-left: 4px solid #667eea; padding-left: 1rem; margin: 1rem 0; font-style: italic; color: #666; background: #f8f9fa; padding: 1rem 1rem 1rem 2rem; border-radius: 5px; }
+        a { color: #667eea; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .pro-tip { background: linear-gradient(135deg, #4299e1 0%, #667eea 100%); color: white; padding: 1.5rem; border-radius: 8px; margin: 2rem 0; }
+        .pro-tip strong { font-size: 1.1em; color: #fff; }
+        .section-description { background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border-left: 4px solid #667eea; }
+        .bullet-explanation { background: #f0f4ff; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 3px solid #4299e1; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; background: #667eea; color: white; padding: 10px 15px; border-radius: 50px; text-decoration: none; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); transition: background 0.2s; }
+        .back-to-top:hover { background: #5a67d8; }
+        
+        /* Table of Contents Styles */
+        .toc-container { background: #f8f9fa; border-radius: 10px; padding: 1.5rem; margin: 2rem 0; border-left: 4px solid #667eea; }
+        .toc-title { font-size: 1.3rem; font-weight: 600; margin-bottom: 1rem; color: #2d3748; }
+        .toc-list { list-style: none; padding: 0; margin: 0; }
+        .toc-list li { margin: 0.3rem 0; }
+        .toc-list a { color: #667eea; text-decoration: none; padding: 0.3rem 0.5rem; border-radius: 4px; display: block; transition: background 0.2s; }
+        .toc-list a:hover { background: #e2e8f0; text-decoration: none; }
+        .toc-toggle { background: #667eea; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin-bottom: 1rem; }
+        .toc-toggle:hover { background: #5a67d8; }
+        .toc-content { display: block; }
+        .toc-content.collapsed { display: none; }
+        
+        /* Collapsible Section Styles */
+        .collapsible-section { margin: 2rem 0; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .section-header { background: #f8f9fa; padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: between; align-items: center; border-bottom: 1px solid #e2e8f0; transition: background 0.2s; }
+        .section-header:hover { background: #e2e8f0; }
+        .section-header h2 { margin: 0; color: #2d3748; flex-grow: 1; }
+        .section-toggle { font-size: 1.2rem; font-weight: bold; color: #667eea; margin-left: 1rem; transition: transform 0.3s; }
+        .section-content { padding: 1.5rem; display: block; }
+        .section-content.collapsed { display: none; }
+        .section-toggle.collapsed { transform: rotate(180deg); }
+        
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        @media (max-width: 768px) { .container { padding: 10px; } .nav-links { flex-direction: column; align-items: stretch; } .nav-links a { text-align: center; } h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } pre { padding: 1rem; font-size: 0.85rem; } .section-header { padding: 0.8rem 1rem; } .section-content { padding: 1rem; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <div class="nav-links">
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🪵 DLT</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
+                <a href="06-requests-apis.html">🧪 requests</a>
+                <a href="07-pandas-numpy.html">🐼 pandas</a>
+                <a href="08-scikit-learn-ml.html">🤖 ML</a>
+                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
+                <a href="10-data-patterns.html">🔧 Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+            </div>
+        </nav>
+
+        <div class="content">
+            <h1 id="top">🔣 Python Language Fundamentals</h1>
+            <blockquote>Complete guide to Python language fundamentals including namespaces, variables, functions, classes, data types, and core concepts essential for data engineering</blockquote>
+
+            <h2>📚 Official Python Documentation</h2>
+            <ul>
+                <li><a href="https://docs.python.org/3/tutorial/" target="_blank">Python Tutorial</a></li>
+                <li><a href="https://docs.python.org/3/reference/" target="_blank">Python Language Reference</a></li>
+                <li><a href="https://docs.python.org/3/library/" target="_blank">Python Standard Library</a></li>
+                <li><a href="https://docs.python.org/3/glossary.html" target="_blank">Python Glossary</a></li>
+                <li><a href="https://docs.python.org/3/library/functions.html" target="_blank">Built-in Functions</a></li>
+            </ul>
+
+            <div class="toc-container">
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <div class="toc-content" id="tocContent">
+                    <ul class="toc-list">
+                        <li><a href="#namespaces-section">🌐 Namespaces and Scope</a></li>
+                        <li><a href="#functions-section">🔧 Functions in Detail</a></li>
+                        <li><a href="#classes-section">🏗️ Classes and Object-Oriented Programming</a></li>
+                        <li><a href="#datatypes-section">📊 Built-in Data Types</a></li>
+                        <li><a href="#builtins-section">🛠️ Common Python Built-ins</a></li>
+                        <li><a href="#imports-section">📦 Imports and Modules</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="namespaces-section">
+                <div class="section-header" onclick="toggleSection('namespaces-section')">
+                    <h2>🌐 Namespaces and Scope</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Namespaces are containers for identifiers (names) that help organize code and prevent naming conflicts. Understanding scope determines where variables can be accessed in your code.</p>
+                    </div>
+
+                <h3>What is a Namespace?</h3>
+                <p>A namespace is a mapping from names to objects. It's essentially a dictionary where the keys are identifier names and values are the objects they refer to.</p>
+
+                <pre><code class="language-python"># Demonstrating different namespaces and their relationships
+
+# Global namespace - available throughout the module
+global_variable = "I'm in the global namespace"
+
+def outer_function():
+    """
+    This function demonstrates enclosing (nonlocal) scope.
+    Variables defined here are in the enclosing scope for inner functions.
+    """
+    # Enclosing namespace - available to inner functions
+    enclosing_variable = "I'm in the enclosing namespace"
+    
+    def inner_function():
+        """
+        This inner function demonstrates local scope and accessing
+        variables from different namespace levels.
+        """
+        # Local namespace - only available within this function
+        local_variable = "I'm in the local namespace"
+        
+        # Access variables from different namespaces
+        print("Local:", local_variable)           # Local scope
+        print("Enclosing:", enclosing_variable)   # Enclosing scope  
+        print("Global:", global_variable)        # Global scope
+        print("Built-in:", len([1, 2, 3]))      # Built-in scope (len function)
+    
+    inner_function()
+
+# Demonstrate namespace inspection
+print("Global namespace keys:", list(globals().keys()))
+print("Local namespace in function:", end=" ")
+outer_function()
+
+# Built-in namespace - always available
+import builtins
+print("Built-in functions available:", [name for name in dir(builtins) if not name.startswith('_')][:10])</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Built-in namespace:</strong> Contains built-in functions like <code>len()</code>, <code>print()</code>, <code>str()</code></li>
+                        <li><strong>Global namespace:</strong> Module-level variables and functions</li>
+                        <li><strong>Enclosing namespace:</strong> Variables in outer functions (for nested functions)</li>
+                        <li><strong>Local namespace:</strong> Variables inside the current function</li>
+                        <li><strong>LEGB Rule:</strong> Python searches for variables in Local → Enclosing → Global → Built-in order</li>
+                    </ul>
+                </div>
+
+                <h3>Variable Scope and the LEGB Rule</h3>
+                <p>Python follows the LEGB rule when resolving variable names: Local, Enclosing, Global, Built-in scopes are searched in that order.</p>
+
+                <pre><code class="language-python"># Comprehensive example demonstrating variable scope resolution
+
+# Global scope variable
+name = "Global Alice"
+
+def demonstrate_scope():
+    """
+    Function showing how Python resolves variable names using LEGB rule.
+    Demonstrates local variables, global keyword, and nonlocal keyword.
+    """
+    # Local variable shadows the global one
+    name = "Local Bob"
+    
+    def nested_function():
+        """
+        Nested function demonstrating enclosing scope access
+        and the nonlocal keyword for modifying enclosing variables.
+        """
+        # This would create a new local variable
+        # name = "Nested Charlie"
+        
+        # Instead, we can modify the enclosing scope variable
+        nonlocal name
+        name = "Modified Bob from nested function"
+        
+        print(f"Inside nested_function: {name}")
+    
+    def global_modifier():
+        """
+        Function demonstrating the global keyword for modifying
+        global scope variables from within a function.
+        """
+        global name  # Refer to global variable, not local
+        name = "Modified Global Alice"
+        print(f"Modified global variable: {name}")
+    
+    print(f"Before nested call: {name}")
+    nested_function()
+    print(f"After nested call: {name}")
+    
+    print(f"Global variable before modification: {globals()['name']}")
+    global_modifier()
+
+# Demonstrate scope behavior
+print(f"Initial global: {name}")
+demonstrate_scope()
+print(f"Final global: {name}")
+
+# Example of scope-related gotchas
+def scope_gotcha_example():
+    """
+    Common gotcha: UnboundLocalError when trying to modify
+    a global variable without declaring it as global.
+    """
+    counter = 0  # Local variable
+    
+    def increment():
+        # This would cause UnboundLocalError without nonlocal
+        nonlocal counter
+        counter += 1
+        return counter
+    
+    return increment
+
+# Create a closure that maintains state
+counter_func = scope_gotcha_example()
+print(f"First call: {counter_func()}")   # 1
+print(f"Second call: {counter_func()}")  # 2</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Variable shadowing:</strong> Local variables hide global ones with the same name</li>
+                        <li><strong>global keyword:</strong> Allows modification of global variables inside functions</li>
+                        <li><strong>nonlocal keyword:</strong> Allows modification of enclosing scope variables</li>
+                        <li><strong>Closures:</strong> Inner functions can capture and remember enclosing scope variables</li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+
+            <div class="collapsible-section" id="functions-section">
+                <div class="section-header" onclick="toggleSection('functions-section')">
+                    <h2>🔧 Functions in Detail</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="section-description">
+                        <p>Functions are first-class objects in Python that encapsulate reusable code. They can accept parameters, return values, and be passed around like any other object.</p>
+                    </div>
+
+                <h3>Function Definition and Return Values</h3>
+                <p>Functions are defined using the <code>def</code> keyword and can return values using the <code>return</code> statement. Without an explicit return, functions return <code>None</code>.</p>
+
+                <pre><code class="language-python"># Comprehensive function examples showing different return patterns
+
+def basic_function():
+    """
+    Basic function with no parameters or return value.
+    Implicitly returns None.
+    """
+    print("This function performs an action but returns None")
+    # Implicit: return None
+
+def simple_calculator(a, b, operation="add"):
+    """
+    Function demonstrating parameters, default values, and explicit returns.
+    
+    Args:
+        a (float): First number
+        b (float): Second number  
+        operation (str): Operation to perform ("add", "subtract", "multiply", "divide")
+        
+    Returns:
+        float: Result of the calculation
+        
+    Raises:
+        ValueError: If operation is not supported
+        ZeroDivisionError: If dividing by zero
+    """
+    if operation == "add":
+        return a + b
+    elif operation == "subtract":
+        return a - b
+    elif operation == "multiply":
+        return a * b
+    elif operation == "divide":
+        if b == 0:
+            raise ZeroDivisionError("Cannot divide by zero")
+        return a / b
+    else:
+        raise ValueError(f"Unsupported operation: {operation}")
+
+def multiple_returns(numbers):
+    """
+    Function returning multiple values (actually returns a tuple).
+    Demonstrates tuple unpacking and multiple assignment.
+    
+    Args:
+        numbers (list): List of numbers to analyze
+        
+    Returns:
+        tuple: (sum, average, min, max) of the numbers
+    """
+    if not numbers:
+        return 0, 0, None, None
+    
+    total = sum(numbers)
+    average = total / len(numbers)
+    minimum = min(numbers)
+    maximum = max(numbers)
+    
+    # Multiple values are automatically packed into a tuple
+    return total, average, minimum, maximum
+
+# Function usage examples
+print("Basic function result:", basic_function())  # None
+
+# Simple calculator usage
+result = simple_calculator(10, 5, "multiply")
+print(f"10 * 5 = {result}")
+
+# Multiple return values - tuple unpacking
+numbers = [1, 5, 3, 9, 2, 7]
+total, avg, min_val, max_val = multiple_returns(numbers)
+print(f"Numbers: {numbers}")
+print(f"Sum: {total}, Average: {avg:.2f}, Min: {min_val}, Max: {max_val}")
+
+# Alternative: receive as tuple
+stats = multiple_returns(numbers)
+print(f"All statistics: {stats}")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Implicit return:</strong> Functions without explicit return statement return <code>None</code></li>
+                        <li><strong>Multiple returns:</strong> Python packs multiple return values into a tuple</li>
+                        <li><strong>Tuple unpacking:</strong> Multiple variables can receive multiple return values</li>
+                        <li><strong>Docstrings:</strong> Use triple quotes for function documentation following PEP 257</li>
+                    </ul>
+                </div>
+
+                <h3>Parameters vs Arguments: *args and **kwargs</h3>
+                <p>Parameters are defined in the function definition, while arguments are the actual values passed when calling the function. *args and **kwargs allow functions to accept variable numbers of arguments.</p>
+
+                <pre><code class="language-python"># Comprehensive demonstration of parameters, arguments, *args, and **kwargs
+
+def parameter_examples(
+    required_param,           # Required positional parameter
+    default_param="default",  # Parameter with default value
+    *args,                   # Variable positional arguments (tuple)
+    keyword_only_param,      # Keyword-only parameter (after *args)
+    **kwargs                 # Variable keyword arguments (dictionary)
+):
+    """
+    Function demonstrating all parameter types in Python.
+    
+    Args:
+        required_param: Must be provided when calling the function
+        default_param: Optional parameter with default value
+        *args: Variable number of positional arguments
+        keyword_only_param: Must be passed as keyword argument
+        **kwargs: Variable number of keyword arguments
+    """
+    print(f"Required parameter: {required_param}")
+    print(f"Default parameter: {default_param}")
+    print(f"Positional args (*args): {args}")
+    print(f"Keyword-only parameter: {keyword_only_param}")
+    print(f"Keyword args (**kwargs): {kwargs}")
+    print("-" * 50)
+
+# Different ways to call the function
+print("Call 1: Minimal required arguments")
+parameter_examples("hello", keyword_only_param="required")
+
+print("\nCall 2: With additional positional and keyword arguments")
+parameter_examples(
+    "hello",                    # required_param
+    "custom_default",          # default_param
+    1, 2, 3,                   # *args
+    keyword_only_param="keyword",
+    extra_arg1="value1",       # **kwargs
+    extra_arg2="value2"
+)
+
+def flexible_data_processor(*data_sources, output_format="json", **processing_options):
+    """
+    Practical example: A data processing function that can handle
+    multiple data sources with various processing options.
+    
+    Args:
+        *data_sources: Variable number of data source paths
+        output_format: Format for output data (keyword-only)
+        **processing_options: Additional processing configuration
+    """
+    print(f"Processing {len(data_sources)} data sources:")
+    for i, source in enumerate(data_sources, 1):
+        print(f"  {i}. {source}")
+    
+    print(f"Output format: {output_format}")
+    
+    if processing_options:
+        print("Processing options:")
+        for key, value in processing_options.items():
+            print(f"  {key}: {value}")
+    
+    # Simulate processing
+    return f"Processed {len(data_sources)} sources to {output_format}"
+
+# Example usage of flexible function
+result = flexible_data_processor(
+    "/data/source1.csv",
+    "/data/source2.json", 
+    "/data/source3.parquet",
+    output_format="parquet",
+    remove_duplicates=True,
+    normalize_columns=True,
+    max_memory_usage="2GB"
+)
+print(f"\nResult: {result}")
+
+# Argument unpacking examples
+def simple_add(a, b, c):
+    """Simple function to demonstrate argument unpacking"""
+    return a + b + c
+
+# Unpack list/tuple as arguments
+numbers = [1, 2, 3]
+result = simple_add(*numbers)  # Equivalent to simple_add(1, 2, 3)
+print(f"\nUnpacking list {numbers}: {result}")
+
+# Unpack dictionary as keyword arguments
+def create_user(name, age, email, role="user"):
+    """Function to demonstrate keyword argument unpacking"""
+    return {
+        "name": name,
+        "age": age, 
+        "email": email,
+        "role": role
+    }
+
+user_data = {
+    "name": "Alice",
+    "age": 30,
+    "email": "alice@example.com",
+    "role": "admin"
+}
+
+user = create_user(**user_data)  # Unpack dictionary as keyword arguments
+print(f"Created user: {user}")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Parameters:</strong> Variable names in function definition (placeholders)</li>
+                        <li><strong>Arguments:</strong> Actual values passed when calling function</li>
+                        <li><strong>*args:</strong> Collects extra positional arguments into a tuple</li>
+                        <li><strong>**kwargs:</strong> Collects extra keyword arguments into a dictionary</li>
+                        <li><strong>Keyword-only:</strong> Parameters after *args must be passed as keyword arguments</li>
+                        <li><strong>Argument unpacking:</strong> Use * and ** to unpack collections as arguments</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>🏗️ Classes and Object-Oriented Programming</h2>
+                <div class="section-description">
+                    <p>Classes are blueprints for creating objects. They encapsulate data (attributes) and behavior (methods) into reusable units, forming the foundation of object-oriented programming.</p>
+                </div>
+
+                <h3>What is a Class? - __init__, Attributes, and Methods</h3>
+                <p>A class defines a new type of object with its own attributes (data) and methods (functions). The <code>__init__</code> method is a special method that initializes new instances.</p>
+
+                <pre><code class="language-python"># Comprehensive class example demonstrating all key concepts
+
+class DataProcessor:
+    """
+    A class demonstrating all fundamental OOP concepts in Python.
+    This class processes data with various transformation methods.
+    """
+    
+    # Class variable - shared by all instances
+    supported_formats = ["csv", "json", "parquet", "excel"]
+    total_processors_created = 0
+    
+    def __init__(self, name, default_format="csv", max_size_mb=100):
+        """
+        Initialize a new DataProcessor instance.
+        
+        Args:
+            name (str): Name identifier for this processor
+            default_format (str): Default data format to use
+            max_size_mb (int): Maximum file size in MB to process
+        """
+        # Instance variables - unique to each instance
+        self.name = name
+        self.default_format = default_format
+        self.max_size_mb = max_size_mb
+        self.processed_files = []  # Track processed files
+        self.is_active = True
+        
+        # Update class variable
+        DataProcessor.total_processors_created += 1
+        
+        print(f"Created DataProcessor '{name}' (#{DataProcessor.total_processors_created})")
+    
+    # Instance method - operates on instance data, has access to self
+    def process_file(self, file_path, format=None):
+        """
+        Process a single data file.
+        
+        Args:
+            file_path (str): Path to the file to process
+            format (str, optional): Override default format
+            
+        Returns:
+            dict: Processing result with status and metadata
+        """
+        if not self.is_active:
+            return {"status": "error", "message": "Processor is inactive"}
+        
+        # Use provided format or fall back to default
+        file_format = format or self.default_format
+        
+        if file_format not in self.supported_formats:
+            return {
+                "status": "error", 
+                "message": f"Unsupported format: {file_format}"
+            }
+        
+        # Simulate processing
+        result = {
+            "status": "success",
+            "file_path": file_path,
+            "format": file_format,
+            "processor_name": self.name,
+            "file_size_mb": 25  # Simulated
+        }
+        
+        # Update instance state
+        self.processed_files.append(result)
+        
+        return result
+    
+    # Instance method that modifies object state
+    def get_processing_stats(self):
+        """
+        Get statistics about files processed by this instance.
+        
+        Returns:
+            dict: Statistics about processed files
+        """
+        if not self.processed_files:
+            return {"total_files": 0, "total_size_mb": 0}
+        
+        total_files = len(self.processed_files)
+        total_size = sum(file["file_size_mb"] for file in self.processed_files)
+        
+        return {
+            "processor_name": self.name,
+            "total_files": total_files,
+            "total_size_mb": total_size,
+            "average_size_mb": total_size / total_files,
+            "formats_used": list(set(file["format"] for file in self.processed_files))
+        }
+    
+    # Class method - operates on the class itself, has access to cls
+    @classmethod
+    def create_batch_processor(cls, batch_name, batch_size=1000):
+        """
+        Class method to create a specialized batch processor.
+        Alternative constructor pattern.
+        
+        Args:
+            batch_name (str): Name for the batch processor
+            batch_size (int): Size of batches to process
+            
+        Returns:
+            DataProcessor: New instance configured for batch processing
+        """
+        processor = cls(f"BatchProcessor_{batch_name}", "parquet", batch_size)
+        processor.batch_size = batch_size  # Add extra attribute
+        print(f"Created batch processor with batch size: {batch_size}")
+        return processor
+    
+    # Static method - doesn't need instance or class, utility function
+    @staticmethod
+    def validate_file_format(file_path):
+        """
+        Static method to validate if a file format is supported.
+        Utility function that doesn't need instance or class data.
+        
+        Args:
+            file_path (str): Path to file to validate
+            
+        Returns:
+            bool: True if format is supported, False otherwise
+        """
+        if not file_path:
+            return False
+        
+        extension = file_path.split('.')[-1].lower()
+        return extension in DataProcessor.supported_formats
+    
+    # Special method (dunder method) - defines string representation
+    def __repr__(self):
+        """
+        Official string representation of the object.
+        Should be unambiguous and ideally evaluable.
+        """
+        return f"DataProcessor(name='{self.name}', format='{self.default_format}')"
+    
+    def __str__(self):
+        """
+        Informal string representation of the object.
+        Should be readable and user-friendly.
+        """
+        return f"DataProcessor '{self.name}' - {len(self.processed_files)} files processed"
+
+# Demonstrate class usage
+print("=== Class Usage Examples ===")
+
+# Create instances using regular constructor
+processor1 = DataProcessor("ETL_Processor", "json", 500)
+processor2 = DataProcessor("Analytics_Processor", "parquet", 1000)
+
+# Create instance using class method (alternative constructor)
+batch_processor = DataProcessor.create_batch_processor("Daily_Batch", 2000)
+
+# Demonstrate instance methods
+result1 = processor1.process_file("/data/sales.json", "json")
+result2 = processor1.process_file("/data/customers.csv", "csv")
+
+print(f"\nProcessing results:")
+print(f"Result 1: {result1}")
+print(f"Result 2: {result2}")
+
+# Get statistics
+stats = processor1.get_processing_stats()
+print(f"\nProcessing statistics: {stats}")
+
+# Demonstrate static method (can be called on class or instance)
+print(f"\nValidation tests:")
+print(f"sales.json is valid: {DataProcessor.validate_file_format('sales.json')}")
+print(f"data.txt is valid: {DataProcessor.validate_file_format('data.txt')}")
+
+# Demonstrate class vs instance variables
+print(f"\nClass variable access:")
+print(f"Total processors created: {DataProcessor.total_processors_created}")
+print(f"Supported formats: {DataProcessor.supported_formats}")
+
+# String representations
+print(f"\nString representations:")
+print(f"repr(processor1): {repr(processor1)}")
+print(f"str(processor1): {str(processor1)}")
+
+# Demonstrate attribute access
+print(f"\nInstance attributes:")
+print(f"processor1.name: {processor1.name}")
+print(f"processor1.processed_files: {len(processor1.processed_files)} files")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Class:</strong> Blueprint/template for creating objects with shared structure</li>
+                        <li><strong>__init__:</strong> Constructor method that initializes new instances</li>
+                        <li><strong>self:</strong> Reference to the current instance, always first parameter in instance methods</li>
+                        <li><strong>Instance variables:</strong> Attributes unique to each object instance</li>
+                        <li><strong>Class variables:</strong> Attributes shared by all instances of the class</li>
+                        <li><strong>Instance methods:</strong> Functions that operate on instance data (have self parameter)</li>
+                        <li><strong>Class methods:</strong> Functions that operate on class data (have cls parameter, use @classmethod)</li>
+                        <li><strong>Static methods:</strong> Utility functions that don't need instance or class data (use @staticmethod)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>📊 Built-in Data Types</h2>
+                <div class="section-description">
+                    <p>Python provides several built-in data types that form the foundation of data manipulation. Understanding their characteristics, mutability, and appropriate use cases is crucial for effective programming.</p>
+                </div>
+
+                <h3>Comprehensive Overview of Built-in Types</h3>
+                <p>Python's built-in data types can be categorized as mutable (can be changed after creation) or immutable (cannot be changed after creation).</p>
+
+                <pre><code class="language-python"># Comprehensive demonstration of Python's built-in data types
+
+# === NUMERIC TYPES ===
+print("=== NUMERIC TYPES (Immutable) ===")
+
+# Integer - arbitrary precision in Python 3
+integer_num = 42
+large_integer = 123456789012345678901234567890
+print(f"Integer: {integer_num}, Large integer: {large_integer}")
+print(f"Integer operations: {integer_num + 10}, {integer_num * 2}")
+
+# Float - double precision floating point
+float_num = 3.14159
+scientific_notation = 1.5e-10
+print(f"Float: {float_num}, Scientific: {scientific_notation}")
+print(f"Float operations: {float_num * 2}, {round(float_num, 2)}")
+
+# Complex numbers
+complex_num = 3 + 4j
+print(f"Complex: {complex_num}, Real: {complex_num.real}, Imaginary: {complex_num.imag}")
+
+# === STRING TYPE (Immutable) ===
+print("\n=== STRING TYPE (Immutable) ===")
+
+# String creation and common operations
+single_quotes = 'Hello World'
+double_quotes = "Python Programming"
+triple_quotes = """Multi-line
+string with
+line breaks"""
+
+print(f"Single quotes: {single_quotes}")
+print(f"Double quotes: {double_quotes}")
+print(f"String length: {len(single_quotes)}")
+print(f"Uppercase: {single_quotes.upper()}")
+print(f"Split: {single_quotes.split()}")
+print(f"Replace: {single_quotes.replace('World', 'Python')}")
+
+# String formatting methods
+name = "Alice"
+age = 30
+formatted1 = f"Name: {name}, Age: {age}"  # f-strings (Python 3.6+)
+formatted2 = "Name: {}, Age: {}".format(name, age)  # .format() method
+formatted3 = "Name: %(name)s, Age: %(age)d" % {"name": name, "age": age}  # % formatting
+
+print(f"F-string: {formatted1}")
+print(f"Format method: {formatted2}")
+
+# === LIST TYPE (Mutable) ===
+print("\n=== LIST TYPE (Mutable) ===")
+
+# List creation and manipulation
+numbers = [1, 2, 3, 4, 5]
+mixed_list = [1, "hello", 3.14, [1, 2, 3], {"key": "value"}]
+empty_list = []
+
+print(f"Numbers list: {numbers}")
+print(f"Mixed list: {mixed_list}")
+
+# List operations (modifying the original list)
+numbers.append(6)              # Add single element to end
+numbers.extend([7, 8, 9])      # Add multiple elements to end
+numbers.insert(0, 0)           # Insert at specific position
+popped = numbers.pop()         # Remove and return last element
+removed = numbers.remove(5)    # Remove first occurrence of value
+
+print(f"After modifications: {numbers}")
+print(f"Popped element: {popped}")
+
+# List comprehensions
+squares = [x**2 for x in range(5)]
+filtered_squares = [x**2 for x in range(10) if x % 2 == 0]
+print(f"Squares: {squares}")
+print(f"Even squares: {filtered_squares}")
+
+# === TUPLE TYPE (Immutable) ===
+print("\n=== TUPLE TYPE (Immutable) ===")
+
+# Tuple creation and usage
+coordinates = (3, 4)
+single_element_tuple = (42,)  # Note the comma for single element
+empty_tuple = ()
+mixed_tuple = (1, "hello", 3.14)
+
+print(f"Coordinates: {coordinates}")
+print(f"Single element: {single_element_tuple}")
+
+# Tuple unpacking
+x, y = coordinates
+print(f"Unpacked coordinates: x={x}, y={y}")
+
+# Named tuples for structured data
+from collections import namedtuple
+Point = namedtuple('Point', ['x', 'y'])
+p = Point(3, 4)
+print(f"Named tuple: {p}, x={p.x}, y={p.y}")
+
+# === DICTIONARY TYPE (Mutable) ===
+print("\n=== DICTIONARY TYPE (Mutable) ===")
+
+# Dictionary creation and manipulation
+student = {"name": "Alice", "age": 20, "courses": ["Math", "Physics"]}
+empty_dict = {}
+dict_from_pairs = dict([("a", 1), ("b", 2)])
+
+print(f"Student: {student}")
+print(f"Name: {student['name']}")  # Key access
+print(f"Age: {student.get('age', 'Unknown')}")  # Safe access with default
+
+# Dictionary operations
+student["gpa"] = 3.8              # Add new key-value pair
+student.update({"year": 2, "major": "Physics"})  # Add multiple pairs
+courses = student.pop("courses")  # Remove and return value
+print(f"After updates: {student}")
+print(f"Removed courses: {courses}")
+
+# Dictionary iteration
+print("Dictionary iteration:")
+for key, value in student.items():
+    print(f"  {key}: {value}")
+
+# Dictionary comprehension
+squared_dict = {x: x**2 for x in range(5)}
+print(f"Squared dictionary: {squared_dict}")
+
+# === SET TYPE (Mutable) ===
+print("\n=== SET TYPE (Mutable) ===")
+
+# Set creation and operations
+numbers_set = {1, 2, 3, 4, 5}
+letters_set = set("hello")  # Creates set from iterable
+empty_set = set()  # Note: {} creates empty dict, not set
+
+print(f"Numbers set: {numbers_set}")
+print(f"Letters set: {letters_set}")
+
+# Set operations
+set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+
+print(f"Union: {set1 | set2}")           # All elements from both sets
+print(f"Intersection: {set1 & set2}")    # Common elements
+print(f"Difference: {set1 - set2}")      # Elements in set1 but not set2
+print(f"Symmetric diff: {set1 ^ set2}")  # Elements in either set, but not both
+
+# Set modification
+numbers_set.add(6)
+numbers_set.discard(1)  # Remove if present, no error if not
+print(f"Modified set: {numbers_set}")
+
+# Frozenset (immutable set)
+immutable_set = frozenset([1, 2, 3, 4])
+print(f"Frozenset: {immutable_set}")
+
+# === BOOLEAN TYPE ===
+print("\n=== BOOLEAN TYPE (Immutable) ===")
+
+is_valid = True
+is_complete = False
+print(f"Boolean values: {is_valid}, {is_complete}")
+print(f"Boolean operations: {is_valid and is_complete}, {is_valid or is_complete}")
+
+# Truthiness in Python
+print(f"Truthiness examples:")
+print(f"bool(0): {bool(0)}")           # False
+print(f"bool(''): {bool('')}")         # False  
+print(f"bool([]): {bool([])}")         # False
+print(f"bool({}): {bool({})}")         # False
+print(f"bool(None): {bool(None)}")     # False
+print(f"bool('hello'): {bool('hello')}")  # True
+print(f"bool([1, 2]): {bool([1, 2])}")    # True</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Immutable types:</strong> int, float, complex, str, tuple, frozenset, bool - cannot be changed after creation</li>
+                        <li><strong>Mutable types:</strong> list, dict, set - can be modified after creation</li>
+                        <li><strong>Sequence types:</strong> str, list, tuple - ordered collections with index access</li>
+                        <li><strong>Mapping type:</strong> dict - key-value pairs with key-based access</li>
+                        <li><strong>Set types:</strong> set, frozenset - unordered collections of unique elements</li>
+                        <li><strong>Truthiness:</strong> Empty containers and zero values are falsy, non-empty are truthy</li>
+                    </ul>
+                </div>
+
+                <h3>Identity vs Equality: is vs ==</h3>
+                <p>Understanding the difference between identity (is) and equality (==) is crucial for avoiding bugs, especially with mutable objects and singleton objects.</p>
+
+                <pre><code class="language-python"># Comprehensive demonstration of identity vs equality
+
+print("=== IDENTITY vs EQUALITY ===")
+
+# === Basic equality vs identity ===
+a = [1, 2, 3]
+b = [1, 2, 3]  # Same content, different objects
+c = a          # Same object reference
+
+print(f"Lists: a={a}, b={b}, c={c}")
+print(f"a == b (equality): {a == b}")      # True - same content
+print(f"a is b (identity): {a is b}")      # False - different objects
+print(f"a is c (identity): {a is c}")      # True - same object
+print(f"id(a): {id(a)}, id(b): {id(b)}, id(c): {id(c)}")
+
+# === Modifications and identity ===
+print("\nAfter modifying a:")
+a.append(4)
+print(f"a: {a}")
+print(f"c: {c}")  # c changes too because it references the same object
+print(f"b: {b}")  # b remains unchanged
+
+# === Small integer caching (implementation detail) ===
+print("\n=== Small Integer Caching ===")
+x = 256
+y = 256
+print(f"x=256, y=256: x is y = {x is y}")  # True (cached)
+
+x = 257
+y = 257
+print(f"x=257, y=257: x is y = {x is y}")  # May be False (not cached)
+
+# === String interning ===
+print("\n=== String Interning ===")
+s1 = "hello"
+s2 = "hello"
+s3 = "hel" + "lo"  # Compile-time concatenation
+s4 = "hel" + "".join(["l", "o"])  # Runtime concatenation
+
+print(f"s1 is s2: {s1 is s2}")  # True (interned)
+print(f"s1 is s3: {s1 is s3}")  # True (compile-time optimization)
+print(f"s1 is s4: {s1 is s4}")  # May be False (runtime creation)
+
+# === None singleton ===
+print("\n=== None Singleton ===")
+def function_without_return():
+    pass  # Implicitly returns None
+
+result1 = None
+result2 = function_without_return()
+
+print(f"result1 is None: {result1 is None}")        # True
+print(f"result2 is None: {result2 is None}")        # True
+print(f"result1 is result2: {result1 is result2}")  # True - same None object
+
+# === Practical implications ===
+print("\n=== Practical Implications ===")
+
+def dangerous_default_argument(item, target_list=[]):
+    """
+    Dangerous: mutable default argument
+    The same list object is reused across calls!
+    """
+    target_list.append(item)
+    return target_list
+
+def safe_default_argument(item, target_list=None):
+    """
+    Safe: create new list for each call when needed
+    """
+    if target_list is None:
+        target_list = []
+    target_list.append(item)
+    return target_list
+
+# Demonstrate the problem
+result1 = dangerous_default_argument("first")
+result2 = dangerous_default_argument("second")
+print(f"Dangerous function results:")
+print(f"First call: {result1}")
+print(f"Second call: {result2}")  # Contains both items!
+print(f"Same object: {result1 is result2}")
+
+# Demonstrate the solution
+result3 = safe_default_argument("first")
+result4 = safe_default_argument("second") 
+print(f"\nSafe function results:")
+print(f"First call: {result3}")
+print(f"Second call: {result4}")  # Contains only its own item
+print(f"Same object: {result3 is result4}")
+
+# === Best practices ===
+print("\n=== Best Practices ===")
+print("1. Use == for value comparison")
+print("2. Use is for identity comparison (especially with None, True, False)")
+print("3. Always use 'is None' instead of '== None'")
+print("4. Be careful with mutable default arguments")
+print("5. Understand that small integers and strings may be cached/interned")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>== (equality):</strong> Compares values/content of objects</li>
+                        <li><strong>is (identity):</strong> Compares object identity (same object in memory)</li>
+                        <li><strong>id() function:</strong> Returns unique identifier for objects (memory address)</li>
+                        <li><strong>Singleton objects:</strong> None, True, False always have same identity</li>
+                        <li><strong>Small integer caching:</strong> Python caches integers -5 to 256 for efficiency</li>
+                        <li><strong>String interning:</strong> Python may reuse identical string objects</li>
+                        <li><strong>Mutable default args:</strong> Dangerous pattern that reuses same object across calls</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>🛠️ Common Python Built-ins</h2>
+                <div class="section-description">
+                    <p>Python provides many powerful built-in functions that make common programming tasks easier and more efficient. These functions are always available without importing any modules.</p>
+                </div>
+
+                <h3>Essential Built-in Functions with Practical Examples</h3>
+                <p>These built-in functions are fundamental tools for data manipulation, iteration, and functional programming patterns.</p>
+
+                <pre><code class="language-python"># Comprehensive demonstration of essential Python built-in functions
+
+# Sample data for demonstrations
+students = [
+    {"name": "Alice", "grades": [85, 92, 78, 96]},
+    {"name": "Bob", "grades": [74, 82, 89, 91]}, 
+    {"name": "Charlie", "grades": [95, 87, 92, 89]},
+    {"name": "Diana", "grades": [68, 72, 85, 79]}
+]
+
+numbers = [1, 5, 3, 9, 2, 8, 4]
+words = ["apple", "banana", "cherry", "date"]
+
+print("=== ENUMERATE - Add Index to Iterations ===")
+# enumerate() adds counter to iterable, returns tuples of (index, item)
+print("Students with index numbers:")
+for index, student in enumerate(students):
+    print(f"{index + 1}. {student['name']}")
+
+# enumerate with custom start value
+print("\nStarting from index 10:")
+for index, word in enumerate(words, start=10):
+    print(f"Index {index}: {word}")
+
+# Practical use: finding index of items matching condition
+print("\nFinding indices of students with high average grades:")
+for index, student in enumerate(students):
+    avg_grade = sum(student['grades']) / len(student['grades'])
+    if avg_grade >= 85:
+        print(f"Student {index}: {student['name']} (avg: {avg_grade:.1f})")
+
+print("\n=== ZIP - Combine Multiple Iterables ===")
+# zip() combines multiple iterables element by element
+names = ["Alice", "Bob", "Charlie"]
+ages = [20, 22, 21]  
+majors = ["Physics", "Chemistry", "Math"]
+
+print("Combining student information:")
+for name, age, major in zip(names, ages, majors):
+    print(f"{name}, {age} years old, studying {major}")
+
+# zip with unequal length iterables (stops at shortest)
+numbers_short = [1, 2, 3]
+letters = ["a", "b", "c", "d", "e"]
+print(f"\nZip with unequal lengths: {list(zip(numbers_short, letters))}")
+
+# Transposing data with zip
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+transposed = list(zip(*matrix))  # *matrix unpacks the rows
+print(f"Original matrix: {matrix}")
+print(f"Transposed: {transposed}")
+
+print("\n=== MAP - Apply Function to Every Item ===")
+# map() applies function to every item in iterable
+def square(x):
+    """Square a number"""
+    return x ** 2
+
+def celsius_to_fahrenheit(celsius):
+    """Convert Celsius to Fahrenheit"""
+    return (celsius * 9/5) + 32
+
+squared_numbers = list(map(square, numbers))
+print(f"Original numbers: {numbers}")
+print(f"Squared numbers: {squared_numbers}")
+
+# map with lambda function
+doubled = list(map(lambda x: x * 2, numbers))
+print(f"Doubled numbers: {doubled}")
+
+# map with multiple iterables
+temperatures_c = [0, 20, 37, 100]
+temperatures_f = list(map(celsius_to_fahrenheit, temperatures_c))
+print(f"Celsius: {temperatures_c}")
+print(f"Fahrenheit: {temperatures_f}")
+
+# Practical example: extract specific data from complex structure
+student_names = list(map(lambda student: student['name'], students))
+print(f"Student names: {student_names}")
+
+print("\n=== FILTER - Select Items Based on Condition ===")
+# filter() selects items where function returns True
+
+def is_even(x):
+    """Check if number is even"""
+    return x % 2 == 0
+
+def has_high_average(student):
+    """Check if student has high average grade"""
+    avg = sum(student['grades']) / len(student['grades'])
+    return avg >= 85
+
+even_numbers = list(filter(is_even, numbers))
+print(f"All numbers: {numbers}")
+print(f"Even numbers: {even_numbers}")
+
+# Filter with lambda
+long_words = list(filter(lambda word: len(word) > 5, words))
+print(f"All words: {words}")
+print(f"Long words (>5 chars): {long_words}")
+
+# Practical example: filter students by performance
+high_performers = list(filter(has_high_average, students))
+print("High-performing students:")
+for student in high_performers:
+    avg = sum(student['grades']) / len(student['grades'])
+    print(f"  {student['name']}: {avg:.1f} average")
+
+print("\n=== RANGE - Generate Number Sequences ===")
+# range() generates sequences of numbers
+
+# Basic range usage
+print("Basic ranges:")
+print(f"range(5): {list(range(5))}")                    # 0 to 4
+print(f"range(2, 8): {list(range(2, 8))}")             # 2 to 7
+print(f"range(0, 10, 2): {list(range(0, 10, 2))}")     # Even numbers 0 to 8
+print(f"range(10, 0, -1): {list(range(10, 0, -1))}")   # Countdown
+
+# Practical uses of range
+print("\nPractical range examples:")
+# Creating index-based loops
+for i in range(len(students)):
+    print(f"Student {i + 1}: {students[i]['name']}")
+
+# Processing every nth item
+print("Every 2nd number:")
+for i in range(0, len(numbers), 2):
+    print(f"Index {i}: {numbers[i]}")
+
+print("\n=== SORTED - Sort Iterables ===")
+# sorted() returns new sorted list (doesn't modify original)
+
+print(f"Original numbers: {numbers}")
+print(f"Sorted numbers: {sorted(numbers)}")
+print(f"Reverse sorted: {sorted(numbers, reverse=True)}")
+
+print(f"Original words: {words}")
+print(f"Alphabetically: {sorted(words)}")
+print(f"By length: {sorted(words, key=len)}")
+print(f"By length (reverse): {sorted(words, key=len, reverse=True)}")
+
+# Sorting complex objects
+students_by_name = sorted(students, key=lambda s: s['name'])
+print("\nStudents sorted by name:")
+for student in students_by_name:
+    print(f"  {student['name']}")
+
+# Sorting by calculated value
+students_by_avg = sorted(students, key=lambda s: sum(s['grades'])/len(s['grades']), reverse=True)
+print("\nStudents sorted by average grade (high to low):")
+for student in students_by_avg:
+    avg = sum(student['grades']) / len(student['grades'])
+    print(f"  {student['name']}: {avg:.1f}")
+
+print("\n=== ANY and ALL - Boolean Testing ===")
+# any() returns True if any element is truthy
+# all() returns True if all elements are truthy
+
+test_numbers = [0, 1, 2, 3, 4]
+empty_list = []
+all_positive = [1, 2, 3, 4, 5]
+mixed_boolean = [True, False, True]
+
+print(f"any({test_numbers}): {any(test_numbers)}")      # True (has non-zero)
+print(f"all({test_numbers}): {all(test_numbers)}")      # False (has zero)
+print(f"any({empty_list}): {any(empty_list)}")          # False (empty)
+print(f"all({empty_list}): {all(empty_list)}")          # True (vacuously true)
+print(f"all({all_positive}): {all(all_positive)}")      # True (all non-zero)
+
+# Practical examples
+print("\nPractical any/all examples:")
+# Check if any student failed (grade < 70)
+print("Checking for failing grades:")
+for student in students:
+    has_failing_grade = any(grade < 70 for grade in student['grades'])
+    print(f"  {student['name']}: {'Has failing grade' if has_failing_grade else 'All grades passing'}")
+
+# Check if all students passed all assignments
+print("\nChecking if all students passed everything:")
+all_students_passed = all(
+    all(grade >= 70 for grade in student['grades']) 
+    for student in students
+)
+print(f"All students passed everything: {all_students_passed}")
+
+# === COMBINING FUNCTIONS FOR POWERFUL DATA PROCESSING ===
+print("\n=== COMBINING BUILT-INS FOR DATA PROCESSING ===")
+
+# Example: Find top 2 students by average grade
+top_students = sorted(
+    students, 
+    key=lambda s: sum(s['grades']) / len(s['grades']), 
+    reverse=True
+)[:2]
+
+print("Top 2 students by average grade:")
+for i, student in enumerate(top_students, 1):
+    avg = sum(student['grades']) / len(student['grades'])
+    print(f"{i}. {student['name']}: {avg:.1f} average")
+
+# Example: Create grade distribution summary
+all_grades = [grade for student in students for grade in student['grades']]
+grade_stats = {
+    'total_grades': len(all_grades),
+    'average': sum(all_grades) / len(all_grades),
+    'highest': max(all_grades),
+    'lowest': min(all_grades),
+    'above_85': len(list(filter(lambda g: g >= 85, all_grades))),
+    'below_70': len(list(filter(lambda g: g < 70, all_grades)))
+}
+
+print("\nGrade Distribution Summary:")
+for stat, value in grade_stats.items():
+    if isinstance(value, float):
+        print(f"  {stat}: {value:.1f}")
+    else:
+        print(f"  {stat}: {value}")
+
+print("\n=== KEY TAKEAWAYS ===")
+print("• enumerate(): Add indices to loops")
+print("• zip(): Combine multiple iterables") 
+print("• map(): Transform every item")
+print("• filter(): Select items by condition")
+print("• range(): Generate number sequences")
+print("• sorted(): Create sorted copies")
+print("• any(): True if any item is truthy")
+print("• all(): True if all items are truthy")
+print("• Combine these functions for powerful data processing!")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>enumerate():</strong> Adds index counter to iterations, useful for tracking position</li>
+                        <li><strong>zip():</strong> Combines multiple iterables element-wise, stops at shortest</li>
+                        <li><strong>map():</strong> Applies function to every item, returns iterator (use list() to materialize)</li>
+                        <li><strong>filter():</strong> Selects items where condition is True, returns iterator</li>
+                        <li><strong>range():</strong> Generates arithmetic sequences, memory-efficient for large ranges</li>
+                        <li><strong>sorted():</strong> Returns new sorted list, accepts key function for custom sorting</li>
+                        <li><strong>any():</strong> Returns True if any element is truthy, False for empty iterables</li>
+                        <li><strong>all():</strong> Returns True if all elements are truthy, True for empty iterables</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2>📦 Imports and Modules</h2>
+                <div class="section-description">
+                    <p>Python's module system allows you to organize code into reusable units and access functionality from the standard library and third-party packages.</p>
+                </div>
+
+                <h3>How Imports Work and Module System</h3>
+                <p>When you import a module, Python searches for it in specific locations and executes the module code the first time it's imported.</p>
+
+                <pre><code class="language-python"># Comprehensive demonstration of Python's import system
+
+# === BASIC IMPORT PATTERNS ===
+print("=== BASIC IMPORT PATTERNS ===")
+
+# Import entire module
+import os
+import sys
+print(f"Operating system: {os.name}")
+print(f"Python version: {sys.version_info}")
+
+# Import specific functions/classes
+from datetime import datetime, timedelta
+from collections import defaultdict, Counter
+
+current_time = datetime.now()
+print(f"Current time: {current_time}")
+
+# Import with alias
+import pandas as pd  # Common convention
+import numpy as np   # Common convention
+
+# For demonstration, we'll use mock imports since these might not be installed
+try:
+    import pandas as pd
+    print("Pandas available")
+except ImportError:
+    print("Pandas not installed")
+
+# Import all (not recommended in production)
+# from math import *  # Pollutes namespace
+
+# === MODULE SEARCH PATH ===
+print(f"\n=== MODULE SEARCH PATH ===")
+print("Python searches for modules in this order:")
+for i, path in enumerate(sys.path, 1):
+    print(f"{i}. {path}")
+
+# === UNDERSTANDING __NAME__ ===
+print(f"\n=== MODULE NAME ===")
+print(f"Current module name: {__name__}")
+# When run as script: __name__ == "__main__"
+# When imported: __name__ == module name
+
+# === CREATING A SIMPLE MODULE EXAMPLE ===
+# This would typically be in a separate .py file
+print("\n=== CUSTOM MODULE EXAMPLE ===")
+
+# math_utils.py content (would be in separate file):
+"""
+def add(a, b):
+    '''Add two numbers'''
+    return a + b
+
+def multiply(a, b):
+    '''Multiply two numbers'''  
+    return a * b
+
+PI = 3.14159
+
+class Calculator:
+    def __init__(self):
+        self.history = []
+    
+    def calculate(self, operation, a, b):
+        if operation == 'add':
+            result = add(a, b)
+        elif operation == 'multiply':
+            result = multiply(a, b)
+        else:
+            raise ValueError("Unsupported operation")
+        
+        self.history.append(f"{operation}({a}, {b}) = {result}")
+        return result
+"""
+
+# === DIFFERENT IMPORT STYLES ===
+print("=== DIFFERENT IMPORT STYLES ===")
+
+# Style 1: Import module, use dot notation
+import json
+data = {"name": "Alice", "age": 30}
+json_string = json.dumps(data)
+print(f"JSON string: {json_string}")
+
+# Style 2: Import specific items
+from json import loads, dumps
+parsed_data = loads(json_string)
+print(f"Parsed data: {parsed_data}")
+
+# Style 3: Import with alias
+from collections import defaultdict as dd
+word_counts = dd(int)
+words = ["apple", "banana", "apple", "cherry", "banana", "apple"]
+for word in words:
+    word_counts[word] += 1
+print(f"Word counts: {dict(word_counts)}")
+
+# === CONDITIONAL IMPORTS ===
+print("\n=== CONDITIONAL IMPORTS ===")
+
+def get_json_library():
+    """
+    Example of conditional imports for compatibility
+    or optional dependencies
+    """
+    try:
+        import ujson as json  # Faster JSON library if available
+        print("Using ujson (faster)")
+        return json
+    except ImportError:
+        import json  # Fall back to standard library
+        print("Using standard json library")
+        return json
+
+json_lib = get_json_library()
+
+# === LAZY IMPORTS ===
+print("\n=== LAZY IMPORTS ===")
+
+def heavy_computation():
+    """
+    Import expensive modules only when needed
+    This is called 'lazy importing'
+    """
+    import time  # Could be expensive module like tensorflow, etc.
+    print("Performing heavy computation...")
+    time.sleep(0.1)  # Simulate work
+    return "Computation complete"
+
+# Module is only imported when function is called
+result = heavy_computation()
+print(result)
+
+# === PACKAGE IMPORTS ===
+print("\n=== PACKAGE IMPORTS ===")
+
+# Packages are directories with __init__.py
+# Example package structure:
+"""
+mypackage/
+    __init__.py
+    module1.py
+    module2.py
+    subpackage/
+        __init__.py
+        submodule.py
+"""
+
+# Different ways to import from packages:
+# from mypackage import module1
+# from mypackage.module1 import some_function  
+# from mypackage.subpackage import submodule
+
+# === RELATIVE IMPORTS (within packages) ===
+print("\n=== RELATIVE IMPORTS ===")
+print("Relative imports work within packages:")
+print("  from .module1 import function        # Same package")
+print("  from ..parent_package import module  # Parent package")
+print("  from ...grandparent import module    # Grandparent package")
+
+# === RELOAD MODULES (for development) ===
+print("\n=== RELOADING MODULES ===")
+
+import importlib
+# importlib.reload(module_name)  # Reload module during development
+print("Use importlib.reload() to reload modules during development")
+
+# === EXPLORING MODULES ===
+print("\n=== MODULE INTROSPECTION ===")
+
+print("Exploring the 'os' module:")
+print(f"Module file: {os.__file__}")
+print(f"Module documentation: {os.__doc__[:100]}...")
+
+# List module attributes
+os_attributes = [attr for attr in dir(os) if not attr.startswith('_')]
+print(f"Public attributes in os module: {len(os_attributes)}")
+print(f"First 10 attributes: {os_attributes[:10]}")
+
+# === BEST PRACTICES ===
+print("\n=== IMPORT BEST PRACTICES ===")
+practices = [
+    "1. Put imports at the top of the file",
+    "2. Group imports: standard library, third-party, local",
+    "3. Use absolute imports when possible", 
+    "4. Avoid 'from module import *'",
+    "5. Use meaningful aliases (pd, np are conventions)",
+    "6. Import only what you need",
+    "7. Handle ImportError for optional dependencies",
+    "8. Use lazy imports for expensive modules"
+]
+
+for practice in practices:
+    print(practice)
+
+# === PRACTICAL EXAMPLE: Configuration Module ===
+print("\n=== PRACTICAL EXAMPLE: CONFIGURATION ===")
+
+# This pattern is common for configuration management
+def load_config():
+    """
+    Example of importing based on environment
+    In real code, this might check environment variables
+    """
+    try:
+        # Try to import production config
+        from config.production import settings
+        print("Loaded production configuration")
+    except ImportError:
+        try:
+            # Fall back to development config
+            from config.development import settings
+            print("Loaded development configuration")  
+        except ImportError:
+            # Use default configuration
+            settings = {
+                "database_url": "sqlite:///default.db",
+                "debug": True,
+                "secret_key": "default-secret"
+            }
+            print("Using default configuration")
+    
+    return settings
+
+# In a real application:
+# config = load_config()
+
+print("\n=== MODULE SEARCH PROCESS ===")
+print("When you 'import module_name', Python:")
+print("1. Checks if module is already in sys.modules cache")
+print("2. Searches sys.path directories in order")
+print("3. Compiles .py to .pyc if needed")
+print("4. Executes module code (only first time)")
+print("5. Adds module to sys.modules cache")
+print("6. Binds module to name in current namespace")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>Module:</strong> A single Python file containing code that can be imported</li>
+                        <li><strong>Package:</strong> A directory containing multiple modules with __init__.py file</li>
+                        <li><strong>sys.path:</strong> List of directories Python searches for modules</li>
+                        <li><strong>sys.modules:</strong> Cache of already imported modules</li>
+                        <li><strong>__name__:</strong> Special variable containing module name (__main__ when run as script)</li>
+                        <li><strong>Lazy importing:</strong> Import expensive modules only when needed</li>
+                        <li><strong>Relative imports:</strong> Import from same package using . notation</li>
+                        <li><strong>Import order:</strong> Standard library, third-party, local modules</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="pro-tip">
+                <strong>💡 Expert Tip:</strong> Master Python fundamentals before diving into complex frameworks. Understanding namespaces, mutability, and the difference between <code>is</code> and <code>==</code> will save you from many debugging headaches. Always prefer explicit imports and meaningful variable names!
+            </div>
+
+            <section>
+                <h2>📋 Python Fundamentals Summary</h2>
+                <ul>
+                    <li><strong>Namespaces:</strong> Containers for names that prevent conflicts (LEGB rule)</li>
+                    <li><strong>Functions:</strong> First-class objects that can accept *args, **kwargs</li>
+                    <li><strong>Classes:</strong> Templates for objects with attributes and methods</li>
+                    <li><strong>Data Types:</strong> Understanding mutability is crucial for avoiding bugs</li>
+                    <li><strong>Identity vs Equality:</strong> Use <code>is</code> for identity, <code>==</code> for value comparison</li>
+                    <li><strong>Built-ins:</strong> Leverage enumerate, zip, map, filter for elegant code</li>
+                    <li><strong>Imports:</strong> Organize code with modules and understand the import system</li>
+                    <li><strong>Best Practices:</strong> Write explicit, readable code that follows Python conventions</li>
+                </ul>
+            </section>
+        </div>
+
+        <a href="#top" class="back-to-top">↑ Top</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
+</body>
+</html> 
