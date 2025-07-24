@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
     <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/modern-theme.css" />
+    
+    
+    
+    <!-- Modern theme CSS removed - was causing spacing issues -->
     <style>
         .project-filter {
             text-align: center;
@@ -244,10 +244,10 @@
         </nav>
 
         <!-- Main -->
-        <div id="main" class="container">
+        <div id="main">
 
             <!-- Project Filter -->
-            <div class="project-filter glass-card">
+            <div class="project-filter">
                 <select id="categoryFilter" onchange="filterProjects()">
                     <option value="all">All Categories</option>
                     <option value="sql">SQL</option>
@@ -260,7 +260,7 @@
             </div>
 
             <!-- Featured Post -->
-            <article class="post featured project-card fade-in-up" data-category="sql">
+            <article class="post featured" data-category="sql">
                 <div class="project-header" onclick="toggleProject(this)">
                     <header class="major">
                         <span class="date"></span>
@@ -274,13 +274,13 @@
                     </p>
                     <a href="https://github.com/kaledz/PorftolioProject/blob/main/DataCleaning_PorfolioProject1_NashvilleHousing.sql" class="image main"><img src="images/pic10.jpg" alt="" /></a>
                     <ul class="actions special">
-                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/DataCleaning_PorfolioProject1_NashvilleHousing.sql" class="btn btn-primary">View Project</a></li>
+                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/DataCleaning_PorfolioProject1_NashvilleHousing.sql" class="button large">View Project</a></li>
                     </ul>
                 </div>
             </article>
 
             <!-- Coffee Bean Analysis Post -->
-            <article class="post featured project-card fade-in-up" data-category="tableau">
+            <article class="post featured" data-category="tableau">
                 <div class="project-header" onclick="toggleProject(this)">
                     <header class="major">
                         <span class="date"></span>
@@ -336,7 +336,7 @@
             </article>
 
             <!-- Power BI Coffee Bean Analysis Post -->
-            <article class="post featured project-card fade-in-up" data-category="powerbi">
+            <article class="post featured" data-category="powerbi">
                 <div class="project-header" onclick="toggleProject(this)">
                     <header class="major">
                         <span class="date"></span>
@@ -355,7 +355,7 @@
             </article>
 
             <!-- Chocolate Sales EDA Python -->
-            <article class="post featured project-card fade-in-up" data-category="python">
+            <article class="post featured" data-category="python">
                 <div class="project-header" onclick="toggleProject(this)">
                     <header class="major">
                         <span class="date"></span>
@@ -371,13 +371,13 @@
                         <iframe src="Kaggle-Data Set.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" frameborder="0" allowFullScreen="true"></iframe>
                     </div>
                     <ul class="actions special">
-                        <li><a href="Kaggle-Data Set.html" target="_blank" class="btn btn-primary"><i class="fas fa-expand"></i> Fullscreen</a></li>
+                        <li><a href="Kaggle-Data Set.html" target="_blank" class="button large"><i class="fas fa-expand"></i> Fullscreen</a></li>
                     </ul>
                 </div>
             </article>
 
             <!-- Python Movie Correlation -->
-            <article class="post featured project-card fade-in-up" data-category="python">
+            <article class="post featured" data-category="python">
                 <div class="project-header" onclick="toggleProject(this)">
                     <header class="major">
                         <span class="date"></span>
@@ -391,13 +391,13 @@
                     </p>
                     <a href="https://github.com/kaledz/PorftolioProject/blob/main/Portfolio%20Project%20-%20Movie%20Correlation%20.ipynb" class="image main"><img src="images/pic13.jpg" alt="" /></a>
                     <ul class="actions special">
-                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/Portfolio%20Project%20-%20Movie%20Correlation%20.ipynb" class="btn btn-primary">View Project</a></li>
+                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/Portfolio%20Project%20-%20Movie%20Correlation%20.ipynb" class="button large">View Project</a></li>
                     </ul>
                 </div>
             </article>
 
             <!-- Excel Data Cleaning -->
-            <article class="post featured project-card fade-in-up" data-category="excel">
+            <article class="post featured" data-category="excel">
                 <div class="project-header" onclick="toggleProject(this)">
                     <header class="major">
                         <span class="date"></span>
@@ -411,13 +411,13 @@
                     </p>
                     <a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx" class="image main"><img src="images/pic14.jpg" alt="" /></a>
                     <ul class="actions special">
-                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx" class="btn btn-primary">View Project</a></li>
+                        <li><a href="https://github.com/kaledz/PorftolioProject/blob/main/Partner%20Level%20Search%20-%20Biz%20Dev%20Research.xlsx" class="button large">View Project</a></li>
                     </ul>
                 </div>
             </article>
 
             <!-- Data Engineering & ML Cheat Sheet System -->
-            <article class="post featured project-card fade-in-up" data-category="webdev">
+            <article class="post featured" data-category="webdev">
                 <div class="project-header" onclick="toggleProject(this)">
                     <header class="major">
                         <span class="date">2024</span>
@@ -456,8 +456,8 @@
                     </div>
                     
                     <ul class="actions special">
-                        <li><a href="cheatsheets/cheatsheet-index.html" target="_blank" class="btn btn-primary"><i class="fas fa-expand"></i> Fullscreen</a></li>
-                        <li><a href="https://github.com/kaledz/KrisLederer.github.io/tree/main/cheatsheets" class="btn btn-secondary">📂 View Source</a></li>
+                        <li><a href="cheatsheets/cheatsheet-index.html" target="_blank" class="button large"><i class="fas fa-expand"></i> Fullscreen</a></li>
+                        <li><a href="https://github.com/kaledz/KrisLederer.github.io/tree/main/cheatsheets" class="button">📂 View Source</a></li>
                     </ul>
                 </div>
             </article>
@@ -472,7 +472,7 @@
                                 <div class="field">
                                     <div class="field">
                                         <ul class="actions special">
-                                            <li><a href="https://x0hw1evxwau.typeform.com/to/iAxIqtq3" class="btn btn-secondary">Contact Me</a></li>
+                                            <li><a href="https://x0hw1evxwau.typeform.com/to/iAxIqtq3" class="button">Contact Me</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -518,7 +518,7 @@
     <script src="assets/js/breakpoints.min.js"></script>
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/theme-toggle.js"></script>
+    <!-- Theme toggle JS removed - was causing issues -->
     <script>
         function toggleProject(header) {
             const content = header.nextElementSibling;
@@ -557,6 +557,14 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
 
 
 
