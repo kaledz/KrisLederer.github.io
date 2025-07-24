@@ -1,23 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ðŸ§ª requests Library Cheat Sheet</title>
+    <title>🧪 requests Library Cheat Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 10; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
         .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
         .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
         .nav-links a:hover { background: #f0f0f0; }
         .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
         .nav-links .home-link:hover { background: #5a67d8; }
         .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
-        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: none; padding-bottom: 0.5rem; }
-        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.3rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
         h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
         p { margin-bottom: 1rem; }
         ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
@@ -65,31 +65,33 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">ðŸ  Home</a>
-                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
-                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
-                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
-                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
-                <a href="05-python-core.html">ðŸ Python Core</a>
-                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
-                <a href="06-requests-apis.html">ðŸ§ª requests</a>
-                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
-                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
-                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
-                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
-                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
-                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
-                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
-                <a href="14-git-essentials.html">ðŸ“ Git</a>
-                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">⚡ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🔄 Delta Live Tables</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Python Fundamentals</a>
+                <a href="06-requests-apis.html">🌐 Requests & APIs</a>
+                <a href="07-pandas-numpy.html">📊 Pandas & NumPy</a>
+                <a href="08-scikit-learn-ml.html">🤖 Scikit-Learn</a>
+                <a href="09-aws-kinesis.html">📡 AWS Kinesis</a>
+                <a href="10-data-patterns.html">🏗️ Data Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Python Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Notebook Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📚 Git Essentials</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="17-databricks-rest-api.html">🌐 Databricks REST API</a>
+                <a href="18-pdf-parsing-bigdata.html">📄 PDF Parsing</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">ðŸ§ª requests Library Cheat Sheet</h1>
+            <h1 id="top">🧪 requests Library Cheat Sheet</h1>
             <blockquote>Complete guide to HTTP requests, API authentication, pagination, and error handling</blockquote>
 
-            <h2>ðŸ”— Official Documentation</h2>
+            <h2>🔗 Official Documentation</h2>
             <ul>
                 <li><a href="https://requests.readthedocs.io/en/latest/" target="_blank">Requests Documentation</a></li>
                 <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank">HTTP Status Codes</a></li>
@@ -97,22 +99,22 @@
             </ul>
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#http-operations">ðŸš€ Basic HTTP Operations</a></li>
-                        <li><a href="#authentication">ðŸ” Authentication Methods</a></li>
-                        <li><a href="#error-handling">âš ï¸ Error Handling and Status Codes</a></li>
-                        <li><a href="#advanced-features">ðŸ”§ Advanced Features</a></li>
-                        <li><a href="#best-practices">ðŸ’¡ Best Practices</a></li>
+                        <li><a href="#http-operations">🚀 Basic HTTP Operations</a></li>
+                        <li><a href="#authentication">🔐 Authentication Methods</a></li>
+                        <li><a href="#error-handling">⚠️ Error Handling and Status Codes</a></li>
+                        <li><a href="#advanced-features">🔧 Advanced Features</a></li>
+                        <li><a href="#best-practices">💡 Best Practices</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="collapsible-section" id="http-operations">
                 <div class="section-header" onclick="toggleSection('http-operations')">
-                    <h2>ðŸš€ Basic HTTP Operations</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <h2>🚀 Basic HTTP Operations</h2>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
             <h3>Simple Requests</h3>
@@ -165,8 +167,8 @@ response = requests.get('https://api.example.com/data', headers=headers)</code><
 
             <div class="collapsible-section" id="authentication">
                 <div class="section-header" onclick="toggleSection('authentication')">
-                    <h2>ðŸ” Authentication Methods</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <h2>🔐 Authentication Methods</h2>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
             <h3>API Key Authentication</h3>
@@ -226,7 +228,7 @@ response = requests.get('https://api.example.com/data',
 response = requests.get('https://api.example.com/data', 
                        auth=('username', 'password'))</code></pre>
 
-            <h2>ðŸ›¡ï¸ Error Handling and Retries</h2>
+            <h2>🛡️ Error Handling and Retries</h2>
             <pre><code class="language-python">import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
@@ -275,7 +277,7 @@ class APIClient:
             print(f"HTTP error {e.response.status_code}: {method} {url}")
             return None</code></pre>
 
-            <h2>ðŸ“„ Pagination Handling</h2>
+            <h2>📄 Pagination Handling</h2>
             <h3>Common Pagination Patterns</h3>
             <pre><code class="language-python">def fetch_all_pages_offset(base_url, headers=None, page_size=100):
     """Handle offset-based pagination"""
@@ -330,7 +332,7 @@ def fetch_all_pages_cursor(base_url, headers=None):
     
     return all_data</code></pre>
 
-            <h2>ðŸ“ File Downloads and Uploads</h2>
+            <h2>📁 File Downloads and Uploads</h2>
             <h3>File Downloads</h3>
             <pre><code class="language-python">def download_file(url, local_path, chunk_size=8192, headers=None):
     """Download file with progress bar"""
@@ -374,7 +376,7 @@ def upload_json_data(url, data, headers=None):
     response.raise_for_status()
     return response.json()</code></pre>
 
-            <h2>ðŸŽ¯ Advanced Features</h2>
+            <h2>🎯 Advanced Features</h2>
             <h3>Session Management</h3>
             <pre><code class="language-python">class APISession:
     def __init__(self, base_url, default_headers=None):
@@ -405,7 +407,7 @@ with APIClient('https://api.example.com/', headers={'Authorization': 'Bearer tok
     response = client.get('users')
     data = response.json()</code></pre>
 
-            <h2>ðŸš€ Production Patterns</h2>
+            <h2>🚀 Production Patterns</h2>
             <h3>Rate Limiting and Configuration</h3>
             <pre><code class="language-python">import os
 from dataclasses import dataclass
@@ -445,11 +447,11 @@ class ProductionAPIClient:
         return self.session.get(url, **kwargs)</code></pre>
 
             <div class="pro-tip">
-                <strong>ðŸ’¡ Pro Tip:</strong> Always implement proper error handling and retry logic for production API clients. Use sessions for multiple requests to the same host for better performance!
+                <strong>💡 Pro Tip:</strong> Always implement proper error handling and retry logic for production API clients. Use sessions for multiple requests to the same host for better performance!
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">â†‘ Top</a>
+        <a href="#top" class="back-to-top">↑ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -463,10 +465,10 @@ class ProductionAPIClient:
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = 'ðŸ“‹ Hide Table of Contents';
+                button.textContent = '📋 Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = 'ðŸ“‹ Show Table of Contents';
+                button.textContent = '📋 Show Table of Contents';
             }
         }
 
@@ -479,11 +481,11 @@ class ProductionAPIClient:
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = 'â–¼';
+                toggle.textContent = '▼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = 'â–¶';
+                toggle.textContent = '▶';
             }
         }
 
@@ -494,7 +496,7 @@ class ProductionAPIClient:
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = 'â–¼';
+                toggle.textContent = '▼';
             });
         }
 
@@ -505,7 +507,7 @@ class ProductionAPIClient:
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = 'â–¶';
+                toggle.textContent = '▶';
             });
         }
 
@@ -525,5 +527,3 @@ class ProductionAPIClient:
     </script>
 </body>
 </html> 
-
-

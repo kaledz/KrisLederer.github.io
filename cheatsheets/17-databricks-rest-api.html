@@ -1,100 +1,815 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Databricks REST API Cheat Sheet</title>
+    <title>🌐 Databricks REST API Cheat Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
-        .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
-        .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; }
-        .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
-        .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
-        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; }
-        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.1); }
-        pre { background: #2d3748; color: #f7fafc; padding: 1rem; border-radius: 8px; overflow-x: auto; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        nav {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .nav-links a:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-links .home-link {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .nav-links .home-link:hover {
+            background: #5a67d8;
+        }
+
+        .content {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            border-bottom: none;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 0.3rem;
+        }
+
+        h3 {
+            color: #4a5568;
+            font-size: 1.4rem;
+            margin-top: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-description {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+        }
+
+        .section-description p {
+            margin: 0;
+            color: #2d3748;
+        }
+
+        .section-description ul {
+            margin: 0.5rem 0 0 1rem;
+            color: #2d3748;
+        }
+
+        pre {
+            margin: 1rem 0;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+
+        .endpoint-method {
+            display: inline-block;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+
+        .method-get { background: #48bb78; color: white; }
+        .method-post { background: #ed8936; color: white; }
+        .method-put { background: #667eea; color: white; }
+        .method-delete { background: #f56565; color: white; }
+
+        .api-endpoint {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="cheatsheet-index.html" class="home-link"> Home</a>
-                <a href="01-sql-databricks.html"> SQL</a>
-                <a href="02-pyspark-essentials.html"> PySpark</a>
-                <a href="17-databricks-rest-api.html"> REST API</a>
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">⚡ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🔄 Delta Live Tables</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Python Fundamentals</a>
+                <a href="06-requests-apis.html">🌐 Requests & APIs</a>
+                <a href="07-pandas-numpy.html">📊 Pandas & NumPy</a>
+                <a href="08-scikit-learn-ml.html">🤖 Scikit-Learn</a>
+                <a href="09-aws-kinesis.html">📡 AWS Kinesis</a>
+                <a href="10-data-patterns.html">🏗️ Data Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Python Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Notebook Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📚 Git Essentials</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="17-databricks-rest-api.html">🌐 Databricks REST API</a>
+                <a href="18-pdf-parsing-bigdata.html">📄 PDF Parsing</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1> Databricks REST API Cheat Sheet</h1>
-            <p>Complete guide to Databricks REST API for cluster management, SQL warehouses, and automation.</p>
+            <h1>🌐 Databricks REST API Cheat Sheet</h1>
+            <p>Complete guide to Databricks REST API for cluster management, SQL warehouses, pools, asset bundles, and automation.</p>
 
-            <h2> Authentication & Setup</h2>
-            <pre><code># Set environment variables
+            <div style="background: #f8f9fa; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.5rem; margin: 2rem 0;">
+                <h2 style="margin-top: 0; color: #2d3748;">📚 Table of Contents</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                    <div>
+                        <h4 style="color: #4a5568; margin-bottom: 0.5rem;">🔧 Core Operations</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li>• <a href="#authentication">🔐 Authentication & Setup</a></li>
+                            <li>• <a href="#clusters">⚡ Cluster Management</a></li>
+                            <li>• <a href="#sql-warehouses">🏢 SQL Warehouses</a></li>
+                            <li>• <a href="#cluster-pools">🏊 Cluster Pools</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: #4a5568; margin-bottom: 0.5rem;">🚀 Advanced Features</h4>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li>• <a href="#cost-optimization">💰 Cost Optimization</a></li>
+                            <li>• <a href="#asset-bundles">📦 Asset Bundles</a></li>
+                            <li>• <a href="#monitoring">📊 Monitoring & Alerts</a></li>
+                            <li>• <a href="#quick-reference">⚡ Quick Reference</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background: #e6fffa; border-left: 4px solid #38b2ac; padding: 1rem; margin: 2rem 0; border-radius: 5px;">
+                <h3 style="margin-top: 0;">📖 Official Documentation Links</h3>
+                <ul>
+                    <li><strong><a href="https://docs.databricks.com/api-explorer/workspace/introduction" target="_blank">🌐 Databricks REST API Reference</a></strong> - Complete API documentation</li>
+                    <li><strong><a href="https://docs.databricks.com/dev-tools/api/latest/clusters.html" target="_blank">⚡ Clusters API</a></strong> - Cluster management endpoints</li>
+                    <li><strong><a href="https://docs.databricks.com/dev-tools/api/latest/sql.html" target="_blank">🏢 SQL Warehouses API</a></strong> - SQL warehouse operations</li>
+                    <li><strong><a href="https://docs.databricks.com/dev-tools/api/latest/instance-pools.html" target="_blank">🏊 Instance Pools API</a></strong> - Pool management</li>
+                    <li><strong><a href="https://docs.databricks.com/dev-tools/auth/pat.html" target="_blank">🔐 Authentication Guide</a></strong> - Setup and security</li>
+                </ul>
+            </div>
+
+            <h2 id="authentication">🔐 Authentication & Setup</h2>
+            <div class="section-description">
+                <p><strong>Authentication methods for Databricks REST API</strong></p>
+                <ul>
+                    <li>Personal Access Tokens (recommended for development)</li>
+                    <li>OAuth 2.0 (recommended for production)</li>
+                    <li>Service Principal authentication</li>
+                </ul>
+            </div>
+
+            <h3>Personal Access Token Setup</h3>
+            <pre><code class="language-bash"># Set environment variables
 export DATABRICKS_HOST="https://your-workspace.cloud.databricks.com"
 export DATABRICKS_TOKEN="dapi1234567890abcdef"
 
-# Python setup
+# Or use databricks CLI configuration
+databricks configure --token</code></pre>
+
+            <h3>Python API Client Setup</h3>
+            <pre><code class="language-python"># Install Databricks SDK
+# pip install databricks-sdk
+
 from databricks.sdk import WorkspaceClient
+import requests
+import json
+
+# Initialize client with token
 w = WorkspaceClient(
     host="https://your-workspace.cloud.databricks.com",
     token="dapi1234567890abcdef"
-)</code></pre>
+)
 
-            <h2> Cluster Management</h2>
-            <pre><code># List all clusters
+# Alternative: Direct REST API calls
+headers = {
+    'Authorization': f'Bearer {token}',
+    'Content-Type': 'application/json'
+}
+
+def make_api_call(endpoint, method='GET', data=None):
+    """Generic API call function"""
+    url = f"{DATABRICKS_HOST}/api/2.1/{endpoint}"
+    
+    if method == 'GET':
+        response = requests.get(url, headers=headers)
+    elif method == 'POST':
+        response = requests.post(url, headers=headers, json=data)
+    elif method == 'DELETE':
+        response = requests.delete(url, headers=headers)
+    
+    return response.json() if response.status_code == 200 else response.text</code></pre>
+
+            <h2 id="clusters">⚡ Cluster Management</h2>
+            <div class="section-description">
+                <p><strong>Complete cluster lifecycle management through REST API</strong></p>
+                <ul>
+                    <li>Create, start, stop, and delete clusters</li>
+                    <li>Monitor cluster status and performance</li>
+                    <li>Configure auto-scaling and termination</li>
+                    <li>Manage cluster libraries and configurations</li>
+                </ul>
+            </div>
+
+            <h3>List All Clusters</h3>
+            <div class="api-endpoint">
+                <span class="endpoint-method method-get">GET</span>
+                <code>/api/2.1/clusters/list</code>
+            </div>
+            <pre><code class="language-python"># Using SDK
 clusters = w.clusters.list()
 for cluster in clusters:
     print(f"Cluster: {cluster.cluster_name} - Status: {cluster.state}")
 
-# Create cluster
+# Using direct API
+response = make_api_call('clusters/list')
+print(json.dumps(response, indent=2))</code></pre>
+
+            <h3>Create a New Cluster</h3>
+            <div class="api-endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <code>/api/2.1/clusters/create</code>
+            </div>
+            <pre><code class="language-python"># Create cluster configuration
 cluster_config = {
     "cluster_name": "my-analytics-cluster",
     "spark_version": "13.3.x-scala2.12",
     "node_type_id": "i3.xlarge",
+    "driver_node_type_id": "i3.xlarge",
     "num_workers": 2,
-    "autotermination_minutes": 60
+    "autotermination_minutes": 60,
+    "enable_elastic_disk": True,
+    "data_security_mode": "SINGLE_USER",
+    "runtime_engine": "STANDARD",
+    "spark_conf": {
+        "spark.sql.adaptive.enabled": "true",
+        "spark.sql.adaptive.coalescePartitions.enabled": "true"
+    },
+    "custom_tags": {
+        "environment": "development",
+        "team": "data-engineering"
+    }
 }
-cluster = w.clusters.create(**cluster_config)</code></pre>
 
-            <h2> SQL Warehouses</h2>
-            <pre><code># List SQL warehouses
+# Using SDK
+cluster = w.clusters.create(**cluster_config)
+print(f"Created cluster: {cluster.cluster_id}")
+
+# Using direct API
+response = make_api_call('clusters/create', 'POST', cluster_config)
+print(f"Cluster ID: {response.get('cluster_id')}")
+
+# Start cluster
+def start_cluster(cluster_id):
+    """Start a stopped cluster"""
+    w.clusters.start(cluster_id)
+    print(f"Starting cluster: {cluster_id}")
+
+# Stop cluster  
+def stop_cluster(cluster_id):
+    """Stop a running cluster"""
+    w.clusters.terminate(cluster_id)
+    print(f"Stopping cluster: {cluster_id}")
+
+# Delete cluster
+def delete_cluster(cluster_id):
+    """Permanently delete a cluster"""
+    w.clusters.permanent_delete(cluster_id)
+    print(f"Deleted cluster: {cluster_id}")
+
+# Batch operations
+def manage_clusters_by_tag(tag_key, tag_value, action):
+    """Start/stop/delete clusters by tag"""
+    clusters = w.clusters.list()
+    for cluster in clusters:
+        if cluster.custom_tags and cluster.custom_tags.get(tag_key) == tag_value:
+            if action == 'start':
+                start_cluster(cluster.cluster_id)
+            elif action == 'stop':
+                stop_cluster(cluster.cluster_id)
+            elif action == 'delete':
+                delete_cluster(cluster.cluster_id)</code></pre>
+
+            <h2 id="sql-warehouses">🏢 SQL Warehouses</h2>
+            <div class="section-description">
+                <p><strong>Manage SQL warehouses for analytics workloads</strong></p>
+                <ul>
+                    <li>Create and configure SQL warehouses</li>
+                    <li>Start/stop warehouses to control costs</li>
+                    <li>Monitor performance and usage</li>
+                    <li>Configure auto-stop settings</li>
+                </ul>
+            </div>
+
+            <h3>List SQL Warehouses</h3>
+            <div class="api-endpoint">
+                <span class="endpoint-method method-get">GET</span>
+                <code>/api/2.0/sql/warehouses</code>
+            </div>
+            <pre><code class="language-python"># List all SQL warehouses
 warehouses = w.warehouses.list()
 for warehouse in warehouses:
     print(f"Warehouse: {warehouse.name} - Status: {warehouse.state}")
 
-# Start/Stop warehouses
-w.warehouses.start(warehouse_id)
-w.warehouses.stop(warehouse_id)</code></pre>
+# Using direct API (note: different API version for SQL warehouses)
+def list_sql_warehouses():
+    url = f"{DATABRICKS_HOST}/api/2.0/sql/warehouses"
+    response = requests.get(url, headers=headers)
+    return response.json()</code></pre>
 
-            <h2> Asset Bundles</h2>
-            <pre><code># databricks.yml configuration
+            <h3>Create and Manage SQL Warehouses</h3>
+            <div class="api-endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <code>/api/2.0/sql/warehouses</code>
+            </div>
+            <pre><code class="language-python"># Create SQL warehouse
+warehouse_config = {
+    "name": "analytics-warehouse",
+    "cluster_size": "Small",
+    "min_num_clusters": 1,
+    "max_num_clusters": 3,
+    "auto_stop_mins": 60,
+    "enable_photon": True,
+    "warehouse_type": "PRO",
+    "tags": {
+        "environment": "production",
+        "cost-center": "analytics"
+    }
+}
+
+warehouse = w.warehouses.create(**warehouse_config)
+print(f"Created warehouse: {warehouse.id}")
+
+# Start SQL warehouse
+def start_sql_warehouse(warehouse_id):
+    """Start a stopped SQL warehouse"""
+    w.warehouses.start(warehouse_id)
+    print(f"Starting warehouse: {warehouse_id}")
+
+# Stop SQL warehouse
+def stop_sql_warehouse(warehouse_id):
+    """Stop a running SQL warehouse"""
+    w.warehouses.stop(warehouse_id)
+    print(f"Stopping warehouse: {warehouse_id}")
+
+# Update warehouse configuration
+def update_warehouse(warehouse_id, **updates):
+    """Update warehouse settings"""
+    w.warehouses.edit(warehouse_id, **updates)
+    print(f"Updated warehouse: {warehouse_id}")
+
+# Batch warehouse management
+def manage_warehouses_by_tag(tag_key, tag_value, action):
+    """Start/stop warehouses based on tags"""
+    warehouses = w.warehouses.list()
+    
+    for warehouse in warehouses:
+        if warehouse.tags and warehouse.tags.get(tag_key) == tag_value:
+            if action == 'start':
+                start_sql_warehouse(warehouse.id)
+            elif action == 'stop':
+                stop_sql_warehouse(warehouse.id)
+            print(f"{action.capitalize()}ed warehouse: {warehouse.name}")
+
+# Example: Stop all development warehouses at end of day
+manage_warehouses_by_tag('environment', 'development', 'stop')</code></pre>
+
+            <h2 id="cluster-pools">🏊 Cluster Pools</h2>
+            <div class="section-description">
+                <p><strong>Manage cluster pools for faster cluster startup times and cost optimization</strong></p>
+                <ul>
+                    <li>Create and configure cluster pools</li>
+                    <li>Monitor pool utilization and costs</li>
+                    <li>Scale pools up/down based on demand</li>
+                    <li>Delete unused pools to save costs</li>
+                </ul>
+            </div>
+
+            <h3>Create and Manage Cluster Pools</h3>
+            <div class="api-endpoint">
+                <span class="endpoint-method method-post">POST</span>
+                <code>/api/2.1/instance-pools/create</code>
+            </div>
+            <pre><code class="language-python"># Create cluster pool
+pool_config = {
+    "instance_pool_name": "general-purpose-pool",
+    "min_idle_instances": 0,
+    "max_capacity": 10,
+    "node_type_id": "i3.xlarge",
+    "idle_instance_autotermination_minutes": 60,
+    "enable_elastic_disk": True,
+    "custom_tags": {
+        "pool-type": "general-purpose",
+        "team": "data-engineering"
+    }
+}
+
+pool = w.instance_pools.create(**pool_config)
+print(f"Created pool: {pool.instance_pool_id}")
+
+# List all pools
+def list_instance_pools():
+    """List all instance pools with stats"""
+    pools = w.instance_pools.list()
+    for pool in pools:
+        stats = pool.stats
+        print(f"Pool: {pool.instance_pool_name}")
+        print(f"  State: {pool.state}")
+        print(f"  Idle: {stats.idle_count}, Used: {stats.used_count}")
+        print(f"  Max Capacity: {pool.max_capacity}")
+        
+        # Calculate utilization
+        utilization = (stats.used_count / pool.max_capacity * 100) if pool.max_capacity > 0 else 0
+        print(f"  Utilization: {utilization:.1f}%")
+        print("-" * 40)
+
+# Update pool configuration
+def update_instance_pool(pool_id, **updates):
+    """Update pool settings like capacity or idle termination"""
+    w.instance_pools.edit(pool_id, **updates)
+    print(f"Updated pool: {pool_id}")
+
+# Delete pool
+def delete_instance_pool(pool_id):
+    """Delete an instance pool"""
+    w.instance_pools.delete(pool_id)
+    print(f"Deleted pool: {pool_id}")
+
+# Cost management: Scale down pools after hours
+def scale_down_pools():
+    """Scale down pools for cost optimization"""
+    pools = w.instance_pools.list()
+    
+    for pool in pools:
+        # Update to minimum capacity
+        update_instance_pool(
+            pool.instance_pool_id,
+            min_idle_instances=0,
+            max_capacity=max(1, pool.max_capacity // 2)  # Reduce capacity by half
+        )
+        print(f"Scaled down pool: {pool.instance_pool_name}")
+
+# Example usage
+list_instance_pools()
+scale_down_pools()</code></pre>
+
+            <h2 id="cost-optimization">💰 Cost Optimization Automation</h2>
+            <div class="section-description">
+                <p><strong>Automated cost control through API-driven resource management</strong></p>
+                <ul>
+                    <li>Scheduled shutdown of development resources</li>
+                    <li>Weekend cost reduction automation</li>
+                    <li>Automatic scaling based on utilization</li>
+                    <li>Cost monitoring and alerting</li>
+                </ul>
+            </div>
+
+            <h3>Automated Cost Control Scripts</h3>
+            <pre><code class="language-python"># Complete cost optimization automation
+import schedule
+import time
+from datetime import datetime, time as dt_time
+
+class DatabricksCostController:
+    def __init__(self, workspace_client):
+        self.w = workspace_client
+    
+    def shutdown_dev_resources(self):
+        """Shutdown all development resources at end of day"""
+        print(f"[{datetime.now()}] Starting dev resource shutdown...")
+        
+        # Stop development clusters
+        clusters = self.w.clusters.list()
+        for cluster in clusters:
+            if cluster.custom_tags and cluster.custom_tags.get('environment') == 'development':
+                if cluster.state in ['RUNNING', 'PENDING']:
+                    self.w.clusters.terminate(cluster.cluster_id)
+                    print(f"Stopped dev cluster: {cluster.cluster_name}")
+        
+        # Stop development warehouses
+        warehouses = self.w.warehouses.list()
+        for warehouse in warehouses:
+            if warehouse.tags and warehouse.tags.get('environment') == 'development':
+                if warehouse.state == 'RUNNING':
+                    self.w.warehouses.stop(warehouse.id)
+                    print(f"Stopped dev warehouse: {warehouse.name}")
+        
+        print("Dev resource shutdown complete!")
+    
+    def weekend_scale_down(self):
+        """Scale down resources for weekend cost savings"""
+        print(f"[{datetime.now()}] Starting weekend scale-down...")
+        
+        # Scale down production warehouses
+        warehouses = self.w.warehouses.list()
+        for warehouse in warehouses:
+            if warehouse.tags and warehouse.tags.get('environment') == 'production':
+                # Reduce to minimum clusters
+                self.w.warehouses.edit(
+                    warehouse.id,
+                    min_num_clusters=1,
+                    max_num_clusters=2  # Reduce from normal capacity
+                )
+                print(f"Scaled down warehouse: {warehouse.name}")
+        
+        # Scale down instance pools
+        pools = self.w.instance_pools.list()
+        for pool in pools:
+            if pool.max_capacity > 2:
+                self.w.instance_pools.edit(
+                    pool.instance_pool_id,
+                    min_idle_instances=0,
+                    max_capacity=max(2, pool.max_capacity // 3)
+                )
+                print(f"Scaled down pool: {pool.instance_pool_name}")
+    
+    def monday_scale_up(self):
+        """Scale resources back up for the work week"""
+        print(f"[{datetime.now()}] Starting Monday scale-up...")
+        
+        # Restore production warehouse capacity
+        warehouses = self.w.warehouses.list()
+        for warehouse in warehouses:
+            if warehouse.tags and warehouse.tags.get('environment') == 'production':
+                self.w.warehouses.edit(
+                    warehouse.id,
+                    min_num_clusters=1,
+                    max_num_clusters=5  # Restore full capacity
+                )
+                print(f"Scaled up warehouse: {warehouse.name}")
+    
+    def setup_schedule(self):
+        """Setup automated cost control schedule"""
+        # Daily shutdown of dev resources at 7 PM
+        schedule.every().day.at("19:00").do(self.shutdown_dev_resources)
+        
+        # Weekend scale-down Friday at 6 PM
+        schedule.every().friday.at("18:00").do(self.weekend_scale_down)
+        
+        # Monday scale-up at 7 AM
+        schedule.every().monday.at("07:00").do(self.monday_scale_up)
+        
+        print("Cost optimization schedule configured!")
+        print("- Dev resources shutdown: Daily 7 PM")
+        print("- Weekend scale-down: Friday 6 PM")  
+        print("- Monday scale-up: Monday 7 AM")
+    
+    def run_scheduler(self):
+        """Run the cost optimization scheduler"""
+        self.setup_schedule()
+        
+        while True:
+            schedule.run_pending()
+            time.sleep(60)  # Check every minute
+
+# Usage
+cost_controller = DatabricksCostController(w)
+
+# Run immediate cost optimization
+cost_controller.shutdown_dev_resources()
+
+# Or run automated scheduler
+# cost_controller.run_scheduler()</code></pre>
+
+            <h2 id="asset-bundles">📦 Asset Bundles</h2>
+            <div class="section-description">
+                <p><strong>Deploy and manage Databricks Asset Bundles (DABs)</strong></p>
+                <ul>
+                    <li>Package notebooks, jobs, and configurations</li>
+                    <li>Deploy to different environments (dev/staging/prod)</li>
+                    <li>Version control for complete workspace assets</li>
+                    <li>Automated CI/CD with asset bundles</li>
+                </ul>
+            </div>
+
+            <h3>Asset Bundle Configuration</h3>
+            <pre><code class="language-yaml"># databricks.yml - Asset Bundle configuration
 bundle:
   name: data-pipeline
+  compute_id: ${var.cluster_id}
   
+variables:
+  cluster_id:
+    description: "Compute cluster ID"
+
 resources:
   jobs:
     daily_etl:
-      name: "Daily ETL Pipeline"
+      name: "Daily ETL Pipeline - ${bundle.environment}"
       schedule:
         quartz_cron_expression: "0 0 2 * * ?"
         timezone_id: "UTC"
+      tasks:
+        - task_key: extract
+          notebook_task:
+            notebook_path: ./notebooks/extract.py
+          new_cluster:
+            spark_version: "13.3.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 2
 
-# Deploy commands
+targets:
+  development:
+    workspace:
+      host: https://dev-workspace.cloud.databricks.com
+    variables:
+      cluster_id: "dev-cluster-id"
+  
+  production:
+    workspace:
+      host: https://prod-workspace.cloud.databricks.com
+    variables:
+      cluster_id: "prod-cluster-id"</code></pre>
+
+            <h3>Deploy Asset Bundle</h3>
+            <pre><code class="language-bash"># Install Databricks CLI with bundle support
+pip install databricks-cli
+
+# Initialize new bundle
+databricks bundle init
+
+# Validate bundle configuration
 databricks bundle validate -t development
-databricks bundle deploy -t development</code></pre>
 
-            <div style="background: #e6fffa; border-left: 4px solid #38b2ac; padding: 1rem; margin: 2rem 0;">
-                <h4> Success! Databricks REST API Guide Complete</h4>
-                <p>Use these APIs to automate cluster management, SQL warehouses, and deployments!</p>
+# Deploy to development environment
+databricks bundle deploy -t development
+
+# Deploy to production environment
+databricks bundle deploy -t production
+
+# Run deployed job
+databricks bundle run daily_etl -t development</code></pre>
+
+            <h2 id="quick-reference">⚡ Quick Reference - Start/Stop Commands</h2>
+            <div class="section-description">
+                <p><strong>Most commonly used commands for starting and stopping Databricks resources</strong></p>
             </div>
+
+            <h3>🔥 Essential Commands</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                <div style="background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: #2d3748; margin-top: 0;">⚡ Cluster Commands</h4>
+                    <pre><code class="language-bash"># Start cluster
+curl -X POST "$DATABRICKS_HOST/api/2.1/clusters/start" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"cluster_id": "cluster-id-here"}'
+
+# Stop cluster  
+curl -X POST "$DATABRICKS_HOST/api/2.1/clusters/terminate" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"cluster_id": "cluster-id-here"}'
+
+# Delete cluster permanently
+curl -X POST "$DATABRICKS_HOST/api/2.1/clusters/permanent-delete" \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"cluster_id": "cluster-id-here"}'</code></pre>
+                </div>
+                <div style="background: #f7fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem;">
+                    <h4 style="color: #2d3748; margin-top: 0;">🏢 SQL Warehouse Commands</h4>
+                    <pre><code class="language-bash"># Start SQL warehouse
+curl -X POST "$DATABRICKS_HOST/api/2.0/sql/warehouses/{id}/start" \
+  -H "Authorization: Bearer $TOKEN"
+
+# Stop SQL warehouse
+curl -X POST "$DATABRICKS_HOST/api/2.0/sql/warehouses/{id}/stop" \
+  -H "Authorization: Bearer $TOKEN"
+
+# Get warehouse status
+curl -X GET "$DATABRICKS_HOST/api/2.0/sql/warehouses/{id}" \
+  -H "Authorization: Bearer $TOKEN"</code></pre>
+                </div>
+            </div>
+
+            <h3>🐍 Python Quick Scripts</h3>
+            <pre><code class="language-python"># Quick cluster start/stop script
+import requests
+import os
+
+DATABRICKS_HOST = os.getenv('DATABRICKS_HOST')
+TOKEN = os.getenv('DATABRICKS_TOKEN')
+headers = {'Authorization': f'Bearer {TOKEN}', 'Content-Type': 'application/json'}
+
+# Start cluster
+def start_cluster(cluster_id):
+    response = requests.post(
+        f"{DATABRICKS_HOST}/api/2.1/clusters/start",
+        headers=headers,
+        json={"cluster_id": cluster_id}
+    )
+    return response.status_code == 200
+
+# Stop cluster
+def stop_cluster(cluster_id):
+    response = requests.post(
+        f"{DATABRICKS_HOST}/api/2.1/clusters/terminate", 
+        headers=headers,
+        json={"cluster_id": cluster_id}
+    )
+    return response.status_code == 200
+
+# Usage
+cluster_id = "your-cluster-id"
+start_cluster(cluster_id)  # Start
+# stop_cluster(cluster_id)   # Stop</code></pre>
+
+            <h3>💡 Pro Tips</h3>
+            <div style="background: #fef5e7; border-left: 4px solid #ed8936; padding: 1rem; margin: 1rem 0; border-radius: 5px;">
+                <ul>
+                    <li><strong>Cost Savings:</strong> Always stop development clusters and warehouses when not in use</li>
+                    <li><strong>Automation:</strong> Use tags to identify resources for bulk start/stop operations</li>
+                    <li><strong>Monitoring:</strong> Check cluster states before operations to avoid errors</li>
+                    <li><strong>Scheduling:</strong> Implement automated shutdown for non-production resources</li>
+                </ul>
+            </div>
+
+            <a href="#top" class="back-to-top">↑ Top</a>
         </div>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
-</html>
-
-
+</html> 

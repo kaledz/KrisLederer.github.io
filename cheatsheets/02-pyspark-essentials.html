@@ -1,23 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ðŸ”¥ ELT Using PySpark - Expert Cheat Sheet</title>
+    <title>🔥 ELT Using PySpark - Expert Cheat Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 10; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
         .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
         .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
         .nav-links a:hover { background: #f0f0f0; }
         .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
         .nav-links .home-link:hover { background: #5a67d8; }
         .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
-        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: none; padding-bottom: 0.5rem; }
-        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.3rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
         h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
         p { margin-bottom: 1rem; line-height: 1.7; }
         ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
@@ -66,41 +66,44 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">ðŸ  Home</a>
-                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
-                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
-                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
-                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
-                <a href="05-python-core.html">ðŸ Python Core</a>
-                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
-                <a href="06-requests-apis.html">ðŸ§ª requests</a>
-                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
-                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
-                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
-                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
-                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
-                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
-                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
-                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">⚡ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🔄 Delta Live Tables</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Python Fundamentals</a>
+                <a href="06-requests-apis.html">🌐 Requests & APIs</a>
+                <a href="07-pandas-numpy.html">📊 Pandas & NumPy</a>
+                <a href="08-scikit-learn-ml.html">🤖 Scikit-Learn</a>
+                <a href="09-aws-kinesis.html">📡 AWS Kinesis</a>
+                <a href="10-data-patterns.html">🏗️ Data Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Python Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Notebook Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📚 Git Essentials</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="17-databricks-rest-api.html">🌐 Databricks REST API</a>
+                <a href="18-pdf-parsing-bigdata.html">📄 PDF Parsing</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">ðŸ”¥ [ ELT Using PySpark ] (Cheatsheet)</h1>
+            <h1 id="top">🔥 [ ELT Using PySpark ] (Cheatsheet)</h1>
             <blockquote>Expert-level comprehensive guide to Extract, Load, Transform operations using PySpark for big data processing and analytics</blockquote>
 
-            <h2>ðŸ”— Official Documentation</h2>
+            <h2>🔗 Official Documentation</h2>
             <ul>
                 <li><a href="https://spark.apache.org/docs/latest/api/python/" target="_blank">PySpark API Documentation</a></li>
                 <li><a href="https://spark.apache.org/docs/latest/sql-programming-guide.html" target="_blank">Spark SQL Programming Guide</a></li>
                 <li><a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" target="_blank">Structured Streaming Guide</a></li>
                 <li><a href="https://spark.apache.org/docs/latest/ml-guide.html" target="_blank">MLlib Machine Learning Guide</a></li>
-                <li><a href="16-sql-functions-comparison.html" style="color: #e53e3e; font-weight: bold;">ðŸ”— SQL vs PySpark Functions Comparison</a></li>
+                <li><a href="16-sql-functions-comparison.html" style="color: #e53e3e; font-weight: bold;">🔗 SQL vs PySpark Functions Comparison</a></li>
             </ul>
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
                         <li><a href="#1-basic-dataframe-operations">1. Basic DataFrame Operations</a></li><li><a href="#2-advanced-data-manipulation">2. Advanced Data Manipulation</a></li><li><a href="#3-handling-missing-and-duplicate-data">3. Handling Missing and Duplicate Data</a></li><li><a href="#4-data-transformation">4. Data Transformation</a></li><li><a href="#5-data-profiling">5. Data Profiling</a></li><li><a href="#6-data-visualization-integration-with-other-libraries">6. Data Visualization (Integration with other libraries)</a></li><li><a href="#7-data-importexport">7. Data Import/Export</a></li><li><a href="#8-working-with-large-data">8. Working with Large Data</a></li><li><a href="#9-spark-sql">9. Spark SQL</a></li><li><a href="#10-machine-learning-and-advanced-analytics">10. Machine Learning and Advanced Analytics</a></li><li><a href="#performance-best-practices-summary">Performance Best Practices Summary</a></li>
@@ -112,7 +115,7 @@
                 <div class="collapsible-section" id="1-basic-dataframe-operations">
                 <div class="section-header" onclick="toggleSection('1-basic-dataframe-operations')">
                     <h2>1. Basic DataFrame Operations</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -231,7 +234,7 @@ df.write \
                 <div class="collapsible-section" id="2-advanced-data-manipulation">
                 <div class="section-header" onclick="toggleSection('2-advanced-data-manipulation')">
                     <h2>2. Advanced Data Manipulation</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -307,7 +310,7 @@ df_broadcast = large_df.join(broadcast(small_df), "key")</code></pre>
                 <div class="collapsible-section" id="3-handling-missing-and-duplicate-data">
                 <div class="section-header" onclick="toggleSection('3-handling-missing-and-duplicate-data')">
                     <h2>3. Handling Missing and Duplicate Data</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -343,7 +346,7 @@ df_replaced = df.na.replace(["old_value"], ["new_value"])</code></pre>
                 <div class="collapsible-section" id="4-data-transformation">
                 <div class="section-header" onclick="toggleSection('4-data-transformation')">
                     <h2>4. Data Transformation</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -463,7 +466,7 @@ df_analytics = df.withColumn("rank", rank().over(windowSpec)) \
                 <div class="collapsible-section" id="5-data-profiling">
                 <div class="section-header" onclick="toggleSection('5-data-profiling')">
                     <h2>5. Data Profiling</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -515,7 +518,7 @@ def profile_dataframe(df):
                 <div class="collapsible-section" id="6-data-visualization-integration-with-other-libraries">
                 <div class="section-header" onclick="toggleSection('6-data-visualization-integration-with-other-libraries')">
                     <h2>6. Data Visualization (Integration with other libraries)</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -572,7 +575,7 @@ print(f"Histogram counts: {histogram_data[1]}")</code></pre>
                 <div class="collapsible-section" id="7-data-importexport">
                 <div class="section-header" onclick="toggleSection('7-data-importexport')">
                     <h2>7. Data Import/Export</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -642,7 +645,7 @@ gcs_df = spark.read.parquet("gs://bucket-name/path/to/data/")</code></pre>
                 <div class="collapsible-section" id="8-working-with-large-data">
                 <div class="section-header" onclick="toggleSection('8-working-with-large-data')">
                     <h2>8. Working with Large Data</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -699,7 +702,7 @@ spark.conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                 <div class="collapsible-section" id="9-spark-sql">
                 <div class="section-header" onclick="toggleSection('9-spark-sql')">
                     <h2>9. Spark SQL</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -775,7 +778,7 @@ complex_query = spark.sql("""
                 <div class="collapsible-section" id="10-machine-learning-and-advanced-analytics">
                 <div class="section-header" onclick="toggleSection('10-machine-learning-and-advanced-analytics')">
                     <h2>10. Machine Learning and Advanced Analytics</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -848,14 +851,14 @@ best_predictions = cv_model.transform(test)</code></pre>
             <!-- Continuing with the remaining 18 sections... -->
 
             <div class="pro-tip">
-                <strong>ðŸ’¡ Expert Tip:</strong> Always profile your data first, choose appropriate partitioning strategies, and leverage Spark's lazy evaluation by chaining transformations before actions. Monitor your Spark UI to identify bottlenecks and optimize accordingly!
+                <strong>💡 Expert Tip:</strong> Always profile your data first, choose appropriate partitioning strategies, and leverage Spark's lazy evaluation by chaining transformations before actions. Monitor your Spark UI to identify bottlenecks and optimize accordingly!
             </div>
 
             <section>
                 <div class="collapsible-section" id="performance-best-practices-summary">
                 <div class="section-header" onclick="toggleSection('performance-best-practices-summary')">
                     <h2>Performance Best Practices Summary</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <ul>
@@ -880,21 +883,18 @@ best_predictions = cv_model.transform(test)</code></pre>
             </div>                </div>
             </div>                </div>
             </div>
-        </div>
 
-        <a href="#top" class="back-to-top">â†‘ Top</a>
-            
             <div class="collapsible-section" id="sql-vs-pyspark-comparison">
                 <div class="section-header" onclick="toggleSection(this)">
-                    <h2> SQL vs PySpark: Side-by-Side Comparison</h2>
-                    <span class="section-toggle"></span>
+                    <h2>🔄 SQL vs PySpark: Side-by-Side Comparison</h2>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
 
             <h3>ANSI Standard Functions - SQL vs PySpark</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
                 <div>
-                    <h4 style="background: #e6fffa; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;"> SQL (ANSI Standard)</h4>
+                    <h4 style="background: #e6fffa; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">📊 SQL (ANSI Standard)</h4>
                     <pre><code class="language-sql">-- String functions
 SELECT 
     UPPER(name) as upper_name,
@@ -904,18 +904,29 @@ SELECT
     TRIM(BOTH ' ' FROM name) as trimmed,
     POSITION('@' IN email) as at_pos,
     
+    -- Date functions
+    CURRENT_DATE as today,
+    CURRENT_TIMESTAMP as now,
+    EXTRACT(YEAR FROM created_date) as year,
+    EXTRACT(MONTH FROM created_date) as month,
+    
     -- Window functions
     RANK() OVER (
         PARTITION BY department 
         ORDER BY salary DESC
-    ) as salary_rank
+    ) as salary_rank,
+    
+    -- Aggregates
+    COUNT(*) OVER (PARTITION BY region) as count
 FROM employees;</code></pre>
                 </div>
                 <div>
-                    <h4 style="background: #fff5f5; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;"> PySpark DataFrame API</h4>
-                    <pre><code class="language-python">from pyspark.sql import functions as F
+                    <h4 style="background: #fff5f5; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">⚡ PySpark DataFrame API</h4>
+                    <pre><code class="language-python"># Import functions
+from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
+# Equivalent transformations
 df.select(
     # String functions
     F.upper("name").alias("upper_name"),
@@ -925,11 +936,22 @@ df.select(
     F.trim("name").alias("trimmed"),
     F.instr("email", "@").alias("at_pos"),
     
+    # Date functions
+    F.current_date().alias("today"),
+    F.current_timestamp().alias("now"),
+    F.year("created_date").alias("year"),
+    F.month("created_date").alias("month"),
+    
     # Window functions
     F.rank().over(
         Window.partitionBy("department")
               .orderBy(F.desc("salary"))
-    ).alias("salary_rank")
+    ).alias("salary_rank"),
+    
+    # Aggregates
+    F.count("*").over(
+        Window.partitionBy("region")
+    ).alias("count")
 )</code></pre>
                 </div>
             </div>
@@ -937,18 +959,32 @@ df.select(
             <h3>ANSI Standard Joins - SQL vs PySpark</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
                 <div>
-                    <h4 style="background: #e6fffa; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;"> SQL (ANSI-92 Joins)</h4>
+                    <h4 style="background: #e6fffa; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">📊 SQL (ANSI-92 Joins)</h4>
                     <pre><code class="language-sql">-- ANSI standard join syntax
-SELECT c.customer_name, o.order_date, p.product_name
+SELECT 
+    c.customer_name,
+    o.order_date,
+    p.product_name,
+    oi.quantity * oi.unit_price as total
 FROM customers c
-    INNER JOIN orders o ON c.customer_id = o.customer_id
-    LEFT OUTER JOIN order_items oi ON o.order_id = oi.order_id  
-    RIGHT OUTER JOIN products p ON oi.product_id = p.product_id
-    FULL OUTER JOIN categories cat ON p.category_id = cat.category_id
-WHERE o.order_date >= DATE '2024-01-01';</code></pre>
+    INNER JOIN orders o 
+        ON c.customer_id = o.customer_id
+    LEFT OUTER JOIN order_items oi 
+        ON o.order_id = oi.order_id
+    RIGHT OUTER JOIN products p 
+        ON oi.product_id = p.product_id
+    FULL OUTER JOIN categories cat 
+        ON p.category_id = cat.category_id
+WHERE o.order_date >= DATE '2024-01-01'
+ORDER BY c.customer_name;
+
+-- Cross join
+SELECT d.date, p.product_name
+FROM date_dimension d
+CROSS JOIN products p;</code></pre>
                 </div>
                 <div>
-                    <h4 style="background: #fff5f5; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;"> PySpark DataFrame API</h4>
+                    <h4 style="background: #fff5f5; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">⚡ PySpark DataFrame API</h4>
                     <pre><code class="language-python"># Equivalent PySpark joins
 result = customers.alias("c") \
     .join(orders.alias("o"), 
@@ -962,20 +998,196 @@ result = customers.alias("c") \
           "right_outer") \
     .join(categories.alias("cat"), 
           F.col("p.category_id") == F.col("cat.category_id"), 
-          "full_outer")</code></pre>
+          "full_outer") \
+    .select(
+        F.col("c.customer_name"),
+        F.col("o.order_date"),
+        F.col("p.product_name"),
+        (F.col("oi.quantity") * F.col("oi.unit_price")).alias("total")
+    ) \
+    .filter(F.col("o.order_date") >= "2024-01-01") \
+    .orderBy("c.customer_name")
+
+# Cross join
+cross_result = date_dimension.crossJoin(products)</code></pre>
                 </div>
+            </div>
+
+            <h3>Complex Queries - SQL vs PySpark</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0;">
+                <div>
+                    <h4 style="background: #e6fffa; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">📊 SQL with CTEs</h4>
+                    <pre><code class="language-sql">-- ANSI SQL:1999 WITH clause
+WITH monthly_sales AS (
+    SELECT 
+        EXTRACT(YEAR FROM order_date) as year,
+        EXTRACT(MONTH FROM order_date) as month,
+        SUM(total_amount) as monthly_total,
+        COUNT(*) as order_count
+    FROM orders
+    WHERE order_date >= DATE '2023-01-01'
+    GROUP BY 
+        EXTRACT(YEAR FROM order_date), 
+        EXTRACT(MONTH FROM order_date)
+),
+sales_with_growth AS (
+    SELECT 
+        year, month, monthly_total, order_count,
+        LAG(monthly_total) OVER (
+            ORDER BY year, month
+        ) as previous_month_total
+    FROM monthly_sales
+)
+SELECT 
+    year, month, monthly_total,
+    CASE 
+        WHEN previous_month_total > 0 THEN 
+            ROUND((monthly_total - previous_month_total) 
+                  / previous_month_total * 100, 2)
+        ELSE NULL
+    END as growth_percentage
+FROM sales_with_growth
+ORDER BY year, month;</code></pre>
+                </div>
+                <div>
+                    <h4 style="background: #fff5f5; padding: 0.5rem; border-radius: 5px; margin-bottom: 0.5rem;">⚡ PySpark Equivalent</h4>
+                    <pre><code class="language-python"># Equivalent PySpark transformation
+from pyspark.sql.window import Window
+
+# Step 1: Monthly aggregation
+monthly_sales = orders \
+    .filter(F.col("order_date") >= "2023-01-01") \
+    .select(
+        F.year("order_date").alias("year"),
+        F.month("order_date").alias("month"),
+        "total_amount"
+    ) \
+    .groupBy("year", "month") \
+    .agg(
+        F.sum("total_amount").alias("monthly_total"),
+        F.count("*").alias("order_count")
+    )
+
+# Step 2: Add growth calculation
+window_spec = Window.orderBy("year", "month")
+
+sales_with_growth = monthly_sales \
+    .withColumn(
+        "previous_month_total",
+        F.lag("monthly_total").over(window_spec)
+    ) \
+    .withColumn(
+        "growth_percentage",
+        F.when(
+            F.col("previous_month_total") > 0,
+            F.round(
+                (F.col("monthly_total") - F.col("previous_month_total")) 
+                / F.col("previous_month_total") * 100, 2
+            )
+        ).otherwise(None)
+    ) \
+    .select("year", "month", "monthly_total", "growth_percentage") \
+    .orderBy("year", "month")
+
+sales_with_growth.show()</code></pre>
+                </div>
+            </div>
+
+            <h3>Best Practices: When to Use SQL vs DataFrame API</h3>
+            <div style="background: #f8f9fa; border-left: 4px solid #667eea; padding: 1rem; margin: 1rem 0; border-radius: 5px;">
+                <h4>📊 Use SQL When:</h4>
+                <ul>
+                    <li><strong>Complex Analytics:</strong> Window functions, CTEs, complex joins</li>
+                    <li><strong>Team Familiarity:</strong> SQL-first teams and analysts</li>
+                    <li><strong>Rapid Prototyping:</strong> Quick data exploration and reporting</li>
+                    <li><strong>Legacy Integration:</strong> Existing SQL code and procedures</li>
+                </ul>
+                
+                <h4 style="margin-top: 1rem;">⚡ Use DataFrame API When:</h4>
+                <ul>
+                    <li><strong>Programming Logic:</strong> Complex business rules and control flow</li>
+                    <li><strong>Dynamic Queries:</strong> Programmatically generated transformations</li>
+                    <li><strong>Type Safety:</strong> Compile-time checking and IDE support</li>
+                    <li><strong>Modularity:</strong> Reusable transformation functions</li>
+                </ul>
             </div>
 
                 </div>
             </div>
 
-            <a href="#top" class="back-to-top"> Top</a>
-        </div>
+            <a href="#top" class="back-to-top">↑ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script>
+        // Toggle Table of Contents
+        function toggleTOC() {
+            const tocContent = document.getElementById('tocContent');
+            const button = document.querySelector('.toc-toggle');
+            
+            if (tocContent.classList.contains('collapsed')) {
+                tocContent.classList.remove('collapsed');
+                button.textContent = '📋 Hide Table of Contents';
+            } else {
+                tocContent.classList.add('collapsed');
+                button.textContent = '📋 Show Table of Contents';
+            }
+        }
+
+        // Toggle individual sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const content = section.querySelector('.section-content');
+            const toggle = section.querySelector('.section-toggle');
+            
+            if (content.classList.contains('collapsed')) {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            } else {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            }
+        }
+
+        // Expand all sections
+        function expandAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.remove('collapsed');
+                toggle.textContent = '▼';
+            });
+        }
+
+        // Collapse all sections
+        function collapseAll() {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.add('collapsed');
+            });
+            document.querySelectorAll('.section-toggle').forEach(toggle => {
+                toggle.classList.add('collapsed');
+                toggle.textContent = '▶';
+            });
+        }
+
+        // Add expand/collapse all buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocContainer = document.querySelector('.toc-container');
+            if (tocContainer) {
+                const controls = document.createElement('div');
+                controls.style.marginTop = '1rem';
+                controls.innerHTML = `
+                    <button onclick="expandAll()" style="background: #48bb78; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; margin-right: 0.5rem; cursor: pointer; font-size: 0.8rem;">Expand All</button>
+                    <button onclick="collapseAll()" style="background: #f56565; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Collapse All</button>
+                `;
+                tocContainer.appendChild(controls);
+            }
+        });
+    </script>
 </body>
-</html>
-
-
+</html> 

@@ -1,23 +1,23 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ðŸ”„ Conditional Notebook Exit & Retry Logic</title>
+    <title>🔄 Conditional Notebook Exit & Retry Logic</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 10; }
+        nav { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; position: sticky; top: 20px; z-index: 100; }
         .nav-links { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
         .nav-links a { color: #667eea; text-decoration: none; padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.2s; font-size: 0.9rem; }
         .nav-links a:hover { background: #f0f0f0; }
         .nav-links .home-link { background: #667eea; color: white; font-weight: 600; }
         .nav-links .home-link:hover { background: #5a67d8; }
         .content { background: white; border-radius: 10px; padding: 2rem; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); margin-bottom: 2rem; }
-        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: none; padding-bottom: 0.5rem; }
-        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 0.3rem; }
+        h1 { color: #2d3748; font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid #667eea; padding-bottom: 0.5rem; }
+        h2 { color: #2d3748; font-size: 1.8rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.3rem; }
         h3 { color: #4a5568; font-size: 1.4rem; margin-top: 1.5rem; margin-bottom: 0.8rem; }
         p { margin-bottom: 1rem; line-height: 1.7; }
         ul, ol { margin-bottom: 1rem; padding-left: 1.5rem; }
@@ -68,31 +68,33 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">ðŸ  Home</a>
-                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
-                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
-                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
-                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
-                <a href="05-python-core.html">ðŸ Python Core</a>
-                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
-                <a href="06-requests-apis.html">ðŸ§ª requests</a>
-                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
-                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
-                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
-                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
-                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
-                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
-                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
-                <a href="14-git-essentials.html">ðŸ“ Git</a>
-                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
+                <a href="index.html" class="home-link">🏠 Home</a>
+                <a href="01-sql-databricks.html">📊 SQL</a>
+                <a href="02-pyspark-essentials.html">⚡ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">🔄 Delta Live Tables</a>
+                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
+                <a href="05-python-core.html">🐍 Python Core</a>
+                <a href="15-python-fundamentals.html">🔣 Python Fundamentals</a>
+                <a href="06-requests-apis.html">🌐 Requests & APIs</a>
+                <a href="07-pandas-numpy.html">📊 Pandas & NumPy</a>
+                <a href="08-scikit-learn-ml.html">🤖 Scikit-Learn</a>
+                <a href="09-aws-kinesis.html">📡 AWS Kinesis</a>
+                <a href="10-data-patterns.html">🏗️ Data Patterns</a>
+                <a href="11-python-packaging-databricks.html">📦 Python Packaging</a>
+                <a href="12-notebook-exit-retry.html">🔄 Notebook Exit & Retry</a>
+                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
+                <a href="14-git-essentials.html">📚 Git Essentials</a>
+                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="17-databricks-rest-api.html">🌐 Databricks REST API</a>
+                <a href="18-pdf-parsing-bigdata.html">📄 PDF Parsing</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">ðŸ”„ Conditional Notebook Exit & Retry Logic</h1>
+            <h1 id="top">🔄 Conditional Notebook Exit & Retry Logic</h1>
             <blockquote>Expert guide to implementing robust error handling, conditional exits, and retry mechanisms in Databricks notebooks</blockquote>
 
-            <h2>ðŸ”— Official Documentation</h2>
+            <h2>🔗 Official Documentation</h2>
             <ul>
                 <li><a href="https://docs.databricks.com/dev-tools/databricks-utils.html#notebook-workflow-utility-dbutilsnotebook" target="_blank">Databricks Notebook Utilities</a></li>
                 <li><a href="https://docs.databricks.com/workflows/jobs/jobs.html" target="_blank">Databricks Jobs and Workflows</a></li>
@@ -101,10 +103,10 @@
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#basic-notebook-exit-patterns">ðŸšª Basic Notebook Exit Patterns</a></li><li><a href="#retry-logic-and-resilience-patterns">ðŸ” Retry Logic and Resilience Patterns</a></li><li><a href="#advanced-workflow-patterns">ðŸŽ¯ Advanced Workflow Patterns</a></li><li><a href="#best-practices-summary">ðŸ“‹ Best Practices Summary</a></li>
+                        <li><a href="#basic-notebook-exit-patterns">🚪 Basic Notebook Exit Patterns</a></li><li><a href="#retry-logic-and-resilience-patterns">🔁 Retry Logic and Resilience Patterns</a></li><li><a href="#advanced-workflow-patterns">🎯 Advanced Workflow Patterns</a></li><li><a href="#best-practices-summary">📋 Best Practices Summary</a></li>
                     </ul>
                 </div>
             </div>
@@ -112,8 +114,8 @@
             <section>
                 <div class="collapsible-section" id="basic-notebook-exit-patterns">
                 <div class="section-header" onclick="toggleSection('basic-notebook-exit-patterns')">
-                    <h2>ðŸšª Basic Notebook Exit Patterns</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <h2>🚪 Basic Notebook Exit Patterns</h2>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -128,7 +130,7 @@ def validate_input_data(df):
     # Check if DataFrame is empty
     if df.count() == 0:
         error_msg = "ERROR: Input dataset is empty. Cannot proceed with processing."
-        print(f"âŒ {error_msg}")
+        print(f"❌ {error_msg}")
         dbutils.notebook.exit(error_msg)
     
     # Check for required columns
@@ -137,7 +139,7 @@ def validate_input_data(df):
     
     if missing_columns:
         error_msg = f"ERROR: Missing required columns: {missing_columns}"
-        print(f"âŒ {error_msg}")
+        print(f"❌ {error_msg}")
         dbutils.notebook.exit(error_msg)
     
     # Check data quality thresholds
@@ -145,10 +147,10 @@ def validate_input_data(df):
     
     if null_percentage > 0.5:  # More than 50% nulls
         error_msg = f"ERROR: Data quality too low. {null_percentage:.2%} null values in 'value' column"
-        print(f"âŒ {error_msg}")
+        print(f"❌ {error_msg}")
         dbutils.notebook.exit(error_msg)
     
-    print("âœ… Input data validation passed")
+    print("✅ Input data validation passed")
     return True
 
 # Usage in notebook
@@ -161,7 +163,7 @@ try:
     
 except Exception as e:
     error_msg = f"UNEXPECTED_ERROR: {str(e)}"
-    print(f"âŒ {error_msg}")
+    print(f"❌ {error_msg}")
     dbutils.notebook.exit(error_msg)</code></pre>
 
                 <div class="bullet-explanation">
@@ -197,11 +199,11 @@ def exit_with_status(status_code, message, additional_info=None):
     }
     
     # Log to console for debugging
-    print(f"ðŸ“‹ Notebook Exit Status: {status_code}")
-    print(f"ðŸ“ Message: {message}")
+    print(f"📋 Notebook Exit Status: {status_code}")
+    print(f"📝 Message: {message}")
     
     if additional_info:
-        print(f"â„¹ï¸  Additional Info: {json.dumps(additional_info, indent=2)}")
+        print(f"ℹ️  Additional Info: {json.dumps(additional_info, indent=2)}")
     
     # Exit with JSON formatted status for parsing
     dbutils.notebook.exit(json.dumps(exit_info))
@@ -308,19 +310,19 @@ def environment_aware_exit(error_condition, message):
     
     if env == "production":
         # In production, always exit on errors
-        print(f"âŒ PRODUCTION ERROR: {message}")
+        print(f"❌ PRODUCTION ERROR: {message}")
         dbutils.notebook.exit(f"PRODUCTION_ERROR: {message}")
         
     elif env == "staging":
         # In staging, log warning but continue with reduced dataset
-        print(f"âš ï¸  STAGING WARNING: {message}")
-        print("ðŸ“ Continuing with sample data for testing...")
+        print(f"⚠️  STAGING WARNING: {message}")
+        print("📝 Continuing with sample data for testing...")
         return "continue_with_sample"
         
     else:  # development
         # In development, just log and continue
-        print(f"ðŸ” DEV NOTE: {message}")
-        print("ðŸ“ Continuing for development testing...")
+        print(f"🔍 DEV NOTE: {message}")
+        print("📝 Continuing for development testing...")
         return "continue"
 
 # Example usage
@@ -341,7 +343,7 @@ def load_data_with_environment_handling():
                 df = create_sample_data(1000)
             elif action == "continue":
                 # In dev, continue with whatever data we have
-                print("ðŸ“ Proceeding with available data in development")
+                print("📝 Proceeding with available data in development")
         
         return df
         
@@ -361,8 +363,8 @@ def load_data_with_environment_handling():
             <section>
                 <div class="collapsible-section" id="retry-logic-and-resilience-patterns">
                 <div class="section-header" onclick="toggleSection('retry-logic-and-resilience-patterns')">
-                    <h2>ðŸ” Retry Logic and Resilience Patterns</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <h2>🔁 Retry Logic and Resilience Patterns</h2>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -410,7 +412,7 @@ def retry_with_backoff(
                     
                     # Log success if we had previous failures
                     if attempt > 0:
-                        print(f"âœ… Function {func.__name__} succeeded on attempt {attempt + 1}")
+                        print(f"✅ Function {func.__name__} succeeded on attempt {attempt + 1}")
                     
                     return result
                     
@@ -421,19 +423,19 @@ def retry_with_backoff(
                     should_retry = any(isinstance(e, exc_type) for exc_type in exceptions_to_retry)
                     
                     if not should_retry or attempt == max_retries:
-                        print(f"âŒ Function {func.__name__} failed permanently: {str(e)}")
+                        print(f"❌ Function {func.__name__} failed permanently: {str(e)}")
                         raise e
                     
                     # Calculate delay with exponential backoff and jitter
                     delay = base_delay * (exponential_base ** attempt)
                     
                     if jitter:
-                        # Add random jitter (Â±25% of delay)
+                        # Add random jitter (±25% of delay)
                         jitter_range = delay * 0.25
                         delay += random.uniform(-jitter_range, jitter_range)
                     
-                    print(f"âš ï¸  Function {func.__name__} failed (attempt {attempt + 1}): {str(e)}")
-                    print(f"ðŸ”„ Retrying in {delay:.1f} seconds...")
+                    print(f"⚠️  Function {func.__name__} failed (attempt {attempt + 1}): {str(e)}")
+                    print(f"🔄 Retrying in {delay:.1f} seconds...")
                     
                     time.sleep(delay)
             
@@ -451,7 +453,7 @@ def retry_with_backoff(
 )
 def read_data_from_external_source(path):
     """Read data with automatic retry for network-related issues"""
-    print(f"ðŸ“– Attempting to read data from {path}")
+    print(f"📖 Attempting to read data from {path}")
     
     # Simulate potential network issues
     import random
@@ -460,20 +462,20 @@ def read_data_from_external_source(path):
     
     # Actual data reading logic
     df = spark.read.parquet(path)
-    print(f"âœ… Successfully read {df.count()} records")
+    print(f"✅ Successfully read {df.count()} records")
     return df
 
 @retry_with_backoff(max_retries=3, base_delay=1.0)
 def write_data_with_retry(df, output_path):
     """Write data with retry logic for storage issues"""
-    print(f"ðŸ’¾ Writing data to {output_path}")
+    print(f"💾 Writing data to {output_path}")
     
     try:
         df.write.mode("overwrite").parquet(output_path)
-        print(f"âœ… Successfully wrote data to {output_path}")
+        print(f"✅ Successfully wrote data to {output_path}")
         return True
     except Exception as e:
-        print(f"âŒ Write failed: {str(e)}")
+        print(f"❌ Write failed: {str(e)}")
         raise</code></pre>
 
                 <div class="bullet-explanation">
@@ -508,8 +510,8 @@ def write_data_with_retry(df, output_path):
     
     for attempt in range(max_retries + 1):
         try:
-            print(f"ðŸš€ Running notebook {notebook_path} (attempt {attempt + 1})")
-            print(f"ðŸ“‹ Arguments: {arguments}")
+            print(f"🚀 Running notebook {notebook_path} (attempt {attempt + 1})")
+            print(f"📋 Arguments: {arguments}")
             
             # Run the notebook
             result = dbutils.notebook.run(
@@ -520,32 +522,32 @@ def write_data_with_retry(df, output_path):
             
             # Parse result to check for success
             if result.startswith("SUCCESS"):
-                print(f"âœ… Notebook completed successfully: {result}")
+                print(f"✅ Notebook completed successfully: {result}")
                 return result
             elif result.startswith("ERROR") or result.startswith("FAILED"):
-                print(f"âŒ Notebook failed with error: {result}")
+                print(f"❌ Notebook failed with error: {result}")
                 
                 # Check if this is a retryable error
                 if is_retryable_error(result) and attempt < max_retries:
-                    print(f"ðŸ”„ Error appears retryable, will retry in {retry_delay} seconds")
+                    print(f"🔄 Error appears retryable, will retry in {retry_delay} seconds")
                     time.sleep(retry_delay)
                     continue
                 else:
                     # Non-retryable error or max retries reached
                     error_msg = f"Notebook {notebook_path} failed permanently: {result}"
-                    print(f"âŒ {error_msg}")
+                    print(f"❌ {error_msg}")
                     dbutils.notebook.exit(error_msg)
             else:
                 # Unexpected result format
-                print(f"âš ï¸  Unexpected notebook result: {result}")
+                print(f"⚠️  Unexpected notebook result: {result}")
                 return result
                 
         except Exception as e:
             error_msg = f"Failed to run notebook {notebook_path}: {str(e)}"
-            print(f"âŒ {error_msg}")
+            print(f"❌ {error_msg}")
             
             if attempt < max_retries:
-                print(f"ðŸ”„ Retrying in {retry_delay} seconds...")
+                print(f"🔄 Retrying in {retry_delay} seconds...")
                 time.sleep(retry_delay)
             else:
                 dbutils.notebook.exit(f"RETRY_EXHAUSTED: {error_msg}")
@@ -605,12 +607,12 @@ def orchestrate_data_pipeline():
             retry_delay=60
         )
         
-        print("âœ… Pipeline completed successfully!")
+        print("✅ Pipeline completed successfully!")
         dbutils.notebook.exit("SUCCESS: Pipeline completed all steps")
         
     except Exception as e:
         error_msg = f"Pipeline failed: {str(e)}"
-        print(f"âŒ {error_msg}")
+        print(f"❌ {error_msg}")
         dbutils.notebook.exit(f"PIPELINE_FAILED: {error_msg}")
 
 # Run the orchestration
@@ -661,10 +663,10 @@ class CircuitBreaker:
         if self.state == CircuitState.OPEN:
             if self._should_attempt_reset():
                 self.state = CircuitState.HALF_OPEN
-                print("ðŸ”„ Circuit breaker moving to HALF_OPEN state")
+                print("🔄 Circuit breaker moving to HALF_OPEN state")
             else:
                 error_msg = f"Circuit breaker is OPEN for {func.__name__}. Fast failing."
-                print(f"âš¡ {error_msg}")
+                print(f"⚡ {error_msg}")
                 raise Exception(error_msg)
         
         try:
@@ -675,7 +677,7 @@ class CircuitBreaker:
             
         except self.expected_exception as e:
             self._on_failure()
-            print(f"âŒ Circuit breaker recorded failure for {func.__name__}: {str(e)}")
+            print(f"❌ Circuit breaker recorded failure for {func.__name__}: {str(e)}")
             raise e
     
     def _should_attempt_reset(self):
@@ -689,7 +691,7 @@ class CircuitBreaker:
     def _on_success(self):
         """Handle successful execution"""
         if self.state == CircuitState.HALF_OPEN:
-            print("âœ… Circuit breaker reset to CLOSED state after successful execution")
+            print("✅ Circuit breaker reset to CLOSED state after successful execution")
         
         self.failure_count = 0
         self.state = CircuitState.CLOSED
@@ -702,7 +704,7 @@ class CircuitBreaker:
         
         if self.failure_count >= self.failure_threshold:
             self.state = CircuitState.OPEN
-            print(f"âš¡ Circuit breaker OPENED after {self.failure_count} failures")
+            print(f"⚡ Circuit breaker OPENED after {self.failure_count} failures")
     
     def get_status(self):
         """Get current circuit breaker status"""
@@ -729,16 +731,16 @@ def call_external_api_with_circuit_breaker():
     
     try:
         result = external_api_circuit.call(make_api_call)
-        print("âœ… API call successful")
+        print("✅ API call successful")
         return result
     except Exception as e:
-        print(f"âŒ API call failed: {str(e)}")
+        print(f"❌ API call failed: {str(e)}")
         
         # Check circuit state and decide next action
         status = external_api_circuit.get_status()
         
         if status["state"] == "open":
-            print("âš ï¸  Using cached data due to circuit breaker")
+            print("⚠️  Using cached data due to circuit breaker")
             return get_cached_data()
         else:
             raise e
@@ -760,8 +762,8 @@ def get_cached_data():
             <section>
                 <div class="collapsible-section" id="advanced-workflow-patterns">
                 <div class="section-header" onclick="toggleSection('advanced-workflow-patterns')">
-                    <h2>ðŸŽ¯ Advanced Workflow Patterns</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <h2>🎯 Advanced Workflow Patterns</h2>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -788,7 +790,7 @@ def get_cached_data():
         volume = data_stats["record_count"]
         complexity = data_stats["complexity_score"]  # Custom metric
         
-        print(f"ðŸ“Š Data Analysis Results:")
+        print(f"📊 Data Analysis Results:")
         print(f"   Volume: {volume:,} records")
         print(f"   Complexity Score: {complexity}")
         
@@ -816,7 +818,7 @@ def get_cached_data():
                 notebook_path = "/workflows/large_simple_processing"  
                 timeout = 5400  # 1.5 hours
         
-        print(f"ðŸŽ¯ Selected processing strategy: {strategy}")
+        print(f"🎯 Selected processing strategy: {strategy}")
         
         # Step 3: Execute chosen strategy with appropriate parameters
         processing_args = {
@@ -844,7 +846,7 @@ def get_cached_data():
         
         # Step 4: Validate results and determine next steps
         if result.startswith("SUCCESS"):
-            print(f"âœ… Processing completed successfully with strategy: {strategy}")
+            print(f"✅ Processing completed successfully with strategy: {strategy}")
             
             # Execute post-processing based on strategy
             post_process_result = execute_post_processing(strategy, processing_date)
@@ -865,7 +867,7 @@ def get_cached_data():
         
     except Exception as e:
         error_msg = f"Workflow orchestration failed: {str(e)}"
-        print(f"âŒ {error_msg}")
+        print(f"❌ {error_msg}")
         dbutils.notebook.exit(f"ORCHESTRATION_ERROR: {error_msg}")
 
 def analyze_input_data(processing_date: str) -> dict:
@@ -896,7 +898,7 @@ def analyze_input_data(processing_date: str) -> dict:
         }
         
     except Exception as e:
-        print(f"âŒ Failed to analyze input data: {str(e)}")
+        print(f"❌ Failed to analyze input data: {str(e)}")
         return None
 
 def execute_post_processing(strategy: str, processing_date: str) -> str:
@@ -941,8 +943,8 @@ def execute_post_processing(strategy: str, processing_date: str) -> str:
 def attempt_fallback_processing(primary_strategy: str, processing_date: str, error_message: str) -> str:
     """Attempt fallback processing when primary strategy fails"""
     
-    print(f"ðŸ”„ Attempting fallback processing for failed strategy: {primary_strategy}")
-    print(f"ðŸ“ Original error: {error_message}")
+    print(f"🔄 Attempting fallback processing for failed strategy: {primary_strategy}")
+    print(f"📝 Original error: {error_message}")
     
     # Define fallback strategies
     fallback_map = {
@@ -956,7 +958,7 @@ def attempt_fallback_processing(primary_strategy: str, processing_date: str, err
     if not fallback_strategy:
         return f"ERROR: No fallback available for strategy {primary_strategy}"
     
-    print(f"ðŸŽ¯ Trying fallback strategy: {fallback_strategy}")
+    print(f"🎯 Trying fallback strategy: {fallback_strategy}")
     
     try:
         # Use simpler processing approach
@@ -973,7 +975,7 @@ def attempt_fallback_processing(primary_strategy: str, processing_date: str, err
         )
         
         if result.startswith("SUCCESS"):
-            print(f"âœ… Fallback processing succeeded with {fallback_strategy}")
+            print(f"✅ Fallback processing succeeded with {fallback_strategy}")
         
         return result
         
@@ -995,14 +997,14 @@ execute_conditional_workflow(processing_date)</code></pre>
             </section>
 
             <div class="pro-tip">
-                <strong>ðŸ’¡ Expert Tip:</strong> Always implement comprehensive logging and status tracking in your retry and exit logic. Use structured exit messages (JSON) for easy parsing by monitoring systems, and consider implementing circuit breakers for external dependencies to prevent cascading failures!
+                <strong>💡 Expert Tip:</strong> Always implement comprehensive logging and status tracking in your retry and exit logic. Use structured exit messages (JSON) for easy parsing by monitoring systems, and consider implementing circuit breakers for external dependencies to prevent cascading failures!
             </div>
 
             <section>
                 <div class="collapsible-section" id="best-practices-summary">
                 <div class="section-header" onclick="toggleSection('best-practices-summary')">
-                    <h2>ðŸ“‹ Best Practices Summary</h2>
-                    <span class="section-toggle">â–¼</span>
+                    <h2>📋 Best Practices Summary</h2>
+                    <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
                 <ul>
@@ -1022,7 +1024,7 @@ execute_conditional_workflow(processing_date)</code></pre>
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">â†‘ Top</a>
+        <a href="#top" class="back-to-top">↑ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -1036,10 +1038,10 @@ execute_conditional_workflow(processing_date)</code></pre>
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = 'ðŸ“‹ Hide Table of Contents';
+                button.textContent = '📋 Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = 'ðŸ“‹ Show Table of Contents';
+                button.textContent = '📋 Show Table of Contents';
             }
         }
 
@@ -1052,11 +1054,11 @@ execute_conditional_workflow(processing_date)</code></pre>
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = 'â–¼';
+                toggle.textContent = '▼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = 'â–¶';
+                toggle.textContent = '▶';
             }
         }
 
@@ -1067,7 +1069,7 @@ execute_conditional_workflow(processing_date)</code></pre>
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = 'â–¼';
+                toggle.textContent = '▼';
             });
         }
 
@@ -1078,7 +1080,7 @@ execute_conditional_workflow(processing_date)</code></pre>
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = 'â–¶';
+                toggle.textContent = '▶';
             });
         }
 
@@ -1098,5 +1100,3 @@ execute_conditional_workflow(processing_date)</code></pre>
     </script>
 </body>
 </html> 
-
-
