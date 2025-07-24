@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📝 Git Essentials</title>
+    <title>ðŸ“ Git Essentials</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -66,31 +66,31 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">📝 Git Essentials</h1>
+            <h1 id="top">ðŸ“ Git Essentials</h1>
             <blockquote>Complete guide to Git version control essentials for data engineering and software development workflows</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://git-scm.com/doc" target="_blank">Official Git Documentation</a></li>
                 <li><a href="https://docs.github.com/" target="_blank">GitHub Documentation</a></li>
@@ -99,10 +99,10 @@
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#repository-setup-and-cloning">🚀 Repository Setup and Cloning</a></li><li><a href="#basic-git-workflow">📝 Basic Git Workflow</a></li><li><a href="#branch-management">🌿 Branch Management</a></li><li><a href="#remote-repository-operations">🔄 Remote Repository Operations</a></li><li><a href="#rebase-and-advanced-history">🔄 Rebase and Advanced History</a></li><li><a href="#pull-requests-and-collaboration">🎯 Pull Requests and Collaboration</a></li><li><a href="#gitignore-best-practices">📄 .gitignore Best Practices</a></li><li><a href="#git-aliases-for-productivity">⚡ Git Aliases for Productivity</a></li><li><a href="#git-workflow-summary">📋 Git Workflow Summary</a></li>
+                        <li><a href="#repository-setup-and-cloning">ðŸš€ Repository Setup and Cloning</a></li><li><a href="#basic-git-workflow">ðŸ“ Basic Git Workflow</a></li><li><a href="#branch-management">ðŸŒ¿ Branch Management</a></li><li><a href="#remote-repository-operations">ðŸ”„ Remote Repository Operations</a></li><li><a href="#rebase-and-advanced-history">ðŸ”„ Rebase and Advanced History</a></li><li><a href="#pull-requests-and-collaboration">ðŸŽ¯ Pull Requests and Collaboration</a></li><li><a href="#gitignore-best-practices">ðŸ“„ .gitignore Best Practices</a></li><li><a href="#git-aliases-for-productivity">âš¡ Git Aliases for Productivity</a></li><li><a href="#git-workflow-summary">ðŸ“‹ Git Workflow Summary</a></li>
                     </ul>
                 </div>
             </div>
@@ -110,8 +110,8 @@
             <section>
                 <div class="collapsible-section" id="repository-setup-and-cloning">
                 <div class="section-header" onclick="toggleSection('repository-setup-and-cloning')">
-                    <h2>🚀 Repository Setup and Cloning</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸš€ Repository Setup and Cloning</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -182,8 +182,8 @@ git clone --recurse-submodules https://github.com/username/repository.git</code>
             <section>
                 <div class="collapsible-section" id="basic-git-workflow">
                 <div class="section-header" onclick="toggleSection('basic-git-workflow')">
-                    <h2>📝 Basic Git Workflow</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“ Basic Git Workflow</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -277,8 +277,8 @@ git log --since="2024-01-01"</code></pre>
             <section>
                 <div class="collapsible-section" id="branch-management">
                 <div class="section-header" onclick="toggleSection('branch-management')">
-                    <h2>🌿 Branch Management</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŒ¿ Branch Management</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -363,8 +363,8 @@ git branch --no-merged           # Branches not yet merged</code></pre>
             <section>
                 <div class="collapsible-section" id="remote-repository-operations">
                 <div class="section-header" onclick="toggleSection('remote-repository-operations')">
-                    <h2>🔄 Remote Repository Operations</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”„ Remote Repository Operations</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -451,8 +451,8 @@ git push origin main             # Update your fork</code></pre>
             <section>
                 <div class="collapsible-section" id="rebase-and-advanced-history">
                 <div class="section-header" onclick="toggleSection('rebase-and-advanced-history')">
-                    <h2>🔄 Rebase and Advanced History</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”„ Rebase and Advanced History</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -526,8 +526,8 @@ git commit -a --amend            # Modify last commit</code></pre>
             <section>
                 <div class="collapsible-section" id="pull-requests-and-collaboration">
                 <div class="section-header" onclick="toggleSection('pull-requests-and-collaboration')">
-                    <h2>🎯 Pull Requests and Collaboration</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŽ¯ Pull Requests and Collaboration</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -621,8 +621,8 @@ git push --force-with-lease origin feature/add-data-validation</code></pre>
             <section>
                 <div class="collapsible-section" id="gitignore-best-practices">
                 <div class="section-header" onclick="toggleSection('gitignore-best-practices')">
-                    <h2>📄 .gitignore Best Practices</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“„ .gitignore Best Practices</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -767,14 +767,14 @@ docs/_build/</code></pre>
             </section>
 
             <div class="pro-tip">
-                <strong>💡 Expert Tip:</strong> Use <code>git commit --amend</code> to modify your last commit, create meaningful commit messages that explain the "why" not just the "what", and always test your changes locally before pushing. Consider using conventional commit formats for better automation!
+                <strong>ðŸ’¡ Expert Tip:</strong> Use <code>git commit --amend</code> to modify your last commit, create meaningful commit messages that explain the "why" not just the "what", and always test your changes locally before pushing. Consider using conventional commit formats for better automation!
             </div>
 
             <section>
                 <div class="collapsible-section" id="git-aliases-for-productivity">
                 <div class="section-header" onclick="toggleSection('git-aliases-for-productivity')">
-                    <h2>⚡ Git Aliases for Productivity</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>âš¡ Git Aliases for Productivity</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <pre><code class="language-bash"># Useful Git aliases for faster workflows
@@ -790,8 +790,8 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
                 <section>
                 <div class="collapsible-section" id="git-workflow-summary">
                 <div class="section-header" onclick="toggleSection('git-workflow-summary')">
-                    <h2>📋 Git Workflow Summary</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“‹ Git Workflow Summary</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <ul>
@@ -816,7 +816,7 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -830,10 +830,10 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -846,11 +846,11 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -861,7 +861,7 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -872,7 +872,7 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -892,4 +892,5 @@ git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Crese
     </script>
 </body>
 </html> 
+
 

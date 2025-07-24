@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🛠️ dbutils Cheat Sheet</title>
+    <title>ðŸ› ï¸ dbutils Cheat Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -64,31 +64,31 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">🛠️ dbutils Cheat Sheet</h1>
+            <h1 id="top">ðŸ› ï¸ dbutils Cheat Sheet</h1>
             <blockquote>Complete guide to Databricks utilities for file system, secrets, widgets, and notebook operations</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://docs.databricks.com/dev-tools/databricks-utils.html" target="_blank">Databricks Utils Documentation</a></li>
                 <li><a href="https://docs.databricks.com/security/secrets/index.html" target="_blank">Secrets Management</a></li>
@@ -97,18 +97,18 @@
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#file-system-operations-dbutilsfs">📁 File System Operations (dbutils.fs)</a></li><li><a href="#secrets-management-dbutilssecrets">🔐 Secrets Management (dbutils.secrets)</a></li><li><a href="#notebook-widgets-dbutilswidgets">🎛️ Notebook Widgets (dbutils.widgets)</a></li><li><a href="#notebook-operations-dbutilsnotebook">📓 Notebook Operations (dbutils.notebook)</a></li><li><a href="#library-management-dbutilslibrary">🎨 Library Management (dbutils.library)</a></li><li><a href="#advanced-dbutils-patterns">⚙️ Advanced dbutils Patterns</a></li>
+                        <li><a href="#file-system-operations-dbutilsfs">ðŸ“ File System Operations (dbutils.fs)</a></li><li><a href="#secrets-management-dbutilssecrets">ðŸ” Secrets Management (dbutils.secrets)</a></li><li><a href="#notebook-widgets-dbutilswidgets">ðŸŽ›ï¸ Notebook Widgets (dbutils.widgets)</a></li><li><a href="#notebook-operations-dbutilsnotebook">ðŸ““ Notebook Operations (dbutils.notebook)</a></li><li><a href="#library-management-dbutilslibrary">ðŸŽ¨ Library Management (dbutils.library)</a></li><li><a href="#advanced-dbutils-patterns">âš™ï¸ Advanced dbutils Patterns</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="collapsible-section" id="file-system-operations-dbutilsfs">
                 <div class="section-header" onclick="toggleSection('file-system-operations-dbutilsfs')">
-                    <h2>📁 File System Operations (dbutils.fs)</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“ File System Operations (dbutils.fs)</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Basic File Operations</h3>
@@ -196,8 +196,8 @@ dbutils.fs.unmount("/mnt/s3-data")</code></pre>
 
             <div class="collapsible-section" id="secrets-management-dbutilssecrets">
                 <div class="section-header" onclick="toggleSection('secrets-management-dbutilssecrets')">
-                    <h2>🔐 Secrets Management (dbutils.secrets)</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ” Secrets Management (dbutils.secrets)</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Working with Secret Scopes</h3>
@@ -234,8 +234,8 @@ df = spark.read.format("jdbc") \
 
             <div class="collapsible-section" id="notebook-widgets-dbutilswidgets">
                 <div class="section-header" onclick="toggleSection('notebook-widgets-dbutilswidgets')">
-                    <h2>🎛️ Notebook Widgets (dbutils.widgets)</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŽ›ï¸ Notebook Widgets (dbutils.widgets)</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Creating Interactive Widgets</h3>
@@ -285,8 +285,8 @@ dbutils.widgets.removeAll()</code></pre>
 
             <div class="collapsible-section" id="notebook-operations-dbutilsnotebook">
                 <div class="section-header" onclick="toggleSection('notebook-operations-dbutilsnotebook')">
-                    <h2>📓 Notebook Operations (dbutils.notebook)</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ““ Notebook Operations (dbutils.notebook)</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Orchestrating Notebook Workflows</h3>
@@ -355,8 +355,8 @@ except Exception as e:
 
             <div class="collapsible-section" id="library-management-dbutilslibrary">
                 <div class="section-header" onclick="toggleSection('library-management-dbutilslibrary')">
-                    <h2>🎨 Library Management (dbutils.library)</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŽ¨ Library Management (dbutils.library)</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <pre><code class="language-python"># Install Python packages dynamically during notebook execution
@@ -385,8 +385,8 @@ print("All packages installed and available!")</code></pre>
 
             <div class="collapsible-section" id="advanced-dbutils-patterns">
                 <div class="section-header" onclick="toggleSection('advanced-dbutils-patterns')">
-                    <h2>⚙️ Advanced dbutils Patterns</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>âš™ï¸ Advanced dbutils Patterns</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Error Handling and Logging</h3>
@@ -431,7 +431,7 @@ create_checkpoint_file(checkpoint_path, "completed",
                       {"records_processed": 1000000, "runtime_minutes": 45})</code></pre>
 
             <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Always use <code>dbutils.secrets.get()</code> instead of hardcoding credentials. Store secrets in Databricks secret scopes for secure access to external systems!
+                <strong>ðŸ’¡ Pro Tip:</strong> Always use <code>dbutils.secrets.get()</code> instead of hardcoding credentials. Store secrets in Databricks secret scopes for secure access to external systems!
             </div>
 
             <h3>Production Best Practices</h3>
@@ -488,7 +488,7 @@ def process_daily_data(processing_date, source_path, target_path):
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -502,10 +502,10 @@ def process_daily_data(processing_date, source_path, target_path):
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -518,11 +518,11 @@ def process_daily_data(processing_date, source_path, target_path):
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -533,7 +533,7 @@ def process_daily_data(processing_date, source_path, target_path):
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -544,7 +544,7 @@ def process_daily_data(processing_date, source_path, target_path):
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -564,4 +564,5 @@ def process_daily_data(processing_date, source_path, target_path):
     </script>
 </body>
 </html> 
+
 

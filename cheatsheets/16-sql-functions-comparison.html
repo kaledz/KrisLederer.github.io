@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔗 SQL Functions: SQL vs PySpark Comparison</title>
+    <title>ðŸ”— SQL Functions: SQL vs PySpark Comparison</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
     <style>
         * {
@@ -281,31 +281,31 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">🔗 SQL Functions: SQL vs PySpark Comparison</h1>
+            <h1 id="top">ðŸ”— SQL Functions: SQL vs PySpark Comparison</h1>
             <blockquote>Complete reference for SQL functions with side-by-side SQL and PySpark implementations</blockquote>
 
-            <h2>📚 Official Documentation</h2>
+            <h2>ðŸ“š Official Documentation</h2>
             <ul>
                 <li><a href="https://spark.apache.org/docs/latest/sql-ref-functions.html" target="_blank">Spark SQL Functions Reference</a></li>
                 <li><a href="https://spark.apache.org/docs/latest/api/python/reference/pyspark.sql/functions.html" target="_blank">PySpark SQL Functions</a></li>
@@ -314,27 +314,27 @@
             </ul>
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#null-handling">🛡️ NULL Handling Functions</a></li>
-                        <li><a href="#conditional-functions">🔀 Conditional Functions</a></li>
-                        <li><a href="#string-functions">📝 String Functions</a></li>
-                        <li><a href="#date-time-functions">📅 Date & Time Functions</a></li>
-                        <li><a href="#numeric-functions">🔢 Numeric & Math Functions</a></li>
-                        <li><a href="#aggregate-functions">📊 Aggregate Functions</a></li>
-                        <li><a href="#window-functions">🪟 Window Functions</a></li>
-                        <li><a href="#array-functions">📋 Array Functions</a></li>
-                        <li><a href="#json-functions">🗂️ JSON Functions</a></li>
-                        <li><a href="#conversion-functions">🔄 Type Conversion Functions</a></li>
+                        <li><a href="#null-handling">ðŸ›¡ï¸ NULL Handling Functions</a></li>
+                        <li><a href="#conditional-functions">ðŸ”€ Conditional Functions</a></li>
+                        <li><a href="#string-functions">ðŸ“ String Functions</a></li>
+                        <li><a href="#date-time-functions">ðŸ“… Date & Time Functions</a></li>
+                        <li><a href="#numeric-functions">ðŸ”¢ Numeric & Math Functions</a></li>
+                        <li><a href="#aggregate-functions">ðŸ“Š Aggregate Functions</a></li>
+                        <li><a href="#window-functions">ðŸªŸ Window Functions</a></li>
+                        <li><a href="#array-functions">ðŸ“‹ Array Functions</a></li>
+                        <li><a href="#json-functions">ðŸ—‚ï¸ JSON Functions</a></li>
+                        <li><a href="#conversion-functions">ðŸ”„ Type Conversion Functions</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="collapsible-section" id="null-handling">
                 <div class="section-header-toggle" onclick="toggleSection('null-handling')">
-                    <h2>🛡️ NULL Handling Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ›¡ï¸ NULL Handling Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -344,7 +344,7 @@
                     <h3>COALESCE - Return First Non-NULL Value</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Return first non-null value from list
 SELECT 
     COALESCE(column1, column2, 'default') AS result,
@@ -360,7 +360,7 @@ SELECT
 FROM customers;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Using coalesce function
@@ -382,7 +382,7 @@ df.select(
                     <h3>ISNULL / ISNOTNULL - Check for NULL Values</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Check for NULL values
 SELECT *
 FROM customers
@@ -400,7 +400,7 @@ SELECT
 FROM customers;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Check for NULL values
@@ -422,7 +422,7 @@ df.select(
                     <h3>NULLIF - Return NULL if Values Match</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Return NULL if values match (useful for cleaning)
 SELECT 
     NULLIF(status, '') AS clean_status,  -- Convert empty strings to NULL
@@ -431,7 +431,7 @@ SELECT
 FROM users;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Using when/otherwise for NULLIF behavior
@@ -456,8 +456,8 @@ df.select(
 
             <div class="collapsible-section" id="conditional-functions">
                 <div class="section-header-toggle" onclick="toggleSection('conditional-functions')">
-                    <h2>🔀 Conditional Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”€ Conditional Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -467,7 +467,7 @@ df.select(
                     <h3>CASE WHEN - Complex Conditional Logic</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Basic CASE WHEN
 SELECT 
     customer_id,
@@ -495,7 +495,7 @@ FROM employees
 GROUP BY department;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Basic CASE WHEN using when/otherwise
@@ -523,7 +523,7 @@ df.groupBy("department").agg(
                     <h3>IF Function - Simple Conditional</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Simple IF statements (Spark SQL)
 SELECT 
     customer_id,
@@ -533,7 +533,7 @@ SELECT
 FROM customers;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Simple conditional using when/otherwise
@@ -561,8 +561,8 @@ df.select(
 
             <div class="collapsible-section" id="string-functions">
                 <div class="section-header-toggle" onclick="toggleSection('string-functions')">
-                    <h2>📝 String Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“ String Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -572,7 +572,7 @@ df.select(
                     <h3>String Manipulation Functions</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Basic string functions
 SELECT 
     UPPER(name) AS name_upper,
@@ -598,7 +598,7 @@ SELECT
 FROM contacts;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Basic string functions
@@ -630,7 +630,7 @@ df.select(
                     <h3>Advanced String Operations</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- String splitting and position finding
 SELECT 
     SPLIT(full_name, ' ')[0] AS first_name,
@@ -649,7 +649,7 @@ SELECT
 FROM users;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # String splitting and position finding
@@ -682,8 +682,8 @@ df.select(
 
             <div class="collapsible-section" id="date-time-functions">
                 <div class="section-header-toggle" onclick="toggleSection('date-time-functions')">
-                    <h2>📅 Date & Time Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“… Date & Time Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -693,7 +693,7 @@ df.select(
                     <h3>Date Arithmetic and Extraction</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Date arithmetic
 SELECT 
     DATE_ADD(current_date, 30) AS thirty_days_later,
@@ -713,7 +713,7 @@ SELECT
 FROM events;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Date arithmetic
@@ -739,7 +739,7 @@ df.select(
                     <h3>Advanced Date Operations</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Date truncation and windows
 SELECT 
     DATE_TRUNC('month', created_at) AS month_start,
@@ -758,7 +758,7 @@ SELECT
 FROM transactions;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Date truncation and windows
@@ -781,7 +781,7 @@ df.select(
                     </div>
 
                     <div class="pro-tip">
-                        <strong>💡 Pro Tip:</strong> Use DATE_TRUNC for time-based grouping in analytics queries. It's much more efficient than extracting date parts and grouping by multiple columns.
+                        <strong>ðŸ’¡ Pro Tip:</strong> Use DATE_TRUNC for time-based grouping in analytics queries. It's much more efficient than extracting date parts and grouping by multiple columns.
                     </div>
 
                     <div class="bullet-explanation">
@@ -797,8 +797,8 @@ df.select(
 
             <div class="collapsible-section" id="numeric-functions">
                 <div class="section-header-toggle" onclick="toggleSection('numeric-functions')">
-                    <h2>🔢 Numeric & Math Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”¢ Numeric & Math Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -808,7 +808,7 @@ df.select(
                     <h3>Basic Math Functions</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Rounding and precision
 SELECT 
     ROUND(price, 2) AS rounded_price,
@@ -830,7 +830,7 @@ SELECT
 FROM financial_data;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 import pyspark.sql.functions as F
 
@@ -859,7 +859,7 @@ df.select(
                     <h3>Advanced Math Functions</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Trigonometric functions
 SELECT 
     SIN(angle_radians) AS sine_value,
@@ -881,7 +881,7 @@ SELECT
 FROM calculations;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Trigonometric functions
@@ -919,8 +919,8 @@ df.select(
 
             <div class="collapsible-section" id="aggregate-functions">
                 <div class="section-header-toggle" onclick="toggleSection('aggregate-functions')">
-                    <h2>📊 Aggregate Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“Š Aggregate Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -930,7 +930,7 @@ df.select(
                     <h3>Basic Aggregations</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Standard aggregations
 SELECT 
     department,
@@ -952,7 +952,7 @@ FROM employees
 GROUP BY department;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Standard aggregations
@@ -978,7 +978,7 @@ df.groupBy("department").agg(
                     <h3>Advanced Aggregations</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Percentiles and quantiles
 SELECT 
     department,
@@ -997,7 +997,7 @@ FROM employees
 GROUP BY department;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Percentiles and quantiles
@@ -1034,8 +1034,8 @@ df.groupBy("department").agg(
 
             <div class="collapsible-section" id="window-functions">
                 <div class="section-header-toggle" onclick="toggleSection('window-functions')">
-                    <h2>🪟 Window Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸªŸ Window Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -1045,7 +1045,7 @@ df.groupBy("department").agg(
                     <h3>Ranking Functions</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Ranking functions
 SELECT 
     employee_id,
@@ -1062,7 +1062,7 @@ SELECT
 FROM employees;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
@@ -1087,7 +1087,7 @@ df.select(
                     <h3>Lag/Lead and Offset Functions</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Lag/Lead functions for time series analysis
 SELECT 
     date,
@@ -1105,7 +1105,7 @@ SELECT
 FROM daily_sales;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
@@ -1134,7 +1134,7 @@ df.select(
                     <h3>Moving Averages and Running Totals</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Moving averages and running calculations
 SELECT 
     date,
@@ -1154,7 +1154,7 @@ SELECT
 FROM daily_sales;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
@@ -1183,7 +1183,7 @@ df.select(
                     </div>
 
                     <div class="pro-tip">
-                        <strong>💡 Pro Tip:</strong> Window functions are incredibly powerful for time series analysis. Use them instead of self-joins for better performance when calculating running totals, moving averages, and period-over-period comparisons.
+                        <strong>ðŸ’¡ Pro Tip:</strong> Window functions are incredibly powerful for time series analysis. Use them instead of self-joins for better performance when calculating running totals, moving averages, and period-over-period comparisons.
                     </div>
 
                     <div class="bullet-explanation">
@@ -1199,8 +1199,8 @@ df.select(
 
             <div class="collapsible-section" id="array-functions">
                 <div class="section-header-toggle" onclick="toggleSection('array-functions')">
-                    <h2>📋 Array Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“‹ Array Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -1210,7 +1210,7 @@ df.select(
                     <h3>Array Creation and Basic Operations</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Array creation and basic operations
 SELECT 
     -- Creating arrays
@@ -1231,7 +1231,7 @@ SELECT
 FROM products;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Array creation and basic operations
@@ -1258,7 +1258,7 @@ df.select(
                     <h3>Array Transformation Functions</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Array transformations and advanced operations
 SELECT 
     product_id,
@@ -1281,7 +1281,7 @@ SELECT
 FROM inventory;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Array transformations and advanced operations
@@ -1323,8 +1323,8 @@ df.select(
 
             <div class="collapsible-section" id="json-functions">
                 <div class="section-header-toggle" onclick="toggleSection('json-functions')">
-                    <h2>🗂️ JSON Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ—‚ï¸ JSON Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -1334,7 +1334,7 @@ df.select(
                     <h3>JSON Extraction and Parsing</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- JSON extraction functions
 SELECT 
     event_id,
@@ -1361,7 +1361,7 @@ SELECT
 FROM events;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # JSON extraction functions
@@ -1391,7 +1391,7 @@ df.select(
                     <h3>JSON Schema and Structure Operations</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- JSON schema and structure operations
 SELECT 
     -- Parse JSON into structured data
@@ -1412,7 +1412,7 @@ SELECT
 FROM user_events;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 
@@ -1448,7 +1448,7 @@ parsed_df = df.select(
                     </div>
 
                     <div class="pro-tip">
-                        <strong>💡 Pro Tip:</strong> When working with JSON data regularly, consider parsing it into structured columns early in your pipeline. This improves performance and makes subsequent queries easier to write and maintain.
+                        <strong>ðŸ’¡ Pro Tip:</strong> When working with JSON data regularly, consider parsing it into structured columns early in your pipeline. This improves performance and makes subsequent queries easier to write and maintain.
                     </div>
 
                     <div class="bullet-explanation">
@@ -1464,8 +1464,8 @@ parsed_df = df.select(
 
             <div class="collapsible-section" id="conversion-functions">
                 <div class="section-header-toggle" onclick="toggleSection('conversion-functions')">
-                    <h2>🔄 Type Conversion Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”„ Type Conversion Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -1475,7 +1475,7 @@ parsed_df = df.select(
                     <h3>Basic Type Conversions</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Basic type conversions
 SELECT 
     -- String conversions
@@ -1498,7 +1498,7 @@ SELECT
 FROM raw_data;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 from pyspark.sql.types import *
 
@@ -1528,7 +1528,7 @@ df.select(
                     <h3>Advanced Conversions and Formatting</h3>
                     <div class="comparison-grid">
                         <div class="sql-section">
-                            <div class="section-header">🔵 SQL Syntax</div>
+                            <div class="section-header">ðŸ”µ SQL Syntax</div>
                             <pre><code class="language-sql">-- Advanced conversions and formatting
 SELECT 
     -- Binary conversions
@@ -1551,7 +1551,7 @@ SELECT
 FROM mixed_data;</code></pre>
                         </div>
                         <div class="pyspark-section">
-                            <div class="section-header">🔴 PySpark Implementation</div>
+                            <div class="section-header">ðŸ”´ PySpark Implementation</div>
                             <pre><code class="language-python">from pyspark.sql import functions as F
 
 # Advanced conversions and formatting
@@ -1588,7 +1588,7 @@ df.select(
                 </div>
             </div>
 
-            <a href="#top" class="back-to-top">↑ Top</a>
+            <a href="#top" class="back-to-top">â†‘ Top</a>
         </div>
     </div>
 
@@ -1603,10 +1603,10 @@ df.select(
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -1619,11 +1619,11 @@ df.select(
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -1634,7 +1634,7 @@ df.select(
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -1645,7 +1645,7 @@ df.select(
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -1665,4 +1665,5 @@ df.select(
     </script>
 </body>
 </html> 
+
 

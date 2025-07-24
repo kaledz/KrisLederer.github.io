@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔣 Python Language Fundamentals</title>
+    <title>ðŸ”£ Python Language Fundamentals</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -67,31 +67,31 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">🔣 Python Language Fundamentals</h1>
+            <h1 id="top">ðŸ”£ Python Language Fundamentals</h1>
             <blockquote>Complete guide to Python language fundamentals including namespaces, variables, functions, classes, data types, and core concepts essential for data engineering</blockquote>
 
-            <h2>📚 Official Python Documentation</h2>
+            <h2>ðŸ“š Official Python Documentation</h2>
             <ul>
                 <li><a href="https://docs.python.org/3/tutorial/" target="_blank">Python Tutorial</a></li>
                 <li><a href="https://docs.python.org/3/reference/" target="_blank">Python Language Reference</a></li>
@@ -101,23 +101,23 @@
             </ul>
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#namespaces-section">🌐 Namespaces and Scope</a></li>
-                        <li><a href="#functions-section">🔧 Functions in Detail</a></li>
-                        <li><a href="#classes-section">🏗️ Classes and Object-Oriented Programming</a></li>
-                        <li><a href="#datatypes-section">📊 Built-in Data Types</a></li>
-                        <li><a href="#builtins-section">🛠️ Common Python Built-ins</a></li>
-                        <li><a href="#imports-section">📦 Imports and Modules</a></li>
+                        <li><a href="#namespaces-section">ðŸŒ Namespaces and Scope</a></li>
+                        <li><a href="#functions-section">ðŸ”§ Functions in Detail</a></li>
+                        <li><a href="#classes-section">ðŸ—ï¸ Classes and Object-Oriented Programming</a></li>
+                        <li><a href="#datatypes-section">ðŸ“Š Built-in Data Types</a></li>
+                        <li><a href="#builtins-section">ðŸ› ï¸ Common Python Built-ins</a></li>
+                        <li><a href="#imports-section">ðŸ“¦ Imports and Modules</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="collapsible-section" id="namespaces-section">
                 <div class="section-header" onclick="toggleSection('namespaces-section')">
-                    <h2>🌐 Namespaces and Scope</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŒ Namespaces and Scope</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -171,7 +171,7 @@ print("Built-in functions available:", [name for name in dir(builtins) if not na
                         <li><strong>Global namespace:</strong> Module-level variables and functions</li>
                         <li><strong>Enclosing namespace:</strong> Variables in outer functions (for nested functions)</li>
                         <li><strong>Local namespace:</strong> Variables inside the current function</li>
-                        <li><strong>LEGB Rule:</strong> Python searches for variables in Local → Enclosing → Global → Built-in order</li>
+                        <li><strong>LEGB Rule:</strong> Python searches for variables in Local â†’ Enclosing â†’ Global â†’ Built-in order</li>
                     </ul>
                 </div>
 
@@ -260,8 +260,8 @@ print(f"Second call: {counter_func()}")  # 2</code></pre>
 
             <div class="collapsible-section" id="functions-section">
                 <div class="section-header" onclick="toggleSection('functions-section')">
-                    <h2>🔧 Functions in Detail</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”§ Functions in Detail</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                     <div class="section-description">
@@ -480,7 +480,7 @@ print(f"Created user: {user}")</code></pre>
             </section>
 
             <section>
-                <h2>🏗️ Classes and Object-Oriented Programming</h2>
+                <h2>ðŸ—ï¸ Classes and Object-Oriented Programming</h2>
                 <div class="section-description">
                     <p>Classes are blueprints for creating objects. They encapsulate data (attributes) and behavior (methods) into reusable units, forming the foundation of object-oriented programming.</p>
                 </div>
@@ -691,7 +691,7 @@ print(f"processor1.processed_files: {len(processor1.processed_files)} files")</c
             </section>
 
             <section>
-                <h2>📊 Built-in Data Types</h2>
+                <h2>ðŸ“Š Built-in Data Types</h2>
                 <div class="section-description">
                     <p>Python provides several built-in data types that form the foundation of data manipulation. Understanding their characteristics, mutability, and appropriate use cases is crucial for effective programming.</p>
                 </div>
@@ -998,7 +998,7 @@ print("5. Understand that small integers and strings may be cached/interned")</c
             </section>
 
             <section>
-                <h2>🛠️ Common Python Built-ins</h2>
+                <h2>ðŸ› ï¸ Common Python Built-ins</h2>
                 <div class="section-description">
                     <p>Python provides many powerful built-in functions that make common programming tasks easier and more efficient. These functions are always available without importing any modules.</p>
                 </div>
@@ -1225,15 +1225,15 @@ for stat, value in grade_stats.items():
         print(f"  {stat}: {value}")
 
 print("\n=== KEY TAKEAWAYS ===")
-print("• enumerate(): Add indices to loops")
-print("• zip(): Combine multiple iterables") 
-print("• map(): Transform every item")
-print("• filter(): Select items by condition")
-print("• range(): Generate number sequences")
-print("• sorted(): Create sorted copies")
-print("• any(): True if any item is truthy")
-print("• all(): True if all items are truthy")
-print("• Combine these functions for powerful data processing!")</code></pre>
+print("â€¢ enumerate(): Add indices to loops")
+print("â€¢ zip(): Combine multiple iterables") 
+print("â€¢ map(): Transform every item")
+print("â€¢ filter(): Select items by condition")
+print("â€¢ range(): Generate number sequences")
+print("â€¢ sorted(): Create sorted copies")
+print("â€¢ any(): True if any item is truthy")
+print("â€¢ all(): True if all items are truthy")
+print("â€¢ Combine these functions for powerful data processing!")</code></pre>
 
                 <div class="bullet-explanation">
                     <ul>
@@ -1250,7 +1250,7 @@ print("• Combine these functions for powerful data processing!")</code></pre>
             </section>
 
             <section>
-                <h2>📦 Imports and Modules</h2>
+                <h2>ðŸ“¦ Imports and Modules</h2>
                 <div class="section-description">
                     <p>Python's module system allows you to organize code into reusable units and access functionality from the standard library and third-party packages.</p>
                 </div>
@@ -1510,11 +1510,11 @@ print("6. Binds module to name in current namespace")</code></pre>
             </section>
 
             <div class="pro-tip">
-                <strong>💡 Expert Tip:</strong> Master Python fundamentals before diving into complex frameworks. Understanding namespaces, mutability, and the difference between <code>is</code> and <code>==</code> will save you from many debugging headaches. Always prefer explicit imports and meaningful variable names!
+                <strong>ðŸ’¡ Expert Tip:</strong> Master Python fundamentals before diving into complex frameworks. Understanding namespaces, mutability, and the difference between <code>is</code> and <code>==</code> will save you from many debugging headaches. Always prefer explicit imports and meaningful variable names!
             </div>
 
             <section>
-                <h2>📋 Python Fundamentals Summary</h2>
+                <h2>ðŸ“‹ Python Fundamentals Summary</h2>
                 <ul>
                     <li><strong>Namespaces:</strong> Containers for names that prevent conflicts (LEGB rule)</li>
                     <li><strong>Functions:</strong> First-class objects that can accept *args, **kwargs</li>
@@ -1528,7 +1528,7 @@ print("6. Binds module to name in current namespace")</code></pre>
             </section>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -1542,10 +1542,10 @@ print("6. Binds module to name in current namespace")</code></pre>
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -1558,11 +1558,11 @@ print("6. Binds module to name in current namespace")</code></pre>
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -1573,7 +1573,7 @@ print("6. Binds module to name in current namespace")</code></pre>
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -1584,7 +1584,7 @@ print("6. Binds module to name in current namespace")</code></pre>
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -1604,4 +1604,5 @@ print("6. Binds module to name in current namespace")</code></pre>
     </script>
 </body>
 </html> 
+
 

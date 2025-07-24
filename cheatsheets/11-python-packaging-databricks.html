@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📦 Python Packaging for Databricks</title>
+    <title>ðŸ“¦ Python Packaging for Databricks</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -66,31 +66,31 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">📦 Python Packaging for Databricks</h1>
+            <h1 id="top">ðŸ“¦ Python Packaging for Databricks</h1>
             <blockquote>Expert guide to creating, building, and deploying reusable Python packages in Databricks environments</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://docs.databricks.com/libraries/index.html" target="_blank">Databricks Libraries Guide</a></li>
                 <li><a href="https://packaging.python.org/en/latest/" target="_blank">Python Packaging User Guide</a></li>
@@ -100,10 +100,10 @@
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#project-structure-setup">🏗️ Project Structure Setup</a></li><li><a href="#building-and-installing-packages">🔨 Building and Installing Packages</a></li><li><a href="#package-placement-and-import-strategies">📍 Package Placement and Import Strategies</a></li><li><a href="#testing-and-quality-assurance">🧪 Testing and Quality Assurance</a></li><li><a href="#deployment-and-cicd">🚀 Deployment and CI/CD</a></li><li><a href="#best-practices-summary">📋 Best Practices Summary</a></li>
+                        <li><a href="#project-structure-setup">ðŸ—ï¸ Project Structure Setup</a></li><li><a href="#building-and-installing-packages">ðŸ”¨ Building and Installing Packages</a></li><li><a href="#package-placement-and-import-strategies">ðŸ“ Package Placement and Import Strategies</a></li><li><a href="#testing-and-quality-assurance">ðŸ§ª Testing and Quality Assurance</a></li><li><a href="#deployment-and-cicd">ðŸš€ Deployment and CI/CD</a></li><li><a href="#best-practices-summary">ðŸ“‹ Best Practices Summary</a></li>
                     </ul>
                 </div>
             </div>
@@ -111,8 +111,8 @@
             <section>
                 <div class="collapsible-section" id="project-structure-setup">
                 <div class="section-header" onclick="toggleSection('project-structure-setup')">
-                    <h2>🏗️ Project Structure Setup</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ—ï¸ Project Structure Setup</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -121,38 +121,38 @@
 
                 <h3>Standard Package Structure</h3>
                 <pre><code class="language-text">my_databricks_package/
-├── pyproject.toml          # Modern Python packaging configuration
-├── setup.cfg              # Alternative/additional configuration
-├── setup.py               # Build script (optional with pyproject.toml)
-├── README.md              # Package documentation
-├── LICENSE                # License file
-├── .gitignore            # Git ignore patterns
-├── requirements.txt       # Runtime dependencies
-├── requirements-dev.txt   # Development dependencies
-├── src/                   # Source code directory
-│   └── my_package/
-│       ├── __init__.py
-│       ├── core/
-│       │   ├── __init__.py
-│       │   ├── data_processing.py
-│       │   └── utils.py
-│       ├── spark/
-│       │   ├── __init__.py
-│       │   ├── etl.py
-│       │   └── transformations.py
-│       └── config/
-│           ├── __init__.py
-│           └── settings.py
-├── tests/                 # Test directory
-│   ├── __init__.py
-│   ├── conftest.py       # Pytest configuration
-│   ├── test_core/
-│   └── test_spark/
-├── notebooks/             # Example notebooks
-│   └── examples/
-└── scripts/              # Utility scripts
-    ├── build.sh
-    └── deploy.sh</code></pre>
+â”œâ”€â”€ pyproject.toml          # Modern Python packaging configuration
+â”œâ”€â”€ setup.cfg              # Alternative/additional configuration
+â”œâ”€â”€ setup.py               # Build script (optional with pyproject.toml)
+â”œâ”€â”€ README.md              # Package documentation
+â”œâ”€â”€ LICENSE                # License file
+â”œâ”€â”€ .gitignore            # Git ignore patterns
+â”œâ”€â”€ requirements.txt       # Runtime dependencies
+â”œâ”€â”€ requirements-dev.txt   # Development dependencies
+â”œâ”€â”€ src/                   # Source code directory
+â”‚   â””â”€â”€ my_package/
+â”‚       â”œâ”€â”€ __init__.py
+â”‚       â”œâ”€â”€ core/
+â”‚       â”‚   â”œâ”€â”€ __init__.py
+â”‚       â”‚   â”œâ”€â”€ data_processing.py
+â”‚       â”‚   â””â”€â”€ utils.py
+â”‚       â”œâ”€â”€ spark/
+â”‚       â”‚   â”œâ”€â”€ __init__.py
+â”‚       â”‚   â”œâ”€â”€ etl.py
+â”‚       â”‚   â””â”€â”€ transformations.py
+â”‚       â””â”€â”€ config/
+â”‚           â”œâ”€â”€ __init__.py
+â”‚           â””â”€â”€ settings.py
+â”œâ”€â”€ tests/                 # Test directory
+â”‚   â”œâ”€â”€ __init__.py
+â”‚   â”œâ”€â”€ conftest.py       # Pytest configuration
+â”‚   â”œâ”€â”€ test_core/
+â”‚   â””â”€â”€ test_spark/
+â”œâ”€â”€ notebooks/             # Example notebooks
+â”‚   â””â”€â”€ examples/
+â””â”€â”€ scripts/              # Utility scripts
+    â”œâ”€â”€ build.sh
+    â””â”€â”€ deploy.sh</code></pre>
 
                 <div class="bullet-explanation">
                     <ul>
@@ -305,8 +305,8 @@ console_scripts =
             <section>
                 <div class="collapsible-section" id="building-and-installing-packages">
                 <div class="section-header" onclick="toggleSection('building-and-installing-packages')">
-                    <h2>🔨 Building and Installing Packages</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”¨ Building and Installing Packages</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -322,8 +322,8 @@ python -m build
 
 # This creates:
 # dist/
-# ├── my_databricks_package-0.1.0-py3-none-any.whl  # Wheel distribution
-# └── my_databricks_package-0.1.0.tar.gz            # Source distribution
+# â”œâ”€â”€ my_databricks_package-0.1.0-py3-none-any.whl  # Wheel distribution
+# â””â”€â”€ my_databricks_package-0.1.0.tar.gz            # Source distribution
 
 # Install locally for testing
 pip install -e .  # Editable install (development mode)
@@ -416,8 +416,8 @@ clusters_api.install_libraries("cluster-id", [library_config])</code></pre>
             <section>
                 <div class="collapsible-section" id="package-placement-and-import-strategies">
                 <div class="section-header" onclick="toggleSection('package-placement-and-import-strategies')">
-                    <h2>📍 Package Placement and Import Strategies</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“ Package Placement and Import Strategies</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -427,14 +427,14 @@ clusters_api.install_libraries("cluster-id", [library_config])</code></pre>
                 <h3>Workspace Repos Integration</h3>
                 <pre><code class="language-python"># Structure in Workspace/Repos
 # /Workspace/Repos/your-username/my-databricks-project/
-# ├── my_package/
-# │   ├── __init__.py
-# │   ├── core/
-# │   └── spark/
-# ├── notebooks/
-# │   ├── etl_pipeline.py
-# │   └── analysis.py
-# └── setup.py
+# â”œâ”€â”€ my_package/
+# â”‚   â”œâ”€â”€ __init__.py
+# â”‚   â”œâ”€â”€ core/
+# â”‚   â””â”€â”€ spark/
+# â”œâ”€â”€ notebooks/
+# â”‚   â”œâ”€â”€ etl_pipeline.py
+# â”‚   â””â”€â”€ analysis.py
+# â””â”€â”€ setup.py
 
 # Method 1: Add to Python path
 import sys
@@ -472,9 +472,9 @@ dbutils.fs.cp("file:/local/path/package.whl", "/dbfs/shared/packages/")
 
 # Create shared location for team packages
 # /dbfs/shared/packages/
-# ├── my-package-v1.0.0.whl
-# ├── another-package-v2.1.0.whl
-# └── common-utils-v0.5.0.whl
+# â”œâ”€â”€ my-package-v1.0.0.whl
+# â”œâ”€â”€ another-package-v2.1.0.whl
+# â””â”€â”€ common-utils-v0.5.0.whl
 
 # Automated upload script
 import subprocess
@@ -507,17 +507,17 @@ dbfs_path = upload_package_to_dbfs(wheel_path)</code></pre>
                 </div>
 
                 <h3>Import Best Practices</h3>
-                <pre><code class="language-python"># ✅ Good: Explicit imports with error handling
+                <pre><code class="language-python"># âœ… Good: Explicit imports with error handling
 try:
     from my_package.spark.etl import ETLProcessor
     from my_package.core.config import load_config
     from my_package.utils.helpers import validate_schema
-    print("✅ Package imported successfully")
+    print("âœ… Package imported successfully")
 except ImportError as e:
-    print(f"❌ Import error: {e}")
+    print(f"âŒ Import error: {e}")
     print("Please ensure the package is installed: %pip install my-databricks-package")
 
-# ✅ Good: Version checking
+# âœ… Good: Version checking
 try:
     import my_package
     print(f"Package version: {my_package.__version__}")
@@ -531,7 +531,7 @@ try:
 except ImportError as e:
     print(f"Version check failed: {e}")
 
-# ✅ Good: Conditional imports for optional features
+# âœ… Good: Conditional imports for optional features
 def load_ml_models():
     try:
         from my_package.ml import ModelFactory
@@ -540,7 +540,7 @@ def load_ml_models():
         print("ML features not available. Install with: %pip install my-package[ml]")
         return None
 
-# ✅ Good: Lazy imports for performance
+# âœ… Good: Lazy imports for performance
 class DataProcessor:
     def __init__(self):
         self._spark_utils = None
@@ -552,10 +552,10 @@ class DataProcessor:
             self._spark_utils = SparkUtils()
         return self._spark_utils
 
-# ❌ Bad: Wildcard imports
+# âŒ Bad: Wildcard imports
 # from my_package.spark import *  # Avoid this
 
-# ❌ Bad: Hardcoded paths
+# âŒ Bad: Hardcoded paths
 # sys.path.append("/dbfs/specific/user/path")  # Not portable</code></pre>
 
                 <div class="bullet-explanation">
@@ -571,8 +571,8 @@ class DataProcessor:
             <section>
                 <div class="collapsible-section" id="testing-and-quality-assurance">
                 <div class="section-header" onclick="toggleSection('testing-and-quality-assurance')">
-                    <h2>🧪 Testing and Quality Assurance</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ§ª Testing and Quality Assurance</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -753,8 +753,8 @@ class TestFullETLPipeline:
             <section>
                 <div class="collapsible-section" id="deployment-and-cicd">
                 <div class="section-header" onclick="toggleSection('deployment-and-cicd')">
-                    <h2>🚀 Deployment and CI/CD</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸš€ Deployment and CI/CD</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -889,7 +889,7 @@ class DatabricksDeployer:
     def deploy_package(self, target_path="/shared/packages/"):
         """Deploy package to Databricks DBFS"""
         
-        print(f"🚀 Deploying {self.package_path.name} to Databricks...")
+        print(f"ðŸš€ Deploying {self.package_path.name} to Databricks...")
         
         # Build package if needed
         if not self.package_path.exists():
@@ -907,28 +907,28 @@ class DatabricksDeployer:
         
         try:
             result = subprocess.run(upload_cmd, check=True, capture_output=True, text=True)
-            print(f"✅ Successfully deployed to {dbfs_path}")
+            print(f"âœ… Successfully deployed to {dbfs_path}")
             return dbfs_path
         except subprocess.CalledProcessError as e:
-            print(f"❌ Deployment failed: {e.stderr}")
+            print(f"âŒ Deployment failed: {e.stderr}")
             sys.exit(1)
     
     def build_package(self):
         """Build the package using build tool"""
-        print("🔨 Building package...")
+        print("ðŸ”¨ Building package...")
         
         build_cmd = ["python", "-m", "build"]
         
         try:
             subprocess.run(build_cmd, check=True, cwd=self.package_path.parent)
-            print("✅ Package built successfully")
+            print("âœ… Package built successfully")
         except subprocess.CalledProcessError as e:
-            print(f"❌ Build failed: {e}")
+            print(f"âŒ Build failed: {e}")
             sys.exit(1)
     
     def install_on_cluster(self, cluster_id):
         """Install package on specific cluster"""
-        print(f"📦 Installing package on cluster {cluster_id}...")
+        print(f"ðŸ“¦ Installing package on cluster {cluster_id}...")
         
         dbfs_path = self.deploy_package()
         
@@ -940,9 +940,9 @@ class DatabricksDeployer:
         
         try:
             subprocess.run(install_cmd, check=True)
-            print(f"✅ Package installed on cluster {cluster_id}")
+            print(f"âœ… Package installed on cluster {cluster_id}")
         except subprocess.CalledProcessError as e:
-            print(f"❌ Installation failed: {e}")
+            print(f"âŒ Installation failed: {e}")
             sys.exit(1)
 
 def main():
@@ -975,14 +975,14 @@ if __name__ == "__main__":
             </section>
 
             <div class="pro-tip">
-                <strong>💡 Expert Tip:</strong> Always version your packages semantically, maintain backwards compatibility when possible, and use virtual environments for development to avoid dependency conflicts. Consider using tools like bump2version for automated version management!
+                <strong>ðŸ’¡ Expert Tip:</strong> Always version your packages semantically, maintain backwards compatibility when possible, and use virtual environments for development to avoid dependency conflicts. Consider using tools like bump2version for automated version management!
             </div>
 
             <section>
                 <div class="collapsible-section" id="best-practices-summary">
                 <div class="section-header" onclick="toggleSection('best-practices-summary')">
-                    <h2>📋 Best Practices Summary</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“‹ Best Practices Summary</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <ul>
@@ -1004,7 +1004,7 @@ if __name__ == "__main__":
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -1018,10 +1018,10 @@ if __name__ == "__main__":
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -1034,11 +1034,11 @@ if __name__ == "__main__":
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -1049,7 +1049,7 @@ if __name__ == "__main__":
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -1060,7 +1060,7 @@ if __name__ == "__main__":
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -1080,4 +1080,5 @@ if __name__ == "__main__":
     </script>
 </body>
 </html> 
+
 

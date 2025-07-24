@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📊 SQL for Databricks Cheat Sheet</title>
+    <title>ðŸ“Š SQL for Databricks Cheat Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * {
@@ -259,52 +259,52 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">📊 SQL for Databricks Cheat Sheet</h1>
+            <h1 id="top">ðŸ“Š SQL for Databricks Cheat Sheet</h1>
 
             <blockquote>Essential SQL commands, window functions, and Delta Lake operations for Databricks</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://spark.apache.org/docs/latest/sql-ref.html" target="_blank">Spark SQL Reference</a></li>
                 <li><a href="https://docs.databricks.com/sql/language-manual/index.html" target="_blank">Databricks SQL Reference</a></li>
                 <li><a href="https://docs.delta.io/latest/delta-batch.html#ddl-statements" target="_blank">Delta Lake SQL Commands</a></li>
-                <li><a href="16-sql-functions-comparison.html" style="color: #e53e3e; font-weight: bold;">🔗 SQL vs PySpark Functions Comparison</a></li>
+                <li><a href="16-sql-functions-comparison.html" style="color: #e53e3e; font-weight: bold;">ðŸ”— SQL vs PySpark Functions Comparison</a></li>
             </ul>
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#core-sql-commands">🏗️ Core SQL Commands</a></li><li><a href="#join-operations">🔗 JOIN Operations</a></li><li><a href="#group-by-and-aggregations">📊 GROUP BY and Aggregations</a></li><li><a href="#window-functions">🪟 Window Functions</a></li><li><a href="#delta-lake-operations">🔺 Delta Lake Operations</a></li><li><a href="#performance-tips">🎯 Performance Tips</a></li>
+                        <li><a href="#core-sql-commands">ðŸ—ï¸ Core SQL Commands</a></li><li><a href="#join-operations">ðŸ”— JOIN Operations</a></li><li><a href="#group-by-and-aggregations">ðŸ“Š GROUP BY and Aggregations</a></li><li><a href="#window-functions">ðŸªŸ Window Functions</a></li><li><a href="#delta-lake-operations">ðŸ”º Delta Lake Operations</a></li><li><a href="#performance-tips">ðŸŽ¯ Performance Tips</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="collapsible-section" id="core-sql-commands">
                 <div class="section-header" onclick="toggleSection('core-sql-commands')">
-                    <h2>🏗️ Core SQL Commands</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ—ï¸ Core SQL Commands</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -384,8 +384,8 @@ FROM customers;</code></pre>
 
             <div class="collapsible-section" id="join-operations">
                 <div class="section-header" onclick="toggleSection('join-operations')">
-                    <h2>🔗 JOIN Operations</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”— JOIN Operations</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -411,8 +411,8 @@ GROUP BY c.customer_id, c.customer_name;</code></pre>
 
             <div class="collapsible-section" id="group-by-and-aggregations">
                 <div class="section-header" onclick="toggleSection('group-by-and-aggregations')">
-                    <h2>📊 GROUP BY and Aggregations</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“Š GROUP BY and Aggregations</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -435,8 +435,8 @@ ORDER BY total_revenue DESC;</code></pre>
 
             <div class="collapsible-section" id="window-functions">
                 <div class="section-header" onclick="toggleSection('window-functions')">
-                    <h2>🪟 Window Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸªŸ Window Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -466,8 +466,8 @@ FROM orders;</code></pre>
 
             <div class="collapsible-section" id="delta-lake-operations">
                 <div class="section-header" onclick="toggleSection('delta-lake-operations')">
-                    <h2>🔺 Delta Lake Operations</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”º Delta Lake Operations</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -506,8 +506,8 @@ SELECT * FROM customers TIMESTAMP AS OF '2023-12-01 00:00:00';</code></pre>
 
             <div class="collapsible-section" id="performance-tips">
                 <div class="section-header" onclick="toggleSection('performance-tips')">
-                    <h2>🎯 Performance Tips</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŽ¯ Performance Tips</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -529,7 +529,7 @@ FROM large_table l
 JOIN small_table s ON l.key = s.key;</code></pre>
 
             <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Always use <code>EXPLAIN</code> to understand query execution plans and identify performance bottlenecks!
+                <strong>ðŸ’¡ Pro Tip:</strong> Always use <code>EXPLAIN</code> to understand query execution plans and identify performance bottlenecks!
             </div>
 
             <pre><code class="language-sql">EXPLAIN SELECT * FROM large_table WHERE complex_condition = 'value';</code></pre>                </div>
@@ -541,7 +541,7 @@ JOIN small_table s ON l.key = s.key;</code></pre>
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
             <h2 id="ansi-sql"> ANSI SQL Standards & Compliance</h2>
             <div class="section-description">
                 <p><strong>ANSI SQL standard compliance and portable SQL patterns</strong></p>
@@ -738,10 +738,10 @@ ORDER BY level, name;</code></pre>
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -754,11 +754,11 @@ ORDER BY level, name;</code></pre>
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -769,7 +769,7 @@ ORDER BY level, name;</code></pre>
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -780,7 +780,7 @@ ORDER BY level, name;</code></pre>
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -800,6 +800,7 @@ ORDER BY level, name;</code></pre>
     </script>
 </body>
 </html> 
+
 
 
 

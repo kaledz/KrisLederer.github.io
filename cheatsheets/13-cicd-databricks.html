@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 CI/CD for Databricks</title>
+    <title>ðŸš€ CI/CD for Databricks</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -66,31 +66,31 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">🚀 CI/CD for Databricks</h1>
+            <h1 id="top">ðŸš€ CI/CD for Databricks</h1>
             <blockquote>Expert guide to implementing comprehensive CI/CD pipelines for Databricks notebooks, jobs, and data pipelines with automated testing and deployment</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://docs.databricks.com/dev-tools/ci-cd/index.html" target="_blank">Databricks CI/CD Guide</a></li>
                 <li><a href="https://docs.databricks.com/repos/index.html" target="_blank">Databricks Repos</a></li>
@@ -100,10 +100,10 @@
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#git-integration-setup">🔧 Git Integration Setup</a></li><li><a href="#testing-strategy-for-spark-functions">🧪 Testing Strategy for Spark Functions</a></li><li><a href="#github-actions-cicd-pipeline">📦 GitHub Actions CI/CD Pipeline</a></li><li><a href="#security-and-compliance-best-practices">🔒 Security and Compliance Best Practices</a></li>
+                        <li><a href="#git-integration-setup">ðŸ”§ Git Integration Setup</a></li><li><a href="#testing-strategy-for-spark-functions">ðŸ§ª Testing Strategy for Spark Functions</a></li><li><a href="#github-actions-cicd-pipeline">ðŸ“¦ GitHub Actions CI/CD Pipeline</a></li><li><a href="#security-and-compliance-best-practices">ðŸ”’ Security and Compliance Best Practices</a></li>
                     </ul>
                 </div>
             </div>
@@ -111,8 +111,8 @@
             <section>
                 <div class="collapsible-section" id="git-integration-setup">
                 <div class="section-header" onclick="toggleSection('git-integration-setup')">
-                    <h2>🔧 Git Integration Setup</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”§ Git Integration Setup</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -121,48 +121,48 @@
 
                 <h3>Repository Structure for Databricks</h3>
                 <pre><code class="language-text">databricks-project/
-├── .github/
-│   └── workflows/
-│       ├── ci-test.yml
-│       ├── cd-staging.yml
-│       └── cd-production.yml
-├── .databricks/
-│   ├── project.json
-│   └── bundle.yml
-├── notebooks/
-│   ├── etl/
-│   │   ├── bronze_ingestion.py
-│   │   ├── silver_transformation.py
-│   │   └── gold_aggregation.py
-│   ├── analysis/
-│   │   └── customer_insights.py
-│   └── utils/
-│       └── common_functions.py
-├── src/
-│   └── data_pipeline/
-│       ├── __init__.py
-│       ├── core/
-│       └── utils/
-├── tests/
-│   ├── unit/
-│   │   ├── test_transformations.py
-│   │   └── test_utils.py
-│   ├── integration/
-│   │   └── test_pipeline.py
-│   └── conftest.py
-├── config/
-│   ├── dev.yaml
-│   ├── staging.yaml
-│   └── prod.yaml
-├── jobs/
-│   ├── daily_etl_job.json
-│   └── weekly_report_job.json
-├── requirements.txt
-├── requirements-dev.txt
-├── setup.py
-├── pytest.ini
-├── .gitignore
-└── README.md</code></pre>
+â”œâ”€â”€ .github/
+â”‚   â””â”€â”€ workflows/
+â”‚       â”œâ”€â”€ ci-test.yml
+â”‚       â”œâ”€â”€ cd-staging.yml
+â”‚       â””â”€â”€ cd-production.yml
+â”œâ”€â”€ .databricks/
+â”‚   â”œâ”€â”€ project.json
+â”‚   â””â”€â”€ bundle.yml
+â”œâ”€â”€ notebooks/
+â”‚   â”œâ”€â”€ etl/
+â”‚   â”‚   â”œâ”€â”€ bronze_ingestion.py
+â”‚   â”‚   â”œâ”€â”€ silver_transformation.py
+â”‚   â”‚   â””â”€â”€ gold_aggregation.py
+â”‚   â”œâ”€â”€ analysis/
+â”‚   â”‚   â””â”€â”€ customer_insights.py
+â”‚   â””â”€â”€ utils/
+â”‚       â””â”€â”€ common_functions.py
+â”œâ”€â”€ src/
+â”‚   â””â”€â”€ data_pipeline/
+â”‚       â”œâ”€â”€ __init__.py
+â”‚       â”œâ”€â”€ core/
+â”‚       â””â”€â”€ utils/
+â”œâ”€â”€ tests/
+â”‚   â”œâ”€â”€ unit/
+â”‚   â”‚   â”œâ”€â”€ test_transformations.py
+â”‚   â”‚   â””â”€â”€ test_utils.py
+â”‚   â”œâ”€â”€ integration/
+â”‚   â”‚   â””â”€â”€ test_pipeline.py
+â”‚   â””â”€â”€ conftest.py
+â”œâ”€â”€ config/
+â”‚   â”œâ”€â”€ dev.yaml
+â”‚   â”œâ”€â”€ staging.yaml
+â”‚   â””â”€â”€ prod.yaml
+â”œâ”€â”€ jobs/
+â”‚   â”œâ”€â”€ daily_etl_job.json
+â”‚   â””â”€â”€ weekly_report_job.json
+â”œâ”€â”€ requirements.txt
+â”œâ”€â”€ requirements-dev.txt
+â”œâ”€â”€ setup.py
+â”œâ”€â”€ pytest.ini
+â”œâ”€â”€ .gitignore
+â””â”€â”€ README.md</code></pre>
 
                 <div class="bullet-explanation">
                     <ul>
@@ -274,8 +274,8 @@ notifications:
             <section>
                 <div class="collapsible-section" id="testing-strategy-for-spark-functions">
                 <div class="section-header" onclick="toggleSection('testing-strategy-for-spark-functions')">
-                    <h2>🧪 Testing Strategy for Spark Functions</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ§ª Testing Strategy for Spark Functions</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -672,8 +672,8 @@ class TestETLPipeline:
             <section>
                 <div class="collapsible-section" id="github-actions-cicd-pipeline">
                 <div class="section-header" onclick="toggleSection('github-actions-cicd-pipeline')">
-                    <h2>📦 GitHub Actions CI/CD Pipeline</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“¦ GitHub Actions CI/CD Pipeline</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -892,7 +892,7 @@ jobs:
       uses: 8398a7/action-slack@v3
       with:
         status: success
-        text: "✅ CI Pipeline completed successfully for ${{ github.ref }}"
+        text: "âœ… CI Pipeline completed successfully for ${{ github.ref }}"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
     
@@ -901,7 +901,7 @@ jobs:
       uses: 8398a7/action-slack@v3
       with:
         status: failure
-        text: "❌ CI Pipeline failed for ${{ github.ref }}"
+        text: "âŒ CI Pipeline failed for ${{ github.ref }}"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}</code></pre>
 
@@ -1026,10 +1026,10 @@ jobs:
             result_state=$(databricks runs get --profile staging --run-id $run_id | jq -r '.state.result_state')
             
             if [ "$result_state" = "SUCCESS" ]; then
-              echo "✅ Smoke test passed"
+              echo "âœ… Smoke test passed"
               break
             else
-              echo "❌ Smoke test failed"
+              echo "âŒ Smoke test failed"
               exit 1
             fi
           fi
@@ -1039,7 +1039,7 @@ jobs:
         done
         
         if [ $elapsed -ge $timeout ]; then
-          echo "⏰ Smoke test timed out"
+          echo "â° Smoke test timed out"
           exit 1
         fi
     
@@ -1048,7 +1048,7 @@ jobs:
       uses: 8398a7/action-slack@v3
       with:
         status: success
-        text: "🚀 Successfully deployed to Staging environment"
+        text: "ðŸš€ Successfully deployed to Staging environment"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
     
@@ -1057,7 +1057,7 @@ jobs:
       uses: 8398a7/action-slack@v3
       with:
         status: failure
-        text: "💥 Staging deployment failed"
+        text: "ðŸ’¥ Staging deployment failed"
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}</code></pre>
 
@@ -1072,14 +1072,14 @@ jobs:
             </section>
 
             <div class="pro-tip">
-                <strong>💡 Expert Tip:</strong> Always implement proper secret management using GitHub Secrets, include comprehensive smoke tests after deployment, and use environment protection rules for production deployments. Consider blue-green deployment strategies for zero-downtime updates!
+                <strong>ðŸ’¡ Expert Tip:</strong> Always implement proper secret management using GitHub Secrets, include comprehensive smoke tests after deployment, and use environment protection rules for production deployments. Consider blue-green deployment strategies for zero-downtime updates!
             </div>
 
             <section>
                 <div class="collapsible-section" id="security-and-compliance-best-practices">
                 <div class="section-header" onclick="toggleSection('security-and-compliance-best-practices')">
-                    <h2>🔒 Security and Compliance Best Practices</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”’ Security and Compliance Best Practices</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <ul>
@@ -1099,7 +1099,7 @@ jobs:
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -1113,10 +1113,10 @@ jobs:
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -1129,11 +1129,11 @@ jobs:
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -1144,7 +1144,7 @@ jobs:
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -1155,7 +1155,7 @@ jobs:
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -1175,4 +1175,5 @@ jobs:
     </script>
 </body>
 </html> 
+
 

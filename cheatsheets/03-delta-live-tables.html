@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🪵 Delta Live Tables (DLT) Cheat Sheet</title>
+    <title>ðŸªµ Delta Live Tables (DLT) Cheat Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * {
@@ -251,32 +251,32 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">🪵 Delta Live Tables (DLT) Cheat Sheet</h1>
+            <h1 id="top">ðŸªµ Delta Live Tables (DLT) Cheat Sheet</h1>
 
             <blockquote>Complete guide to Delta Live Tables with streaming, bronze-silver-gold architecture, and Kinesis integration</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://docs.databricks.com/workflows/delta-live-tables/index.html" target="_blank">Delta Live Tables Guide</a></li>
                 <li><a href="https://docs.databricks.com/workflows/delta-live-tables/delta-live-tables-python-ref.html" target="_blank">DLT API Reference</a></li>
@@ -286,18 +286,18 @@
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#dlt-fundamentals">🏗️ DLT Fundamentals</a></li><li><a href="#aws-kinesis-integration">⚡ AWS Kinesis Integration</a></li><li><a href="#bronze-silver-gold-architecture">🏛️ Bronze-Silver-Gold Architecture</a></li><li><a href="#data-quality-and-expectations">✅ Data Quality and Expectations</a></li><li><a href="#streaming-tables-and-auto-loader">🌊 Streaming Tables and Auto Loader</a></li><li><a href="#change-data-capture-cdc-patterns">🔄 Change Data Capture (CDC) Patterns</a></li>
+                        <li><a href="#dlt-fundamentals">ðŸ—ï¸ DLT Fundamentals</a></li><li><a href="#aws-kinesis-integration">âš¡ AWS Kinesis Integration</a></li><li><a href="#bronze-silver-gold-architecture">ðŸ›ï¸ Bronze-Silver-Gold Architecture</a></li><li><a href="#data-quality-and-expectations">âœ… Data Quality and Expectations</a></li><li><a href="#streaming-tables-and-auto-loader">ðŸŒŠ Streaming Tables and Auto Loader</a></li><li><a href="#change-data-capture-cdc-patterns">ðŸ”„ Change Data Capture (CDC) Patterns</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="collapsible-section" id="dlt-fundamentals">
                 <div class="section-header" onclick="toggleSection('dlt-fundamentals')">
-                    <h2>🏗️ DLT Fundamentals</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ—ï¸ DLT Fundamentals</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -339,8 +339,8 @@ def streaming_orders():
 
             <div class="collapsible-section" id="aws-kinesis-integration">
                 <div class="section-header" onclick="toggleSection('aws-kinesis-integration')">
-                    <h2>⚡ AWS Kinesis Integration</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>âš¡ AWS Kinesis Integration</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -411,8 +411,8 @@ def kinesis_parsed():
 
             <div class="collapsible-section" id="bronze-silver-gold-architecture">
                 <div class="section-header" onclick="toggleSection('bronze-silver-gold-architecture')">
-                    <h2>🏛️ Bronze-Silver-Gold Architecture</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ›ï¸ Bronze-Silver-Gold Architecture</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -474,8 +474,8 @@ def gold_daily_customer_summary():
 
             <div class="collapsible-section" id="data-quality-and-expectations">
                 <div class="section-header" onclick="toggleSection('data-quality-and-expectations')">
-                    <h2>✅ Data Quality and Expectations</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>âœ… Data Quality and Expectations</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -503,8 +503,8 @@ def validated_customers():
 
             <div class="collapsible-section" id="streaming-tables-and-auto-loader">
                 <div class="section-header" onclick="toggleSection('streaming-tables-and-auto-loader')">
-                    <h2>🌊 Streaming Tables and Auto Loader</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŒŠ Streaming Tables and Auto Loader</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -544,8 +544,8 @@ def bronze_events():
 
             <div class="collapsible-section" id="change-data-capture-cdc-patterns">
                 <div class="section-header" onclick="toggleSection('change-data-capture-cdc-patterns')">
-                    <h2>🔄 Change Data Capture (CDC) Patterns</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”„ Change Data Capture (CDC) Patterns</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
 
@@ -584,7 +584,7 @@ def customers_current():
     )</code></pre>
 
             <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Use DLT's built-in data lineage and monitoring features to track data flow and quality across your pipeline!
+                <strong>ðŸ’¡ Pro Tip:</strong> Use DLT's built-in data lineage and monitoring features to track data flow and quality across your pipeline!
             </div>
 
             <pre><code class="language-python"># Check pipeline status
@@ -597,7 +597,7 @@ display(spark.sql("DESCRIBE HISTORY delta_live_tables.my_table"))</code></pre>  
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -611,10 +611,10 @@ display(spark.sql("DESCRIBE HISTORY delta_live_tables.my_table"))</code></pre>  
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -627,11 +627,11 @@ display(spark.sql("DESCRIBE HISTORY delta_live_tables.my_table"))</code></pre>  
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -642,7 +642,7 @@ display(spark.sql("DESCRIBE HISTORY delta_live_tables.my_table"))</code></pre>  
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -653,7 +653,7 @@ display(spark.sql("DESCRIBE HISTORY delta_live_tables.my_table"))</code></pre>  
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -673,4 +673,5 @@ display(spark.sql("DESCRIBE HISTORY delta_live_tables.my_table"))</code></pre>  
     </script>
 </body>
 </html> 
+
 

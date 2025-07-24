@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🤖 Scikit-learn ML Cheat Sheet</title>
+    <title>ðŸ¤– Scikit-learn ML Cheat Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -64,31 +64,31 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">🤖 Scikit-learn ML Essentials</h1>
+            <h1 id="top">ðŸ¤– Scikit-learn ML Essentials</h1>
             <blockquote>Comprehensive guide to machine learning with scikit-learn - from data preprocessing to model deployment</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://scikit-learn.org/stable/user_guide.html" target="_blank">Scikit-learn User Guide</a></li>
                 <li><a href="https://scikit-learn.org/stable/modules/classes.html" target="_blank">API Reference</a></li>
@@ -97,18 +97,18 @@
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#data-loading-and-preparation">📊 Data Loading and Preparation</a></li><li><a href="#data-preprocessing">🔄 Data Preprocessing</a></li><li><a href="#model-training-and-evaluation">🎯 Model Training and Evaluation</a></li><li><a href="#classification-algorithms">🤖 Classification Algorithms</a></li><li><a href="#regression-algorithms">📈 Regression Algorithms</a></li><li><a href="#hyperparameter-tuning">🔍 Hyperparameter Tuning</a></li><li><a href="#model-evaluation-and-metrics">📊 Model Evaluation and Metrics</a></li><li><a href="#production-ml-pipeline">🚀 Production ML Pipeline</a></li>
+                        <li><a href="#data-loading-and-preparation">ðŸ“Š Data Loading and Preparation</a></li><li><a href="#data-preprocessing">ðŸ”„ Data Preprocessing</a></li><li><a href="#model-training-and-evaluation">ðŸŽ¯ Model Training and Evaluation</a></li><li><a href="#classification-algorithms">ðŸ¤– Classification Algorithms</a></li><li><a href="#regression-algorithms">ðŸ“ˆ Regression Algorithms</a></li><li><a href="#hyperparameter-tuning">ðŸ” Hyperparameter Tuning</a></li><li><a href="#model-evaluation-and-metrics">ðŸ“Š Model Evaluation and Metrics</a></li><li><a href="#production-ml-pipeline">ðŸš€ Production ML Pipeline</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="collapsible-section" id="data-loading-and-preparation">
                 <div class="section-header" onclick="toggleSection('data-loading-and-preparation')">
-                    <h2>📊 Data Loading and Preparation</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“Š Data Loading and Preparation</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Sample Datasets and Basic Setup</h3>
@@ -166,8 +166,8 @@ print(df.head())</code></pre>
 
             <div class="collapsible-section" id="data-preprocessing">
                 <div class="section-header" onclick="toggleSection('data-preprocessing')">
-                    <h2>🔄 Data Preprocessing</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”„ Data Preprocessing</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Feature Scaling and Transformation</h3>
@@ -297,8 +297,8 @@ print(f"\nProcessed data shape: {X_processed.shape}")</code></pre>
 
             <div class="collapsible-section" id="model-training-and-evaluation">
                 <div class="section-header" onclick="toggleSection('model-training-and-evaluation')">
-                    <h2>🎯 Model Training and Evaluation</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŽ¯ Model Training and Evaluation</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Train-Test Split and Cross-Validation</h3>
@@ -348,8 +348,8 @@ for metric in scoring:
 
             <div class="collapsible-section" id="classification-algorithms">
                 <div class="section-header" onclick="toggleSection('classification-algorithms')">
-                    <h2>🤖 Classification Algorithms</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ¤– Classification Algorithms</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Logistic Regression</h3>
@@ -448,8 +448,8 @@ print(models_comparison)</code></pre>
 
             <div class="collapsible-section" id="regression-algorithms">
                 <div class="section-header" onclick="toggleSection('regression-algorithms')">
-                    <h2>📈 Regression Algorithms</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“ˆ Regression Algorithms</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Linear Regression</h3>
@@ -483,7 +483,7 @@ r2 = r2_score(y_test_reg, y_pred_linear)
 print(f"Linear Regression Results:")
 print(f"RMSE: {rmse:.3f}")
 print(f"MAE: {mae:.3f}")
-print(f"R² Score: {r2:.3f}")
+print(f"RÂ² Score: {r2:.3f}")
 
 # Polynomial features for non-linear relationships
 poly_features = PolynomialFeatures(degree=2, include_bias=False)
@@ -499,7 +499,7 @@ y_pred_poly = poly_reg.predict(X_test_poly)
 poly_r2 = r2_score(y_test_reg, y_pred_poly)
 
 print(f"\nPolynomial Regression (degree 2):")
-print(f"R² Score: {poly_r2:.3f}")
+print(f"RÂ² Score: {poly_r2:.3f}")
 
 # Regularized regression to prevent overfitting
 from sklearn.linear_model import Ridge, Lasso, ElasticNet
@@ -517,8 +517,8 @@ y_pred_lasso = lasso_reg.predict(X_test_scaled)
 lasso_r2 = r2_score(y_test_reg, y_pred_lasso)
 
 print(f"\nRegularized Regression Results:")
-print(f"Ridge R² Score: {ridge_r2:.3f}")
-print(f"Lasso R² Score: {lasso_r2:.3f}")
+print(f"Ridge RÂ² Score: {ridge_r2:.3f}")
+print(f"Lasso RÂ² Score: {lasso_r2:.3f}")
 
 # Feature selection with Lasso - features with non-zero coefficients
 selected_features = np.where(lasso_reg.coef_ != 0)[0]
@@ -527,8 +527,8 @@ print(f"Lasso selected {len(selected_features)} out of {len(boston.feature_names
 
             <div class="collapsible-section" id="hyperparameter-tuning">
                 <div class="section-header" onclick="toggleSection('hyperparameter-tuning')">
-                    <h2>🔍 Hyperparameter Tuning</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ” Hyperparameter Tuning</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <pre><code class="language-python">from sklearn.model_selection import GridSearchCV, RandomizedSearchCV
@@ -608,8 +608,8 @@ print(comparison_df)</code></pre>
 
             <div class="collapsible-section" id="model-evaluation-and-metrics">
                 <div class="section-header" onclick="toggleSection('model-evaluation-and-metrics')">
-                    <h2>📊 Model Evaluation and Metrics</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“Š Model Evaluation and Metrics</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <pre><code class="language-python">from sklearn.metrics import (
@@ -721,13 +721,13 @@ def plot_learning_curve(estimator, X, y, cv=5):
 plot_learning_curve(best_model, X_iris, y_iris)</code></pre>
 
             <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Always use cross-validation for model evaluation and hyperparameter tuning. Single train-test splits can be misleading due to data variance!
+                <strong>ðŸ’¡ Pro Tip:</strong> Always use cross-validation for model evaluation and hyperparameter tuning. Single train-test splits can be misleading due to data variance!
             </div>
 
             <div class="collapsible-section" id="production-ml-pipeline">
                 <div class="section-header" onclick="toggleSection('production-ml-pipeline')">
-                    <h2>🚀 Production ML Pipeline</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸš€ Production ML Pipeline</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <pre><code class="language-python">from sklearn.pipeline import Pipeline
@@ -887,7 +887,7 @@ print(f"Production Model Metrics: {metrics}")
 # Save model for deployment
 ml_pipeline.save_model('production_model.joblib')
 
-print("\n✅ Production ML Pipeline Created Successfully!")</code></pre>                </div>
+print("\nâœ… Production ML Pipeline Created Successfully!")</code></pre>                </div>
             </div>                </div>
             </div>                </div>
             </div>                </div>
@@ -898,7 +898,7 @@ print("\n✅ Production ML Pipeline Created Successfully!")</code></pre>        
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -912,10 +912,10 @@ print("\n✅ Production ML Pipeline Created Successfully!")</code></pre>        
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -928,11 +928,11 @@ print("\n✅ Production ML Pipeline Created Successfully!")</code></pre>        
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -943,7 +943,7 @@ print("\n✅ Production ML Pipeline Created Successfully!")</code></pre>        
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -954,7 +954,7 @@ print("\n✅ Production ML Pipeline Created Successfully!")</code></pre>        
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -974,4 +974,5 @@ print("\n✅ Production ML Pipeline Created Successfully!")</code></pre>        
     </script>
 </body>
 </html> 
+
 

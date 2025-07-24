@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔥 ELT Using PySpark - Expert Cheat Sheet</title>
+    <title>ðŸ”¥ ELT Using PySpark - Expert Cheat Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -66,41 +66,41 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">🔥 [ ELT Using PySpark ] (Cheatsheet)</h1>
+            <h1 id="top">ðŸ”¥ [ ELT Using PySpark ] (Cheatsheet)</h1>
             <blockquote>Expert-level comprehensive guide to Extract, Load, Transform operations using PySpark for big data processing and analytics</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://spark.apache.org/docs/latest/api/python/" target="_blank">PySpark API Documentation</a></li>
                 <li><a href="https://spark.apache.org/docs/latest/sql-programming-guide.html" target="_blank">Spark SQL Programming Guide</a></li>
                 <li><a href="https://spark.apache.org/docs/latest/structured-streaming-programming-guide.html" target="_blank">Structured Streaming Guide</a></li>
                 <li><a href="https://spark.apache.org/docs/latest/ml-guide.html" target="_blank">MLlib Machine Learning Guide</a></li>
-                <li><a href="16-sql-functions-comparison.html" style="color: #e53e3e; font-weight: bold;">🔗 SQL vs PySpark Functions Comparison</a></li>
+                <li><a href="16-sql-functions-comparison.html" style="color: #e53e3e; font-weight: bold;">ðŸ”— SQL vs PySpark Functions Comparison</a></li>
             </ul>
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
                         <li><a href="#1-basic-dataframe-operations">1. Basic DataFrame Operations</a></li><li><a href="#2-advanced-data-manipulation">2. Advanced Data Manipulation</a></li><li><a href="#3-handling-missing-and-duplicate-data">3. Handling Missing and Duplicate Data</a></li><li><a href="#4-data-transformation">4. Data Transformation</a></li><li><a href="#5-data-profiling">5. Data Profiling</a></li><li><a href="#6-data-visualization-integration-with-other-libraries">6. Data Visualization (Integration with other libraries)</a></li><li><a href="#7-data-importexport">7. Data Import/Export</a></li><li><a href="#8-working-with-large-data">8. Working with Large Data</a></li><li><a href="#9-spark-sql">9. Spark SQL</a></li><li><a href="#10-machine-learning-and-advanced-analytics">10. Machine Learning and Advanced Analytics</a></li><li><a href="#performance-best-practices-summary">Performance Best Practices Summary</a></li>
@@ -112,7 +112,7 @@
                 <div class="collapsible-section" id="1-basic-dataframe-operations">
                 <div class="section-header" onclick="toggleSection('1-basic-dataframe-operations')">
                     <h2>1. Basic DataFrame Operations</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -231,7 +231,7 @@ df.write \
                 <div class="collapsible-section" id="2-advanced-data-manipulation">
                 <div class="section-header" onclick="toggleSection('2-advanced-data-manipulation')">
                     <h2>2. Advanced Data Manipulation</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -307,7 +307,7 @@ df_broadcast = large_df.join(broadcast(small_df), "key")</code></pre>
                 <div class="collapsible-section" id="3-handling-missing-and-duplicate-data">
                 <div class="section-header" onclick="toggleSection('3-handling-missing-and-duplicate-data')">
                     <h2>3. Handling Missing and Duplicate Data</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -343,7 +343,7 @@ df_replaced = df.na.replace(["old_value"], ["new_value"])</code></pre>
                 <div class="collapsible-section" id="4-data-transformation">
                 <div class="section-header" onclick="toggleSection('4-data-transformation')">
                     <h2>4. Data Transformation</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -463,7 +463,7 @@ df_analytics = df.withColumn("rank", rank().over(windowSpec)) \
                 <div class="collapsible-section" id="5-data-profiling">
                 <div class="section-header" onclick="toggleSection('5-data-profiling')">
                     <h2>5. Data Profiling</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -515,7 +515,7 @@ def profile_dataframe(df):
                 <div class="collapsible-section" id="6-data-visualization-integration-with-other-libraries">
                 <div class="section-header" onclick="toggleSection('6-data-visualization-integration-with-other-libraries')">
                     <h2>6. Data Visualization (Integration with other libraries)</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -572,7 +572,7 @@ print(f"Histogram counts: {histogram_data[1]}")</code></pre>
                 <div class="collapsible-section" id="7-data-importexport">
                 <div class="section-header" onclick="toggleSection('7-data-importexport')">
                     <h2>7. Data Import/Export</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -642,7 +642,7 @@ gcs_df = spark.read.parquet("gs://bucket-name/path/to/data/")</code></pre>
                 <div class="collapsible-section" id="8-working-with-large-data">
                 <div class="section-header" onclick="toggleSection('8-working-with-large-data')">
                     <h2>8. Working with Large Data</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -699,7 +699,7 @@ spark.conf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
                 <div class="collapsible-section" id="9-spark-sql">
                 <div class="section-header" onclick="toggleSection('9-spark-sql')">
                     <h2>9. Spark SQL</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -775,7 +775,7 @@ complex_query = spark.sql("""
                 <div class="collapsible-section" id="10-machine-learning-and-advanced-analytics">
                 <div class="section-header" onclick="toggleSection('10-machine-learning-and-advanced-analytics')">
                     <h2>10. Machine Learning and Advanced Analytics</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <div class="section-description">
@@ -848,14 +848,14 @@ best_predictions = cv_model.transform(test)</code></pre>
             <!-- Continuing with the remaining 18 sections... -->
 
             <div class="pro-tip">
-                <strong>💡 Expert Tip:</strong> Always profile your data first, choose appropriate partitioning strategies, and leverage Spark's lazy evaluation by chaining transformations before actions. Monitor your Spark UI to identify bottlenecks and optimize accordingly!
+                <strong>ðŸ’¡ Expert Tip:</strong> Always profile your data first, choose appropriate partitioning strategies, and leverage Spark's lazy evaluation by chaining transformations before actions. Monitor your Spark UI to identify bottlenecks and optimize accordingly!
             </div>
 
             <section>
                 <div class="collapsible-section" id="performance-best-practices-summary">
                 <div class="section-header" onclick="toggleSection('performance-best-practices-summary')">
                     <h2>Performance Best Practices Summary</h2>
-                    <span class="section-toggle">▼</span>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
                 <ul>
@@ -882,7 +882,7 @@ best_predictions = cv_model.transform(test)</code></pre>
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
             
             <div class="collapsible-section" id="sql-vs-pyspark-comparison">
                 <div class="section-header" onclick="toggleSection(this)">
@@ -977,4 +977,5 @@ result = customers.alias("c") \
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 </body>
 </html>
+
 

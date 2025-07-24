@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ AWS Kinesis Streaming Cheat Sheet</title>
+    <title>âš¡ AWS Kinesis Streaming Cheat Sheet</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -64,31 +64,31 @@
     <div class="container">
         <nav>
             <div class="nav-links">
-                <a href="index.html" class="home-link">🏠 Home</a>
-                <a href="01-sql-databricks.html">📊 SQL</a>
-                <a href="02-pyspark-essentials.html">🔥 PySpark ELT</a>
-                <a href="03-delta-live-tables.html">🪵 DLT</a>
-                <a href="04-dbutils-cheatsheet.html">🛠️ dbutils</a>
-                <a href="05-python-core.html">🐍 Python Core</a>
-                <a href="15-python-fundamentals.html">🔣 Fundamentals</a>
-                <a href="06-requests-apis.html">🧪 requests</a>
-                <a href="07-pandas-numpy.html">🐼 pandas</a>
-                <a href="08-scikit-learn-ml.html">🤖 ML</a>
-                <a href="09-aws-kinesis.html">⚡ Kinesis</a>
-                <a href="10-data-patterns.html">🔧 Patterns</a>
-                <a href="11-python-packaging-databricks.html">📦 Packaging</a>
-                <a href="12-notebook-exit-retry.html">🔄 Exit & Retry</a>
-                <a href="13-cicd-databricks.html">🚀 CI/CD</a>
-                <a href="14-git-essentials.html">📝 Git</a>
-                <a href="16-sql-functions-comparison.html">🔗 SQL Functions</a>
+                <a href="index.html" class="home-link">ðŸ  Home</a>
+                <a href="01-sql-databricks.html">ðŸ“Š SQL</a>
+                <a href="02-pyspark-essentials.html">ðŸ”¥ PySpark ELT</a>
+                <a href="03-delta-live-tables.html">ðŸªµ DLT</a>
+                <a href="04-dbutils-cheatsheet.html">ðŸ› ï¸ dbutils</a>
+                <a href="05-python-core.html">ðŸ Python Core</a>
+                <a href="15-python-fundamentals.html">ðŸ”£ Fundamentals</a>
+                <a href="06-requests-apis.html">ðŸ§ª requests</a>
+                <a href="07-pandas-numpy.html">ðŸ¼ pandas</a>
+                <a href="08-scikit-learn-ml.html">ðŸ¤– ML</a>
+                <a href="09-aws-kinesis.html">âš¡ Kinesis</a>
+                <a href="10-data-patterns.html">ðŸ”§ Patterns</a>
+                <a href="11-python-packaging-databricks.html">ðŸ“¦ Packaging</a>
+                <a href="12-notebook-exit-retry.html">ðŸ”„ Exit & Retry</a>
+                <a href="13-cicd-databricks.html">ðŸš€ CI/CD</a>
+                <a href="14-git-essentials.html">ðŸ“ Git</a>
+                <a href="16-sql-functions-comparison.html">ðŸ”— SQL Functions</a>
             </div>
         </nav>
 
         <div class="content">
-            <h1 id="top">⚡ AWS Kinesis Streaming Cheat Sheet</h1>
+            <h1 id="top">âš¡ AWS Kinesis Streaming Cheat Sheet</h1>
             <blockquote>Complete guide to AWS Kinesis Data Streams, Firehose, and Analytics for real-time data processing</blockquote>
 
-            <h2>🔗 Official Documentation</h2>
+            <h2>ðŸ”— Official Documentation</h2>
             <ul>
                 <li><a href="https://docs.aws.amazon.com/kinesis/" target="_blank">AWS Kinesis Documentation</a></li>
                 <li><a href="https://docs.aws.amazon.com/kinesis/latest/dev/" target="_blank">Kinesis Data Streams Developer Guide</a></li>
@@ -98,18 +98,18 @@
 
 
             <div class="toc-container">
-                <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
+                <button class="toc-toggle" onclick="toggleTOC()">ðŸ“‹ Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#kinesis-data-streams-setup-and-configuration">🚀 Kinesis Data Streams - Setup and Configuration</a></li><li><a href="#producing-data-to-kinesis-streams">📤 Producing Data to Kinesis Streams</a></li><li><a href="#consuming-data-from-kinesis-streams">📥 Consuming Data from Kinesis Streams</a></li><li><a href="#kinesis-data-firehose">🔥 Kinesis Data Firehose</a></li><li><a href="#kinesis-data-analytics">📊 Kinesis Data Analytics</a></li><li><a href="#production-patterns-and-best-practices">🔧 Production Patterns and Best Practices</a></li><li><a href="#performance-optimization">🎯 Performance Optimization</a></li><li><a href="#production-checklist">📋 Production Checklist</a></li>
+                        <li><a href="#kinesis-data-streams-setup-and-configuration">ðŸš€ Kinesis Data Streams - Setup and Configuration</a></li><li><a href="#producing-data-to-kinesis-streams">ðŸ“¤ Producing Data to Kinesis Streams</a></li><li><a href="#consuming-data-from-kinesis-streams">ðŸ“¥ Consuming Data from Kinesis Streams</a></li><li><a href="#kinesis-data-firehose">ðŸ”¥ Kinesis Data Firehose</a></li><li><a href="#kinesis-data-analytics">ðŸ“Š Kinesis Data Analytics</a></li><li><a href="#production-patterns-and-best-practices">ðŸ”§ Production Patterns and Best Practices</a></li><li><a href="#performance-optimization">ðŸŽ¯ Performance Optimization</a></li><li><a href="#production-checklist">ðŸ“‹ Production Checklist</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="collapsible-section" id="kinesis-data-streams-setup-and-configuration">
                 <div class="section-header" onclick="toggleSection('kinesis-data-streams-setup-and-configuration')">
-                    <h2>🚀 Kinesis Data Streams - Setup and Configuration</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸš€ Kinesis Data Streams - Setup and Configuration</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Creating and Managing Streams</h3>
@@ -192,8 +192,8 @@ stream_info = describe_stream(stream_name)</code></pre>
 
             <div class="collapsible-section" id="producing-data-to-kinesis-streams">
                 <div class="section-header" onclick="toggleSection('producing-data-to-kinesis-streams')">
-                    <h2>📤 Producing Data to Kinesis Streams</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“¤ Producing Data to Kinesis Streams</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Single Record Production</h3>
@@ -344,8 +344,8 @@ if failed_records:
 
             <div class="collapsible-section" id="consuming-data-from-kinesis-streams">
                 <div class="section-header" onclick="toggleSection('consuming-data-from-kinesis-streams')">
-                    <h2>📥 Consuming Data from Kinesis Streams</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“¥ Consuming Data from Kinesis Streams</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Basic Consumer Implementation</h3>
@@ -526,8 +526,8 @@ custom_consumer = CustomKinesisConsumer("user-activity-stream")
 
             <div class="collapsible-section" id="kinesis-data-firehose">
                 <div class="section-header" onclick="toggleSection('kinesis-data-firehose')">
-                    <h2>🔥 Kinesis Data Firehose</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”¥ Kinesis Data Firehose</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Setting up Firehose Delivery Stream</h3>
@@ -644,8 +644,8 @@ send_to_firehose("user-events-delivery-stream", sample_events)</code></pre>
 
             <div class="collapsible-section" id="kinesis-data-analytics">
                 <div class="section-header" onclick="toggleSection('kinesis-data-analytics')">
-                    <h2>📊 Kinesis Data Analytics</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“Š Kinesis Data Analytics</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Real-time Analytics with SQL</h3>
@@ -715,8 +715,8 @@ HAVING COUNT(*) > 10;
 
             <div class="collapsible-section" id="production-patterns-and-best-practices">
                 <div class="section-header" onclick="toggleSection('production-patterns-and-best-practices')">
-                    <h2>🔧 Production Patterns and Best Practices</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ”§ Production Patterns and Best Practices</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Error Handling and Monitoring</h3>
@@ -925,13 +925,13 @@ except Exception as e:
 </code></pre>
 
             <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Always implement proper retry logic with exponential backoff for Kinesis operations. Monitor your shard utilization and scale your streams based on throughput requirements!
+                <strong>ðŸ’¡ Pro Tip:</strong> Always implement proper retry logic with exponential backoff for Kinesis operations. Monitor your shard utilization and scale your streams based on throughput requirements!
             </div>
 
             <div class="collapsible-section" id="performance-optimization">
                 <div class="section-header" onclick="toggleSection('performance-optimization')">
-                    <h2>🎯 Performance Optimization</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸŽ¯ Performance Optimization</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <h3>Shard Management and Scaling</h3>
@@ -1054,8 +1054,8 @@ monitor_and_scale_stream("user-activity-stream")</code></pre>
 
             <div class="collapsible-section" id="production-checklist">
                 <div class="section-header" onclick="toggleSection('production-checklist')">
-                    <h2>📋 Production Checklist</h2>
-                    <span class="section-toggle">▼</span>
+                    <h2>ðŸ“‹ Production Checklist</h2>
+                    <span class="section-toggle">â–¼</span>
                 </div>
                 <div class="section-content">
             <ul>
@@ -1105,7 +1105,7 @@ monitor_and_scale_stream("user-activity-stream")</code></pre>
             </div>
         </div>
 
-        <a href="#top" class="back-to-top">↑ Top</a>
+        <a href="#top" class="back-to-top">â†‘ Top</a>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
@@ -1119,10 +1119,10 @@ monitor_and_scale_stream("user-activity-stream")</code></pre>
             
             if (tocContent.classList.contains('collapsed')) {
                 tocContent.classList.remove('collapsed');
-                button.textContent = '📋 Hide Table of Contents';
+                button.textContent = 'ðŸ“‹ Hide Table of Contents';
             } else {
                 tocContent.classList.add('collapsed');
-                button.textContent = '📋 Show Table of Contents';
+                button.textContent = 'ðŸ“‹ Show Table of Contents';
             }
         }
 
@@ -1135,11 +1135,11 @@ monitor_and_scale_stream("user-activity-stream")</code></pre>
             if (content.classList.contains('collapsed')) {
                 content.classList.remove('collapsed');
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             } else {
                 content.classList.add('collapsed');
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             }
         }
 
@@ -1150,7 +1150,7 @@ monitor_and_scale_stream("user-activity-stream")</code></pre>
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.remove('collapsed');
-                toggle.textContent = '▼';
+                toggle.textContent = 'â–¼';
             });
         }
 
@@ -1161,7 +1161,7 @@ monitor_and_scale_stream("user-activity-stream")</code></pre>
             });
             document.querySelectorAll('.section-toggle').forEach(toggle => {
                 toggle.classList.add('collapsed');
-                toggle.textContent = '▶';
+                toggle.textContent = 'â–¶';
             });
         }
 
@@ -1181,4 +1181,5 @@ monitor_and_scale_stream("user-activity-stream")</code></pre>
     </script>
 </body>
 </html> 
+
 
