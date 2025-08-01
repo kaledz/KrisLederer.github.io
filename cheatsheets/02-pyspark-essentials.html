@@ -106,7 +106,7 @@
                 <button class="toc-toggle" onclick="toggleTOC()">📋 Table of Contents</button>
                 <div class="toc-content" id="tocContent">
                     <ul class="toc-list">
-                        <li><a href="#1-basic-dataframe-operations">1. Basic DataFrame Operations</a></li><li><a href="#2-schema-creation-and-management">2. Schema Creation and Management</a></li><li><a href="#3-advanced-data-manipulation">3. Advanced Data Manipulation</a></li><li><a href="#4-handling-missing-and-duplicate-data">4. Handling Missing and Duplicate Data</a></li><li><a href="#5-data-transformation">5. Data Transformation</a></li><li><a href="#6-data-profiling">6. Data Profiling</a></li><li><a href="#7-data-visualization-integration-with-other-libraries">7. Data Visualization (Integration with other libraries)</a></li><li><a href="#8-data-importexport">8. Data Import/Export</a></li><li><a href="#9-working-with-large-data">9. Working with Large Data</a></li><li><a href="#10-spark-sql">10. Spark SQL</a></li><li><a href="#11-machine-learning-and-advanced-analytics">11. Machine Learning and Advanced Analytics</a></li><li><a href="#performance-best-practices-summary">Performance Best Practices Summary</a></li>
+                        <li><a href="#1-basic-dataframe-operations">1. Basic DataFrame Operations</a></li><li><a href="#2-schema-creation-and-management">2. Schema Creation and Management</a></li><li><a href="#3-advanced-data-manipulation">3. Advanced Data Manipulation</a></li><li><a href="#4-handling-missing-and-duplicate-data">4. Handling Missing and Duplicate Data</a></li><li><a href="#5-data-transformation">5. Data Transformation</a></li><li><a href="#6-data-profiling">6. Data Profiling</a></li><li><a href="#7-data-visualization-integration-with-other-libraries">7. Data Visualization (Integration with other libraries)</a></li><li><a href="#8-data-importexport">8. Data Import/Export</a></li><li><a href="#9-batching-and-optimization">9. Batching and Optimization Techniques</a></li><li><a href="#10-working-with-large-data">10. Working with Large Data</a></li><li><a href="#11-spark-sql">11. Spark SQL</a></li><li><a href="#12-machine-learning-and-advanced-analytics">12. Machine Learning and Advanced Analytics</a></li><li><a href="#performance-best-practices-summary">Performance Best Practices Summary</a></li>
                     </ul>
                 </div>
             </div>
@@ -1241,9 +1241,816 @@ gcs_df = spark.read.parquet("gs://bucket-name/path/to/data/")</code></pre>
             </section>
 
             <section>
-                <div class="collapsible-section" id="9-working-with-large-data">
-                <div class="section-header" onclick="toggleSection('9-working-with-large-data')">
-                    <h2>9. Working with Large Data</h2>
+                <div class="collapsible-section" id="9-batching-and-optimization">
+                <div class="section-header" onclick="toggleSection('9-batching-and-optimization')">
+                    <h2>9. Batching and Optimization Techniques</h2>
+                    <span class="section-toggle">▼</span>
+                </div>
+                <div class="section-content">
+                <div class="section-description">
+                    <p>Advanced techniques for reading and writing data using batching strategies, partition optimization, and performance tuning for big data operations. Essential for handling massive datasets efficiently.</p>
+                </div>
+
+                <h3>Reading Data with Batching Options</h3>
+                <pre><code class="language-python"># Reading CSV with batch size optimization
+df_csv_batched = spark.read \
+    .option("header", "true") \
+    .option("inferSchema", "true") \
+    .option("batchSize", "10000") \  # Control batch size for parsing
+    .option("maxCharsPerColumn", "100000") \  # Limit column size
+    .option("multiLine", "true") \
+    .csv("path/to/large_file.csv")
+
+# Reading JSON with batching for large files
+df_json_batched = spark.read \
+    .option("multiline", "true") \
+    .option("mode", "PERMISSIVE") \  # Handle malformed JSON gracefully
+    .option("columnNameOfCorruptRecord", "_corrupt_record") \
+    .option("timestampFormat", "yyyy-MM-dd HH:mm:ss") \
+    .json("path/to/large_file.json")
+
+# Reading Parquet with partition discovery
+df_parquet_batched = spark.read \
+    .option("mergeSchema", "true") \  # Handle schema evolution
+    .option("recursiveFileLookup", "true") \  # Find files in subdirectories
+    .parquet("path/to/partitioned_data/")
+
+# Reading from JDBC with batching
+df_jdbc_batched = spark.read \
+    .format("jdbc") \
+    .option("url", "jdbc:postgresql://localhost:5432/mydb") \
+    .option("dbtable", "large_table") \
+    .option("user", "username") \
+    .option("password", "password") \
+    .option("driver", "org.postgresql.Driver") \
+    .option("fetchsize", "10000") \  # Batch size for fetching
+    .option("numPartitions", "8") \  # Number of parallel connections
+    .option("partitionColumn", "id") \  # Column to partition on
+    .option("lowerBound", "1") \
+    .option("upperBound", "1000000") \
+    .load()
+
+# Reading with custom partition strategy
+def read_with_custom_partitions(spark, path, num_partitions=8):
+    """Read data with optimized partitioning strategy"""
+    return spark.read \
+        .option("numPartitions", num_partitions) \
+        .option("mergeSchema", "true") \
+        .parquet(path) \
+        .repartition(num_partitions)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Optimizes data reading with batch sizes and partition strategies</li>
+                        <li><strong>When to use:</strong> Large files, database connections, performance-critical operations</li>
+                        <li><strong>Performance tip:</strong> Batch size should match available memory and CPU cores</li>
+                        <li><strong>Best practice:</strong> Use partition columns that distribute data evenly</li>
+                    </ul>
+                </div>
+
+                <h3>Writing Data with Batching and Partitioning</h3>
+                <pre><code class="language-python"># Writing with optimized batch size and partitioning
+df.write \
+    .mode("overwrite") \
+    .option("compression", "snappy") \  # Fast compression
+    .option("maxRecordsPerFile", "1000000") \  # Control file size
+    .partitionBy("year", "month", "day") \  # Partition by date columns
+    .parquet("path/to/output/")
+
+# Writing to JDBC with batching
+df.write \
+    .format("jdbc") \
+    .option("url", "jdbc:postgresql://localhost:5432/mydb") \
+    .option("dbtable", "output_table") \
+    .option("user", "username") \
+    .option("password", "password") \
+    .option("driver", "org.postgresql.Driver") \
+    .option("batchsize", "10000") \  # Batch size for inserts
+    .option("isolationLevel", "NONE") \  # Faster for bulk inserts
+    .mode("append") \
+    .save()
+
+# Writing with dynamic partition overwrite
+spark.conf.set("spark.sql.sources.partitionOverwriteMode", "dynamic")
+df.write \
+    .mode("overwrite") \
+    .partitionBy("country", "region") \
+    .parquet("path/to/partitioned_output/")
+
+# Writing with optimized file sizes
+def write_optimized(df, path, target_file_size_mb=128):
+    """Write DataFrame with optimized file sizes"""
+    # Calculate optimal number of partitions
+    total_size_mb = df.count() * len(df.columns) * 8 / (1024 * 1024)  # Rough estimate
+    optimal_partitions = max(1, int(total_size_mb / target_file_size_mb))
+    
+    return df.repartition(optimal_partitions) \
+        .write \
+        .mode("overwrite") \
+        .option("compression", "snappy") \
+        .parquet(path)
+
+# Writing with custom batch processing
+def write_in_batches(df, path, batch_size=100000):
+    """Write DataFrame in batches to avoid memory issues"""
+    total_rows = df.count()
+    num_batches = (total_rows + batch_size - 1) // batch_size
+    
+    for i in range(num_batches):
+        start_idx = i * batch_size
+        end_idx = min((i + 1) * batch_size, total_rows)
+        
+        batch_df = df.limit(batch_size).offset(start_idx)
+        batch_df.write \
+            .mode("append") \
+            .option("compression", "snappy") \
+            .parquet(f"{path}/batch_{i}")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Optimizes data writing with batching, partitioning, and compression</li>
+                        <li><strong>When to use:</strong> Large datasets, performance-critical writes, storage optimization</li>
+                        <li><strong>Performance tip:</strong> Snappy compression offers good balance of speed and size</li>
+                        <li><strong>Best practice:</strong> Partition by columns used in frequent queries</li>
+                    </ul>
+                </div>
+
+                <h3>Advanced Batching Strategies</h3>
+                <pre><code class="language-python"># Streaming with micro-batching
+streaming_df = spark.readStream \
+    .option("maxFilesPerTrigger", "10") \  # Process 10 files per batch
+    .option("maxBytesPerTrigger", "100MB") \  # Or limit by size
+    .option("cleanSource", "delete") \  # Clean up processed files
+    .option("sourceArchiveDir", "/archive") \  # Archive processed files
+    .csv("path/to/streaming_data/")
+
+# Processing with sliding windows
+from pyspark.sql.functions import window, col
+
+windowed_df = streaming_df \
+    .withWatermark("timestamp", "10 minutes") \
+    .groupBy(
+        window(col("timestamp"), "5 minutes", "2 minutes"),
+        col("category")
+    ) \
+    .agg(count("*").alias("count"))
+
+# Batch processing with checkpointing
+streaming_query = windowed_df.writeStream \
+    .outputMode("append") \
+    .option("checkpointLocation", "/checkpoints") \
+    .option("trigger.interval", "30 seconds") \  # Process every 30 seconds
+    .format("parquet") \
+    .start("path/to/output/")
+
+# Adaptive query execution for dynamic batching
+spark.conf.set("spark.sql.adaptive.enabled", "true")
+spark.conf.set("spark.sql.adaptive.coalescePartitions.enabled", "true")
+spark.conf.set("spark.sql.adaptive.skewJoin.enabled", "true")
+spark.conf.set("spark.sql.adaptive.localShuffleReader.enabled", "true")
+
+# Custom batch processor
+class BatchProcessor:
+    def __init__(self, batch_size=10000, max_memory_mb=1024):
+        self.batch_size = batch_size
+        self.max_memory_mb = max_memory_mb
+    
+    def process_in_batches(self, df, process_func):
+        """Process DataFrame in batches with memory management"""
+        total_rows = df.count()
+        processed_dfs = []
+        
+        for i in range(0, total_rows, self.batch_size):
+            batch_df = df.limit(self.batch_size).offset(i)
+            processed_batch = process_func(batch_df)
+            processed_dfs.append(processed_batch)
+            
+            # Force garbage collection
+            if i % (self.batch_size * 10) == 0:
+                import gc
+                gc.collect()
+        
+        return processed_dfs[0].union(*processed_dfs[1:]) if processed_dfs else None
+
+# Memory-optimized batch processing
+def process_with_memory_management(df, process_func, memory_threshold_mb=512):
+    """Process DataFrame with memory monitoring"""
+    import psutil
+    
+    def check_memory():
+        memory_percent = psutil.virtual_memory().percent
+        if memory_percent > 80:  # If memory usage > 80%
+            import gc
+            gc.collect()
+            return False
+        return True
+    
+    # Process in smaller batches if memory is high
+    if not check_memory():
+        batch_size = df.count() // 4  # Reduce batch size
+    else:
+        batch_size = df.count() // 2
+    
+    processor = BatchProcessor(batch_size=batch_size)
+    return processor.process_in_batches(df, process_func)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Implements advanced batching strategies for streaming and batch processing</li>
+                        <li><strong>When to use:</strong> Real-time processing, memory-constrained environments, streaming pipelines</li>
+                        <li><strong>Performance tip:</strong> Adaptive query execution automatically optimizes batch sizes</li>
+                        <li><strong>Best practice:</strong> Monitor memory usage and adjust batch sizes dynamically</li>
+                    </ul>
+                </div>
+
+                <h3>Download and Export Optimization</h3>
+                <pre><code class="language-python"># Optimized data download with batching
+def download_with_batching(df, output_path, batch_size=50000, format="csv"):
+    """Download DataFrame in optimized batches"""
+    total_rows = df.count()
+    
+    if total_rows <= batch_size:
+        # Small dataset - download directly
+        df.write \
+            .mode("overwrite") \
+            .option("header", "true") \
+            .option("compression", "gzip") \
+            .format(format) \
+            .save(output_path)
+    else:
+        # Large dataset - download in batches
+        for i in range(0, total_rows, batch_size):
+            batch_df = df.limit(batch_size).offset(i)
+            batch_path = f"{output_path}/batch_{i//batch_size}"
+            
+            batch_df.write \
+                .mode("overwrite") \
+                .option("header", "true" if i == 0 else "false") \
+                .option("compression", "gzip") \
+                .format(format) \
+                .save(batch_path)
+
+# Parallel download with multiple formats
+def parallel_download(df, base_path, formats=["csv", "parquet", "json"]):
+    """Download DataFrame in multiple formats simultaneously"""
+    from concurrent.futures import ThreadPoolExecutor
+    import os
+    
+    def download_format(format_type):
+        format_path = f"{base_path}/{format_type}"
+        os.makedirs(format_path, exist_ok=True)
+        
+        df.write \
+            .mode("overwrite") \
+            .option("compression", "snappy" if format_type == "parquet" else "gzip") \
+            .format(format_type) \
+            .save(format_path)
+    
+    # Download in parallel
+    with ThreadPoolExecutor(max_workers=len(formats)) as executor:
+        executor.map(download_format, formats)
+
+# Memory-efficient download for very large datasets
+def download_large_dataset(df, output_path, chunk_size=100000):
+    """Download very large datasets with memory management"""
+    import gc
+    
+    # Get total count and schema
+    total_count = df.count()
+    schema = df.schema
+    
+    # Download in chunks
+    for chunk_start in range(0, total_count, chunk_size):
+        chunk_end = min(chunk_start + chunk_size, total_count)
+        
+        # Read chunk with optimized settings
+        chunk_df = df.limit(chunk_size).offset(chunk_start)
+        
+        # Write chunk
+        chunk_path = f"{output_path}/chunk_{chunk_start//chunk_size}"
+        chunk_df.write \
+            .mode("overwrite") \
+            .option("compression", "snappy") \
+            .parquet(chunk_path)
+        
+        # Force garbage collection
+        del chunk_df
+        gc.collect()
+
+# Optimized export with progress tracking
+def export_with_progress(df, output_path, batch_size=10000):
+    """Export DataFrame with progress tracking and optimization"""
+    total_rows = df.count()
+    total_batches = (total_rows + batch_size - 1) // batch_size
+    
+    print(f"Starting export of {total_rows:,} rows in {total_batches} batches")
+    
+    for batch_num in range(total_batches):
+        start_idx = batch_num * batch_size
+        end_idx = min(start_idx + batch_size, total_rows)
+        
+        # Process batch
+        batch_df = df.limit(batch_size).offset(start_idx)
+        
+        # Write batch
+        batch_path = f"{output_path}/batch_{batch_num:04d}"
+        batch_df.write \
+            .mode("overwrite") \
+            .option("compression", "snappy") \
+            .parquet(batch_path)
+        
+        # Progress update
+        progress = (batch_num + 1) / total_batches * 100
+        print(f"Progress: {progress:.1f}% ({batch_num + 1}/{total_batches} batches)")
+        
+        # Memory cleanup
+        del batch_df
+        import gc
+        gc.collect()
+    
+    print("Export completed successfully!")
+
+# Download with custom partitioning
+def download_partitioned(df, output_path, partition_cols=["year", "month"]):
+    """Download DataFrame with custom partitioning strategy"""
+    df.write \
+        .mode("overwrite") \
+        .option("compression", "snappy") \
+        .partitionBy(*partition_cols) \
+        .parquet(output_path)
+    
+    print(f"Downloaded with partitioning by: {partition_cols}")
+
+# Optimized CSV export for compatibility
+def export_to_csv_optimized(df, output_path, batch_size=50000):
+    """Export to CSV with optimization for large datasets"""
+    total_rows = df.count()
+    
+    if total_rows <= batch_size:
+        # Single file export
+        df.coalesce(1).write \
+            .mode("overwrite") \
+            .option("header", "true") \
+            .option("compression", "gzip") \
+            .csv(output_path)
+    else:
+        # Multi-file export with headers in each file
+        for i in range(0, total_rows, batch_size):
+            batch_df = df.limit(batch_size).offset(i)
+            batch_path = f"{output_path}/part_{i//batch_size:04d}"
+            
+            batch_df.coalesce(1).write \
+                .mode("overwrite") \
+                .option("header", "true") \
+                .option("compression", "gzip") \
+                .csv(batch_path)</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Optimizes data download and export operations for large datasets</li>
+                        <li><strong>When to use:</strong> Data export, backup operations, data sharing between systems</li>
+                        <li><strong>Performance tip:</strong> Use appropriate compression based on data type and access patterns</li>
+                        <li><strong>Best practice:</strong> Monitor progress and implement error handling for large exports</li>
+                    </ul>
+                </div>
+
+                <h3>Efficient Counting and Statistics</h3>
+                <pre><code class="language-python"># Efficient row counting - avoid full data scan
+# Method 1: Use DataFrame.count() with caching for repeated counts
+df.cache()  # Cache DataFrame if counting multiple times
+row_count = df.count()
+
+# Method 2: Approximate count for very large datasets
+approx_count = df.select().count()  # Uses sampling for estimation
+
+# Method 3: Count with specific columns only
+efficient_count = df.select("id").count()  # Only count one column
+
+# Method 4: Use SQL for faster counting
+df.createOrReplaceTempView("temp_table")
+sql_count = spark.sql("SELECT COUNT(*) as total_rows FROM temp_table").collect()[0]["total_rows"]
+
+# Efficient column counting and statistics
+def get_efficient_stats(df):
+    """Get efficient statistics without full data scan"""
+    # Get column count
+    column_count = len(df.columns)
+    
+    # Get row count efficiently
+    row_count = df.select().count()
+    
+    # Get null counts for each column efficiently
+    null_counts = {}
+    for col in df.columns:
+        null_count = df.filter(col(col).isNull()).count()
+        null_counts[col] = null_count
+    
+    # Get distinct counts for categorical columns
+    distinct_counts = {}
+    categorical_cols = [col for col in df.columns if df.schema[col].dataType in [StringType(), BooleanType()]]
+    for col in categorical_cols:
+        distinct_count = df.select(col).distinct().count()
+        distinct_counts[col] = distinct_count
+    
+    return {
+        "row_count": row_count,
+        "column_count": column_count,
+        "null_counts": null_counts,
+        "distinct_counts": distinct_counts
+    }
+
+# Batch counting for large datasets
+def batch_count(df, batch_size=100000):
+    """Count rows in batches to avoid memory issues"""
+    total_count = 0
+    total_rows = df.count()  # Get total once
+    
+    for i in range(0, total_rows, batch_size):
+        batch_df = df.limit(batch_size).offset(i)
+        batch_count = batch_df.count()
+        total_count += batch_count
+        
+        # Progress update
+        progress = (i + batch_size) / total_rows * 100
+        print(f"Counting progress: {min(progress, 100):.1f}%")
+    
+    return total_count
+
+# Efficient counting with sampling
+def approximate_count_with_sampling(df, sample_fraction=0.01):
+    """Get approximate count using sampling"""
+    sample_df = df.sample(withReplacement=False, fraction=sample_fraction, seed=42)
+    sample_count = sample_df.count()
+    estimated_total = int(sample_count / sample_fraction)
+    return estimated_total
+
+# Count with conditions efficiently
+def conditional_count(df, condition_col, condition_value):
+    """Count rows matching condition efficiently"""
+    return df.filter(col(condition_col) == condition_value).count()
+
+# Count distinct values efficiently
+def efficient_distinct_count(df, column_name):
+    """Count distinct values in a column efficiently"""
+    return df.select(column_name).distinct().count()
+
+# Count with grouping efficiently
+def grouped_count(df, group_cols):
+    """Count with grouping efficiently"""
+    return df.groupBy(*group_cols).count()
+
+# Memory-efficient counting for very large datasets
+def memory_efficient_count(df, chunk_size=50000):
+    """Count very large datasets with memory management"""
+    import gc
+    
+    # Get schema and sample for estimation
+    sample_df = df.sample(withReplacement=False, fraction=0.001, seed=42)
+    sample_count = sample_df.count()
+    
+    # Estimate total size
+    estimated_total = int(sample_count / 0.001)
+    
+    # Count in chunks if dataset is very large
+    if estimated_total > 1000000:  # If estimated > 1M rows
+        total_count = 0
+        for i in range(0, estimated_total, chunk_size):
+            chunk_df = df.limit(chunk_size).offset(i)
+            chunk_count = chunk_df.count()
+            total_count += chunk_count
+            
+            # Force garbage collection
+            del chunk_df
+            gc.collect()
+        
+        return total_count
+    else:
+        return df.count()
+
+# Performance comparison for counting methods
+def compare_counting_methods(df):
+    """Compare different counting methods for performance"""
+    import time
+    
+    methods = {
+        "Direct count": lambda: df.count(),
+        "Select count": lambda: df.select().count(),
+        "SQL count": lambda: spark.sql(f"SELECT COUNT(*) FROM ({df.createOrReplaceTempView('temp'); 'temp'})").collect()[0][0],
+        "Sampled count": lambda: approximate_count_with_sampling(df, 0.01)
+    }
+    
+    results = {}
+    for method_name, method_func in methods.items():
+        try:
+            start_time = time.time()
+            count_result = method_func()
+            duration = time.time() - start_time
+            
+            results[method_name] = {
+                "count": count_result,
+                "duration": duration
+            }
+            print(f"{method_name}: {count_result} rows in {duration:.2f}s")
+        except Exception as e:
+            print(f"{method_name}: Error - {e}")
+    
+    return results
+
+# Data size estimation and calculation
+def get_data_size(df, unit='GB'):
+    """Get estimated data size in specified unit (B, KB, MB, GB, TB)"""
+    # Get row count and column count
+    row_count = df.count()
+    column_count = len(df.columns)
+    
+    # Estimate average row size in bytes (rough estimation)
+    # Assuming average of 8 bytes per field (typical for mixed data types)
+    estimated_bytes_per_row = column_count * 8
+    total_bytes = row_count * estimated_bytes_per_row
+    
+    # Convert to requested unit
+    units = {'B': 1, 'KB': 1024, 'MB': 1024**2, 'GB': 1024**3, 'TB': 1024**4}
+    if unit.upper() in units:
+        size_in_unit = total_bytes / units[unit.upper()]
+        return size_in_unit
+    else:
+        raise ValueError(f"Invalid unit: {unit}. Use B, KB, MB, GB, or TB")
+    
+    return total_bytes
+
+def get_detailed_size_breakdown(df):
+    """Get detailed size breakdown by data type"""
+    import sys
+    
+    # Get schema information
+    schema = df.schema
+    size_breakdown = {}
+    
+    for field in schema.fields:
+        field_name = field.name
+        data_type = field.dataType
+        
+        # Estimate size based on data type
+        if isinstance(data_type, StringType):
+            estimated_size = 50  # Average string length
+        elif isinstance(data_type, IntegerType):
+            estimated_size = 4
+        elif isinstance(data_type, LongType):
+            estimated_size = 8
+        elif isinstance(data_type, DoubleType):
+            estimated_size = 8
+        elif isinstance(data_type, FloatType):
+            estimated_size = 4
+        elif isinstance(data_type, BooleanType):
+            estimated_size = 1
+        elif isinstance(data_type, DateType):
+            estimated_size = 4
+        elif isinstance(data_type, TimestampType):
+            estimated_size = 8
+        elif isinstance(data_type, ArrayType):
+            estimated_size = 100  # Average array size
+        elif isinstance(data_type, StructType):
+            estimated_size = 200  # Average struct size
+        else:
+            estimated_size = 8  # Default size
+        
+        size_breakdown[field_name] = {
+            'data_type': str(data_type),
+            'estimated_size_bytes': estimated_size
+        }
+    
+    return size_breakdown
+
+def get_accurate_data_size(df, sample_fraction=0.01):
+    """Get more accurate data size using sampling"""
+    # Sample the data to get more accurate size estimation
+    sample_df = df.sample(withReplacement=False, fraction=sample_fraction, seed=42)
+    
+    # Convert to pandas for size calculation (only for sample)
+    sample_pandas = sample_df.toPandas()
+    sample_size_bytes = sample_pandas.memory_usage(deep=True).sum()
+    
+    # Estimate total size
+    total_size_bytes = sample_size_bytes / sample_fraction
+    
+    return {
+        'sample_size_bytes': sample_size_bytes,
+        'estimated_total_bytes': total_size_bytes,
+        'sample_fraction': sample_fraction
+    }
+
+def format_size(size_bytes):
+    """Format size in human-readable format"""
+    if size_bytes < 1024:
+        return f"{size_bytes:.2f} B"
+    elif size_bytes < 1024**2:
+        return f"{size_bytes/1024:.2f} KB"
+    elif size_bytes < 1024**3:
+        return f"{size_bytes/1024**2:.2f} MB"
+    elif size_bytes < 1024**4:
+        return f"{size_bytes/1024**3:.2f} GB"
+    else:
+        return f"{size_bytes/1024**4:.2f} TB"
+
+def get_comprehensive_size_info(df):
+    """Get comprehensive size information for DataFrame"""
+    # Get basic counts
+    row_count = df.count()
+    column_count = len(df.columns)
+    
+    # Get size breakdown by column
+    size_breakdown = get_detailed_size_breakdown(df)
+    
+    # Get accurate size estimation
+    accurate_size = get_accurate_data_size(df)
+    
+    # Calculate estimated total size
+    estimated_total_bytes = sum(
+        size_breakdown[col]['estimated_size_bytes'] * row_count 
+        for col in size_breakdown
+    )
+    
+    return {
+        'row_count': row_count,
+        'column_count': column_count,
+        'estimated_size_bytes': estimated_total_bytes,
+        'formatted_size': format_size(estimated_total_bytes),
+        'accurate_estimation': accurate_size,
+        'size_breakdown': size_breakdown,
+        'size_in_gb': get_data_size(df, 'GB'),
+        'size_in_mb': get_data_size(df, 'MB'),
+        'size_in_tb': get_data_size(df, 'TB')
+    }
+
+# Memory usage monitoring
+def monitor_memory_usage(df, operation_name="DataFrame operation"):
+    """Monitor memory usage during DataFrame operations"""
+    import psutil
+    import gc
+    
+    # Get initial memory usage
+    initial_memory = psutil.virtual_memory().used / (1024**3)  # GB
+    
+    # Perform operation
+    result = df.count()  # Example operation
+    
+    # Get final memory usage
+    final_memory = psutil.virtual_memory().used / (1024**3)  # GB
+    memory_used = final_memory - initial_memory
+    
+    # Force garbage collection
+    gc.collect()
+    
+    print(f"{operation_name}:")
+    print(f"  Initial memory: {initial_memory:.2f} GB")
+    print(f"  Final memory: {final_memory:.2f} GB")
+    print(f"  Memory used: {memory_used:.2f} GB")
+    print(f"  Result: {result}")
+    
+    return {
+        'initial_memory_gb': initial_memory,
+        'final_memory_gb': final_memory,
+        'memory_used_gb': memory_used,
+        'result': result
+    }
+
+# Size-based optimization recommendations
+def get_size_based_recommendations(df):
+    """Get optimization recommendations based on data size"""
+    size_info = get_comprehensive_size_info(df)
+    recommendations = []
+    
+    if size_info['size_in_gb'] < 1:
+        recommendations.append("Small dataset (< 1GB): Consider using pandas for faster processing")
+    elif size_info['size_in_gb'] < 10:
+        recommendations.append("Medium dataset (1-10GB): Use Spark with default settings")
+    elif size_info['size_in_gb'] < 100:
+        recommendations.append("Large dataset (10-100GB): Consider partitioning and caching")
+    else:
+        recommendations.append("Very large dataset (>100GB): Use advanced optimization techniques")
+    
+    if size_info['column_count'] > 50:
+        recommendations.append("High column count: Consider column pruning for better performance")
+    
+    if size_info['row_count'] > 1000000:
+        recommendations.append("High row count: Use sampling for exploratory analysis")
+    
+    return recommendations</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Provides efficient methods for counting rows and columns without full data scans</li>
+                        <li><strong>When to use:</strong> Large datasets, performance-critical operations, data profiling</li>
+                        <li><strong>Performance tip:</strong> Use sampling for approximate counts on very large datasets</li>
+                        <li><strong>Best practice:</strong> Cache DataFrames if counting multiple times</li>
+                    </ul>
+                </div>
+
+                <h3>Performance Monitoring and Tuning</h3>
+                <pre><code class="language-python"># Performance monitoring utilities
+def monitor_performance(func, *args, **kwargs):
+    """Decorator to monitor function performance"""
+    import time
+    import psutil
+    
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        start_memory = psutil.virtual_memory().used
+        
+        result = func(*args, **kwargs)
+        
+        end_time = time.time()
+        end_memory = psutil.virtual_memory().used
+        
+        duration = end_time - start_time
+        memory_used = end_memory - start_memory
+        
+        print(f"Function: {func.__name__}")
+        print(f"Duration: {duration:.2f} seconds")
+        print(f"Memory used: {memory_used / (1024*1024):.2f} MB")
+        
+        return result
+    
+    return wrapper
+
+# Batch size optimization
+def optimize_batch_size(df, target_duration_seconds=60):
+    """Find optimal batch size based on target processing time"""
+    total_rows = df.count()
+    
+    # Test different batch sizes
+    batch_sizes = [1000, 5000, 10000, 50000, 100000]
+    results = {}
+    
+    for batch_size in batch_sizes:
+        if batch_size > total_rows:
+            continue
+            
+        start_time = time.time()
+        test_df = df.limit(batch_size)
+        test_df.count()  # Force computation
+        duration = time.time() - start_time
+        
+        results[batch_size] = duration
+        print(f"Batch size {batch_size}: {duration:.2f}s")
+    
+    # Find batch size closest to target duration
+    optimal_batch_size = min(results.keys(), 
+                           key=lambda x: abs(results[x] - target_duration_seconds))
+    
+    return optimal_batch_size
+
+# Memory optimization for large operations
+def optimize_memory_usage(df, operation_func, max_memory_mb=1024):
+    """Optimize memory usage for large operations"""
+    import psutil
+    
+    def check_memory():
+        memory_mb = psutil.virtual_memory().used / (1024 * 1024)
+        return memory_mb < max_memory_mb
+    
+    # Start with conservative batch size
+    batch_size = 10000
+    
+    while not check_memory() and batch_size > 1000:
+        batch_size = batch_size // 2
+        print(f"Reducing batch size to {batch_size}")
+    
+    return BatchProcessor(batch_size=batch_size).process_in_batches(df, operation_func)
+
+# Configuration optimization
+def optimize_spark_config(spark, dataset_size_gb):
+    """Optimize Spark configuration based on dataset size"""
+    if dataset_size_gb < 1:
+        # Small dataset
+        spark.conf.set("spark.sql.adaptive.enabled", "false")
+        spark.conf.set("spark.sql.adaptive.coalescePartitions.enabled", "false")
+    elif dataset_size_gb < 10:
+        # Medium dataset
+        spark.conf.set("spark.sql.adaptive.enabled", "true")
+        spark.conf.set("spark.sql.adaptive.coalescePartitions.enabled", "true")
+    else:
+        # Large dataset
+        spark.conf.set("spark.sql.adaptive.enabled", "true")
+        spark.conf.set("spark.sql.adaptive.coalescePartitions.enabled", "true")
+        spark.conf.set("spark.sql.adaptive.skewJoin.enabled", "true")
+        spark.conf.set("spark.sql.adaptive.localShuffleReader.enabled", "true")
+        spark.conf.set("spark.sql.adaptive.advisoryPartitionSizeInBytes", "128m")</code></pre>
+
+                <div class="bullet-explanation">
+                    <ul>
+                        <li><strong>What it does:</strong> Provides tools for monitoring and optimizing batch processing performance</li>
+                        <li><strong>When to use:</strong> Performance tuning, capacity planning, production optimization</li>
+                        <li><strong>Performance tip:</strong> Monitor memory usage and adjust batch sizes dynamically</li>
+                        <li><strong>Best practice:</strong> Profile operations on representative data sizes</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <div class="collapsible-section" id="10-working-with-large-data">
+                <div class="section-header" onclick="toggleSection('10-working-with-large-data')">
+                    <h2>10. Working with Large Data</h2>
                     <span class="section-toggle">▼</span>
                 </div>
                 <div class="section-content">
