@@ -3,7 +3,7 @@
 Welcome to my personal website repository, powered by **GitHub Pages** and built with HTML.  
 This site serves as a digital portfolio showcasing my data projects, resume, and background in **data engineering**, **analytics**, and **cloud technologies**.
 
-> 🌐 Visit the live site: [KrisLederer.github.io]([https://KrisLederer.github.io](https://kaledz.github.io/KrisLederer.github.io/projects.html)
+> 🌐 Visit the live site: [KrisLederer.github.io]([https://KrisLederer.github.io](https://kaledz.github.io/KrisLederer.github.io/projects.html))
 
 ---
 
