@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Kristoph Lederer Portfolio</title>
     <meta charset="utf-8" />
@@ -296,8 +296,8 @@
                         </object>
                     </div>
                     <script type='text/javascript'>
-                        var divElement = document.getElementById('viz1741758783715');
-                        var vizElement = divElement.getElementsByTagName('object')[0];
+                        const divElement = document.getElementById('viz1741758783715');
+                        const vizElement = divElement.getElementsByTagName('object')[0];
                         if (divElement.offsetWidth > 800) {
                             vizElement.style.width = '100%';
                             vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
@@ -308,7 +308,7 @@
                             vizElement.style.width = '100%';
                             vizElement.style.height = '1877px';
                         }
-                        var scriptElement = document.createElement('script');
+                        const scriptElement = document.createElement('script');
                         scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
                         vizElement.parentNode.insertBefore(scriptElement, vizElement);
                     </script>
@@ -460,6 +460,10 @@
     <script src="assets/js/main.js"></script>
     <!-- Theme toggle JS removed - was causing issues -->
     <script>
+        /**
+         * Toggles the visibility of a project section
+         * @param {HTMLElement} header - The project header element that was clicked
+         */
         function toggleProject(header) {
             const content = header.nextElementSibling;
             const button = header.querySelector('.collapse-btn');
@@ -473,6 +477,10 @@
             }
         }
 
+        /**
+         * Filters projects based on selected category
+         * Shows/hides projects according to the category filter dropdown
+         */
         function filterProjects() {
             const selectedCategory = document.getElementById('categoryFilter').value;
             const projects = document.querySelectorAll('.post.featured, .posts article');
@@ -486,7 +494,7 @@
             });
         }
 
-        // Initialize all projects as expanded
+        // Initialize all projects as expanded on page load
         document.addEventListener('DOMContentLoaded', function() {
             const projectContents = document.querySelectorAll('.project-content');
             projectContents.forEach(content => {
@@ -497,11 +505,6 @@
 
 </body>
 </html>
-
-
-
-
-
 
 
 
